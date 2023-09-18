@@ -1,8 +1,6 @@
 package lexer;
 
 import lexer.token.Token;
-import lexer.token.TokenType;
-import lexer.LexerUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -148,7 +146,7 @@ public class Lexer
     private void processStr(FileReader fr, int firstChar, int lineNum) throws IOException
     {
         StringBuilder str = new StringBuilder();
-        str.append(firstChar);
+        str.append((char) firstChar);
         int c = getNextChar(fr);
         while (c != '"')
         {
