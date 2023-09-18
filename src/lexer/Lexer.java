@@ -120,6 +120,7 @@ public class Lexer
 
     private void processSymbol(FileReader fr, int firstChar, int lineNum) throws IOException
     {
+        /* if a comment */
         if (firstChar == '/')
         {
             int nextChar = getNextChar(fr);
