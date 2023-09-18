@@ -47,9 +47,9 @@ public class Lexer
                     processSymbol(fr, c, lineNum);
                 }
 
-                else
+                else if (c == '"')
                 {
-                    throw new IOException("Invalid character: " + (char) c);
+                    processStr(fr, c, lineNum);
                 }
 
 
@@ -63,6 +63,21 @@ public class Lexer
 
     }
 
+    public void output() throws IOException
+    {
+        File destFile = new File("output.txt");
+        try
+        {
+            for(Token t : tokens)
+            {
+                outputFileUsingUsingBuffer(destFile, t.toString()+"\n", true);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
     private int getNextChar(FileReader fr) throws IOException
     {
         if (buffer != -1)
@@ -122,16 +137,26 @@ public class Lexer
                 UnGetCH(nextChar);
             }
         }
-        else if (firstChar >= 33 && firstChar <= 126 && !twoCharSymbols.containsValue((char) firstChar))
+        else
         {
             str.append((char) firstChar);
         }
-        else
-        {
-            throw new IOException("Invalid character: " + (char) firstChar);
-        }
 
         tokens.add(generateSymbolToken(str.toString(), lineNum));
+    }
+
+    private void processStr(FileReader fr, int firstChar, int lineNum) throws IOException
+    {
+        StringBuilder str = new StringBuilder();
+        str.append(firstChar);
+        int c = getNextChar(fr);
+        while (c != '"')
+        {
+            str.append((char) c);
+            c = getNextChar(fr);
+        }
+        str.append('"');
+        tokens.add(generateStrToken(str.toString(), lineNum));
     }
 
 }

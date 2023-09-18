@@ -36,14 +36,13 @@ public class FileOperate
         Files.copy(srcFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
-    public static void outputFileUsingUsingBuffer(String p1, String str, boolean append)
+    public static void outputFileUsingUsingBuffer(File file, String str, boolean append)
     {
-        File tmp = new File(p1);
-        if (!tmp.exists())
+        if (!file.exists())
         {
             try
             {
-                Files.createFile(tmp.toPath());
+                Files.createFile(file.toPath());
             }
             catch (IOException e)
             {
@@ -52,7 +51,7 @@ public class FileOperate
         }
         try
         {
-            BufferedWriter out = new BufferedWriter(new FileWriter(p1, append));
+            BufferedWriter out = new BufferedWriter(new FileWriter(file, append));
             out.write(str);
             out.close();
         }
