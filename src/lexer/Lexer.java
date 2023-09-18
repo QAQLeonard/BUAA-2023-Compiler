@@ -120,6 +120,34 @@ public class Lexer
 
     private void processSymbol(FileReader fr, int firstChar, int lineNum) throws IOException
     {
+        if (firstChar == '/')
+        {
+            int nextChar = getNextChar(fr);
+            if (nextChar == '/')
+            {
+                while (nextChar != '\n')
+                {
+                    nextChar = getNextChar(fr);
+                }
+                return;
+            }
+            else if (nextChar == '*')
+            {
+                int c1 = getNextChar(fr);
+                int c2 = getNextChar(fr);
+                while (c1 != '*' || c2 != '/')
+                {
+                    c1 = c2;
+                    c2 = getNextChar(fr);
+                }
+                return;
+            }
+            else
+            {
+                UnGetCH(nextChar);
+            }
+        }
+
         StringBuilder str = new StringBuilder();
 
         if (twoCharSymbols.containsKey((char) firstChar))

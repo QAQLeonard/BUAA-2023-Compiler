@@ -31,5 +31,6 @@ bin/
 .idea/
 *.iml
 *.zip
-testfile.txt
+*.tar.gz
 output.txt
+testfile.txt
