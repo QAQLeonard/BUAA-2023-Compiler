@@ -96,7 +96,7 @@ public class Lexer
     {
         StringBuilder str = new StringBuilder();
         int c = firstChar;
-        while (Character.isLetterOrDigit(c))
+        while (Character.isLetterOrDigit(c)||c=='_')
         {
             str.append((char) c);
             c = getNextChar(fr);
