@@ -14,9 +14,9 @@ public class Token
         this.lineNumber = lineNumber;
     }
 
-    public String getType()
+    public TokenType getType()
     {
-        return type.toString();
+        return type;
     }
 
     public String getValue()
