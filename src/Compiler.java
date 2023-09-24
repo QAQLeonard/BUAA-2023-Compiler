@@ -1,4 +1,4 @@
-import lexer.Lexer;
+import frontend.lexer.Lexer;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ public class Compiler
         {
             Lexer lexer = new Lexer();
             lexer.run();
-            lexer.output();
+            // lexer.output();
         }
         catch (IOException e)
         {

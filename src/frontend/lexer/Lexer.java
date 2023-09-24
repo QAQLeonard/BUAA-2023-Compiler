@@ -1,11 +1,11 @@
-package lexer;
+package frontend.lexer;
 
-import lexer.token.Token;
+import frontend.lexer.token.Token;
 
 import java.io.*;
 import java.util.ArrayList;
 
-import static lexer.LexerUtils.*;
+import static frontend.lexer.LexerUtils.*;
 import static utils.FileOperate.*;
 
 public class Lexer
@@ -184,6 +184,11 @@ public class Lexer
         }
         str.append('"');
         tokens.add(generateStrToken(str.toString(), lineNum));
+    }
+
+    public ArrayList<Token> getTokens()
+    {
+        return tokens;
     }
 
 }

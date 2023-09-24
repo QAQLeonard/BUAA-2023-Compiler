@@ -1,4 +1,4 @@
-package lexer.token;
+package frontend.lexer.token;
 
 public class OperatorToken extends Token
 {
