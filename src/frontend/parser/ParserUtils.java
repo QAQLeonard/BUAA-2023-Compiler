@@ -1,5 +1,7 @@
 package frontend.parser;
 
+import frontend.lexer.token.Token;
+import frontend.lexer.token.TokenType;
 import frontend.parser.node.NodeType;
 
 import java.io.BufferedWriter;
@@ -35,4 +37,21 @@ public class ParserUtils
             }
         }
     }
+
+    public static Token findNearestTokenByType(TokenType targetType)
+    {
+        int i = Parser.tokenIndex;
+        while (i < Parser.tokenList.size())
+        {
+            if (Parser.tokenList.get(i).getType() == targetType)
+            {
+                return Parser.tokenList.get(i);
+            }
+            i++;
+        }
+        // 如果未找到匹配的Token，则返回-1表示未找到
+        return null;
+    }
+
+
 }

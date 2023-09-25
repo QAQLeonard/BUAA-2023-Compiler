@@ -2,8 +2,8 @@ package frontend.parser.node;
 
 public class LOrExpNode extends Node {
 
-    public LOrExpNode(NodeType type)
+    public LOrExpNode()
     {
-        super(type);
+        super(NodeType.LOrExp);
     }
 }

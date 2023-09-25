@@ -2,8 +2,8 @@ package frontend.parser.node;
 
 public class CondNode extends Node {
 
-    public CondNode(NodeType type)
+    public CondNode()
     {
-        super(type);
+        super(NodeType.Cond);
     }
 }

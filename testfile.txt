@@ -21,10 +21,8 @@ int func1(int a, int b[], int c[][2])
     func2();
     if (var1_g < 30) {
         printf("%d < 30.\n", var1_g);
-    } else if (var1_g == 30) {
-        printf("%d = 30.\n", var1_g);
     } else {
-        printf("%d > 30.\n", var1_g);
+        printf("%d >= 30.\n", var1_g);
     }
     return 0;
 }
@@ -37,10 +35,8 @@ void vfunc1(int a, int b[], int c[][2])
     func2();
     if (var1_g < 30) {
         printf("%d < 30.\n", var1_g);
-    } else if (var1_g == 30) {
-        printf("%d = 30.\n", var1_g);
     } else {
-        printf("%d > 30.\n", var1_g);
+        printf("%d >= 30.\n", var1_g);
     }
     return;
 }
@@ -132,7 +128,7 @@ int is_palindrome(int x)
     if (x >= 0 && x < 10)
         return 1;
 
-    else if (x < 0)
+    else
         return 0;
 
 

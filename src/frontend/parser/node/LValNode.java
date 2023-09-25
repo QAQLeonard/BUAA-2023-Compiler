@@ -2,8 +2,8 @@ package frontend.parser.node;
 
 public class LValNode extends Node {
 
-    public LValNode(NodeType type)
+    public LValNode()
     {
-        super(type);
+        super(NodeType.LVal);
     }
 }

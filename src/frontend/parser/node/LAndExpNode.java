@@ -2,8 +2,8 @@ package frontend.parser.node;
 
 public class LAndExpNode extends Node {
 
-    public LAndExpNode(NodeType type)
+    public LAndExpNode()
     {
-        super(type);
+        super(NodeType.LAndExp);
     }
 }

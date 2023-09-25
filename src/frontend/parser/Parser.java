@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Parser
 {
     public static int tokenIndex = 0;
-    public static ArrayList<Token> tokens;
+    public static ArrayList<Token> tokenList;
 
     public void run()
     {
@@ -19,15 +19,15 @@ public class Parser
     public static Token getToken()
     {
         tokenIndex++;
-        return tokens.get(tokenIndex - 1);
+        return tokenList.get(tokenIndex - 1);
     }
 
     public static Token peekToken(int offset)
     {
-        if (tokenIndex + offset >= tokens.size())
+        if (tokenIndex + offset >= tokenList.size())
         {
             return null;
         }
-        return tokens.get(tokenIndex + offset);
+        return tokenList.get(tokenIndex + offset);
     }
 }
