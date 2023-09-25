@@ -18,6 +18,11 @@ public class MainFuncDefNode extends Node {
     public MainFuncDefNode()
     {
         super(NodeType.MainFuncDef);
+        this.INTTKToken = null;
+        this.MAINTKToken = null;
+        this.LPARENTToken = null;
+        this.RPARENTToken = null;
+        this.blockNode = null;
     }
 
     @Override

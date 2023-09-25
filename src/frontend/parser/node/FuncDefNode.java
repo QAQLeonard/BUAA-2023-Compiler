@@ -34,6 +34,7 @@ public class FuncDefNode extends Node {
         this.funcTypeNode.parseNode();
         this.IDENFRToken = Parser.getToken();
         this.LPARENTToken = Parser.getToken();
+        // not ()
         if(Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.RPARENT)
         {
             this.funcFParamsNode = new FuncFParamsNode();
