@@ -19,9 +19,9 @@ public class MulExpNode extends Node
     Token MODToken;
 
 
-    public MulExpNode(NodeType type)
+    public MulExpNode()
     {
-        super(type);
+        super(NodeType.MulExp);
         unaryExpNode = null;
         mulExpNode = null;
         MULTToken = null;
@@ -52,7 +52,7 @@ public class MulExpNode extends Node
         {
             return ;
         }
-        mulExpNode = new MulExpNode(NodeType.MulExp);
+        mulExpNode = new MulExpNode();
         mulExpNode.parseNode();
 
     }

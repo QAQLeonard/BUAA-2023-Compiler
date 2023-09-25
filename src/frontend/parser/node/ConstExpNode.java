@@ -10,4 +10,11 @@ public class ConstExpNode extends Node {
     {
         super(NodeType.ConstExp);
     }
+
+    @Override
+    public void parseNode()
+    {
+        addExpNode = new AddExpNode();
+        addExpNode.parseNode();
+    }
 }
