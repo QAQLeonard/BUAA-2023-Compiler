@@ -2,7 +2,7 @@ package frontend.parser;
 
 // import static frontend.parser.ParserUtils.GenerateNodeClasses;
 
-import frontend.lexer.token.Token;
+import frontend.lexer.token.*;
 
 import java.util.ArrayList;
 

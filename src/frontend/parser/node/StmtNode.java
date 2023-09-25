@@ -75,6 +75,10 @@ public class StmtNode extends Node
         this.forStmtNodeList = new ArrayList<>();
         this.BREAKTKToken = null;
         this.CONTINUETKToken = null;
+        this.RETURNTKToken = null;
+        this.GETINTTKToken = null;
+        this.PRINTFTKToken = null;
+        this.STRCONToken = null;
         this.stmtType = null;
     }
 

@@ -1,9 +1,24 @@
 package frontend.parser.node;
 
-public class NumberNode extends Node {
+import frontend.lexer.token.Token;
+import frontend.parser.Parser;
 
-    public NumberNode(NodeType type)
+/**
+ * 数值 Number → IntConst
+ */
+public class NumberNode extends Node {
+    Token INTCONToken;
+    int value;
+    public NumberNode()
     {
-        super(type);
+        super(NodeType.Number);
     }
+
+    @Override
+    public void parseNode()
+    {
+        this.INTCONToken = Parser.getToken();
+        this.value = Integer.parseInt(this.INTCONToken.getValue());
+    }
+
 }
