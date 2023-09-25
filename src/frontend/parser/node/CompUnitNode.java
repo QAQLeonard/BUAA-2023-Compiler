@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * 编译单元CompUnit → {Decl} {FuncDef} MainFuncDef
+ * 编译单元 CompUnit → {Decl} {FuncDef} MainFuncDef
  */
 public class CompUnitNode extends Node
 {
-    public ArrayList<DeclNode> declNodes;
-    public ArrayList<FuncDefNode> funcDefNodes;
+    public ArrayList<DeclNode> declNodeList;
+    public ArrayList<FuncDefNode> funcDefNodeList;
     public MainFuncDefNode mainFuncDefNode;
     public CompUnitNode()
     {
         super(NodeType.CompUnit);
-        this.declNodes = new ArrayList<>();
-        this.funcDefNodes = new ArrayList<>();
+        this.declNodeList = new ArrayList<>();
+        this.funcDefNodeList = new ArrayList<>();
         this.mainFuncDefNode = null;
     }
 
@@ -30,7 +30,7 @@ public class CompUnitNode extends Node
         {
             DeclNode declNode = new DeclNode();
             declNode.parseNode();
-            this.declNodes.add(declNode);
+            this.declNodeList.add(declNode);
         }
 
         // Parser.tokens.get(Parser.tokenIndex+1).getType()!=TokenType.MAINTK: 保证不是main函数
@@ -38,7 +38,7 @@ public class CompUnitNode extends Node
         {
             FuncDefNode funcDefNode = new FuncDefNode();
             funcDefNode.parseNode();
-            this.funcDefNodes.add(funcDefNode);
+            this.funcDefNodeList.add(funcDefNode);
         }
 
         this.mainFuncDefNode = new MainFuncDefNode();

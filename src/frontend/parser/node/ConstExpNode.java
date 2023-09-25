@@ -1,9 +1,13 @@
 package frontend.parser.node;
 
+/**
+ * 常量表达式 ConstExp → AddExp
+ */
 public class ConstExpNode extends Node {
 
-    public ConstExpNode(NodeType type)
+    AddExpNode addExpNode;
+    public ConstExpNode()
     {
-        super(type);
+        super(NodeType.ConstExp);
     }
 }
