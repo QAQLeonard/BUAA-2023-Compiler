@@ -8,17 +8,20 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
+
 /**
  * MainFuncDef -> 'int' 'main' '(' ')' Block
  */
 
-public class MainFuncDefNode extends Node {
+public class MainFuncDefNode extends Node
+{
 
     Token INTTKToken;
     Token MAINTKToken;
     Token LPARENTToken;
     Token RPARENTToken;
     BlockNode blockNode;
+
     public MainFuncDefNode()
     {
         super(NodeType.MainFuncDef);
@@ -48,6 +51,7 @@ public class MainFuncDefNode extends Node {
         FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
         FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
         this.blockNode.outputNode(destFile);
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
     }
 
 

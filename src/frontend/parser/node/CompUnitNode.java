@@ -36,6 +36,7 @@ public class CompUnitNode extends Node
             declNode.parseNode();
             this.declNodeList.add(declNode);
         }
+        // System.out.println(this.declNodeList.size());
 
         // Parser.tokens.get(Parser.tokenIndex+1).getType()!=TokenType.MAINTK: 保证不是main函数
         while(Objects.requireNonNull(Parser.peekToken(1)).getType()!=TokenType.MAINTK)

@@ -48,4 +48,19 @@ public class VarDeclNode extends Node
         }
         this.SEMICNToken = Parser.getToken();
     }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        this.bTypeNode.outputNode(destFile);
+        this.varDefNodeList.get(0).outputNode(destFile);
+        for (int i = 0; i < this.COMMATokenList.size(); i++)
+        {
+
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.COMMATokenList.get(i).toString() + "\n", true);
+            this.varDefNodeList.get(i + 1).outputNode(destFile);
+        }
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNToken.toString() + "\n", true);
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
+    }
 }

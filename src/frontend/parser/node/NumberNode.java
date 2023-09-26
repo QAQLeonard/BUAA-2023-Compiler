@@ -22,7 +22,7 @@ public class NumberNode extends Node {
     public void parseNode()
     {
         this.INTCONToken = Parser.getToken();
-        System.out.println("NumberNode: " + this.INTCONToken.getLineNumber()+ " " + this.INTCONToken);
+        // System.out.println("NumberNode: " + this.INTCONToken.getLineNumber()+ " " + this.INTCONToken);
         this.value = Integer.parseInt(this.INTCONToken.getValue());
     }
 

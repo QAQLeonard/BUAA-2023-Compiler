@@ -33,6 +33,7 @@ public class ParserUtils
         nodeMap.put(NodeType.Block, "<Block>");
         nodeMap.put(NodeType.BlockItem, "<BlockItem>");
         nodeMap.put(NodeType.Stmt, "<Stmt>");
+        nodeMap.put(NodeType.ForStmt, "<ForStmt>");
         nodeMap.put(NodeType.Exp, "<Exp>");
         nodeMap.put(NodeType.Cond, "<Cond>");
         nodeMap.put(NodeType.LVal, "<LVal>");
