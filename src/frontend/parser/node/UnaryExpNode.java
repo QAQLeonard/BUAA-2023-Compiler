@@ -3,7 +3,11 @@ package frontend.parser.node;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -11,7 +15,8 @@ import java.util.Objects;
  * | Ident '(' [FuncRParams] ')'<br>
  * | UnaryOp UnaryExp<br>
  */
-public class UnaryExpNode extends Node {
+public class UnaryExpNode extends Node implements Expression
+{
 
     PrimaryExpNode primaryExpNode;
     Token IDENFRToken;
@@ -29,7 +34,7 @@ public class UnaryExpNode extends Node {
     public void parseNode()
     {
         // UnaryExp → UnaryOp UnaryExp
-        if (NodeUtil.UnaryOpTokenTypes.contains(Objects.requireNonNull(Parser.peekToken(0)).getType()))
+        if (ParserUtils.UnaryOpTokenTypes.contains(Objects.requireNonNull(Parser.peekToken(0)).getType()))
         {
             this.unaryOpNode = new UnaryOpNode();
             this.unaryOpNode.parseNode();
@@ -54,5 +59,62 @@ public class UnaryExpNode extends Node {
             this.primaryExpNode = new PrimaryExpNode(NodeType.PrimaryExp);
             this.primaryExpNode.parseNode();
         }
+    }
+
+    @Override
+    public Token getOPToken()
+    {
+        return null;
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        if (this.unaryOpNode != null)
+        {
+            this.unaryOpNode.outputNode(destFile);
+            this.unaryExpNode.outputNode(destFile);
+        }
+        else if (this.IDENFRToken != null)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFRToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
+            if (this.funcRParamsNode != null)
+            {
+                this.funcRParamsNode.outputNode(destFile);
+            }
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
+        }
+        else
+        {
+            this.primaryExpNode.outputNode(destFile);
+        }
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
+    }
+
+    @Override
+    public String toString()
+    {
+        String temp = "";
+        if (this.unaryOpNode != null)
+        {
+            temp += this.unaryOpNode.toString();
+            temp += this.unaryExpNode.toString();
+        }
+        else if (this.IDENFRToken != null)
+        {
+            temp += this.IDENFRToken.getValue() + "\n";
+            temp += this.LPARENTToken.getValue() + "\n";
+            if (this.funcRParamsNode != null)
+            {
+                temp += this.funcRParamsNode.toString();
+            }
+            temp += this.RPARENTToken.getValue() + "\n";
+        }
+        else
+        {
+            temp += this.primaryExpNode.toString();
+        }
+        return temp;
     }
 }

@@ -3,6 +3,8 @@ package frontend.parser.node;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -24,6 +26,7 @@ public class BlockItemNode extends Node {
     {
         if(Objects.requireNonNull(Parser.peekToken(0)).getType()== TokenType.CONSTTK || Objects.requireNonNull(Parser.peekToken(0)).getType()== TokenType.INTTK)
         {
+            // System.out.println("BlockItemNode Decl");
             this.declNode = new DeclNode();
             this.declNode.parseNode();
         }
@@ -31,6 +34,19 @@ public class BlockItemNode extends Node {
         {
             this.stmtNode = new StmtNode();
             this.stmtNode.parseNode();
+        }
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        if(this.declNode != null)
+        {
+            this.declNode.outputNode(destFile);
+        }
+        else
+        {
+            this.stmtNode.outputNode(destFile);
         }
     }
 }

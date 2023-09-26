@@ -3,11 +3,16 @@ package frontend.parser.node;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 /**
  * 关系表达式 RelExp → AddExp | AddExp ('<' | '>' | '<=' | '>=') RelExp
  */
-public class RelExpNode extends Node {
+public class RelExpNode extends Node implements Expression
+{
 
     AddExpNode addExpNode;
     RelExpNode relExpNode;
@@ -15,6 +20,7 @@ public class RelExpNode extends Node {
     Token GREToken;
     Token LEQToken;
     Token GEQToken;
+
     public RelExpNode()
     {
         super(NodeType.RelExp);
@@ -45,9 +51,47 @@ public class RelExpNode extends Node {
         }
         else
         {
-            return ;
+            return;
         }
         relExpNode = new RelExpNode();
         relExpNode.parseNode();
+    }
+
+    @Override
+    public Token getOPToken()
+    {
+        if (this.LSSToken != null)
+        {
+            return this.LSSToken;
+        }
+        else if (this.GREToken != null)
+        {
+            return this.GREToken;
+        }
+        else if (this.LEQToken != null)
+        {
+            return this.LEQToken;
+        }
+        else if (this.GEQToken != null)
+        {
+            return this.GEQToken;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        this.addExpNode.outputNode(destFile);
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
+        Token OPToken = this.getOPToken();
+        if (OPToken != null)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, OPToken.toString() + "\n", true);
+            this.relExpNode.outputNode(destFile);
+        }
     }
 }

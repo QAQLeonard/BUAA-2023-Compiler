@@ -3,7 +3,11 @@ package frontend.parser.node;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -33,5 +37,17 @@ public class FuncRParamsNode extends Node {
             expNode.parseNode();
             this.expNodeList.add(expNode);
         }
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        expNodeList.get(0).outputNode(destFile);
+        for (int i = 0; i < COMMATokenList.size(); i++)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, COMMATokenList.get(i).toString()+ "\n", true);
+            expNodeList.get(i + 1).outputNode(destFile);
+        }
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
     }
 }

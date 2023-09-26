@@ -3,7 +3,11 @@ package frontend.parser.node;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -11,12 +15,14 @@ import java.util.Objects;
  * InitVal → Exp <br>
  * | '{' [ InitVal { ',' InitVal } ] '}'
  */
-public class InitValNode extends Node {
+public class InitValNode extends Node
+{
     ExpNode expNode;
     Token LBRACEToken;
     ArrayList<InitValNode> initValNodeList;
     ArrayList<Token> COMMATokenList;
     Token RBRACEToken;
+
     public InitValNode()
     {
         super(NodeType.InitVal);
@@ -30,10 +36,10 @@ public class InitValNode extends Node {
     @Override
     public void parseNode()
     {
-        if (Objects.requireNonNull(Parser.peekToken(0)).getType()== TokenType.LBRACE)
+        if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACE)
         {
             LBRACEToken = Parser.getToken();
-            if (Objects.requireNonNull(Parser.peekToken(0)).getType()==TokenType.RBRACE)
+            if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.RBRACE)
             {
                 RBRACEToken = Parser.getToken();
                 return;
@@ -41,7 +47,7 @@ public class InitValNode extends Node {
             InitValNode initValNode = new InitValNode();
             initValNode.parseNode();
             this.initValNodeList.add(initValNode);
-            while (Objects.requireNonNull(Parser.peekToken(0)).getType()==TokenType.COMMA)
+            while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
             {
                 COMMATokenList.add(Parser.getToken());
                 initValNode = new InitValNode();
@@ -55,5 +61,26 @@ public class InitValNode extends Node {
             this.expNode = new ExpNode();
             this.expNode.parseNode();
         }
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        if (this.expNode != null) this.expNode.outputNode(destFile);
+        else
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, LBRACEToken.toString() + "\n", true);
+            if (this.initValNodeList.size() > 0)
+            {
+                this.initValNodeList.get(0).outputNode(destFile);
+                for (int i = 0; i < COMMATokenList.size(); i++)
+                {
+                    FileOperate.outputFileUsingUsingBuffer(destFile, COMMATokenList.get(i).toString() + "\n", true);
+                    this.initValNodeList.get(i + 1).outputNode(destFile);
+                }
+            }
+            FileOperate.outputFileUsingUsingBuffer(destFile, RBRACEToken.toString() + "\n", true);
+        }
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
     }
 }

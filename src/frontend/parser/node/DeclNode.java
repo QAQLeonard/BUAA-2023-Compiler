@@ -2,7 +2,11 @@ package frontend.parser.node;
 
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -33,6 +37,19 @@ public class DeclNode extends Node
         {
             this.varDeclNode = new VarDeclNode();
             this.varDeclNode.parseNode();
+        }
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        if(this.constDeclNode != null)
+        {
+            this.constDeclNode.outputNode(destFile);
+        }
+        else
+        {
+            this.varDeclNode.outputNode(destFile);
         }
     }
 

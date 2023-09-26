@@ -3,7 +3,11 @@ package frontend.parser.node;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -45,5 +49,20 @@ public class ConstDeclNode extends Node {
             this.constDefNodeList.add(constDefNode);
         }
         this.SEMICNToken = Parser.getToken();
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.CONSTTKToken.toString() + "\n", true);
+        this.bTypeNode.outputNode(destFile);
+        this.constDefNodeList.get(0).outputNode(destFile);
+        for(int i = 0; i < this.COMMATokenList.size(); i++)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.COMMATokenList.get(i).toString() + "\n", true);
+            this.constDefNodeList.get(i+1).outputNode(destFile);
+        }
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNToken.toString() + "\n", true);
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
     }
 }

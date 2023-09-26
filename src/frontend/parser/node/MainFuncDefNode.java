@@ -3,7 +3,11 @@ package frontend.parser.node;
 import frontend.lexer.token.IdentifierToken;
 import frontend.lexer.token.Token;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 /**
  * MainFuncDef -> 'int' 'main' '(' ')' Block
  */
@@ -35,5 +39,16 @@ public class MainFuncDefNode extends Node {
         this.blockNode = new BlockNode();
         this.blockNode.parseNode();
     }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.INTTKToken.toString() + "\n", true);
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.MAINTKToken.toString() + "\n", true);
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
+        this.blockNode.outputNode(destFile);
+    }
+
 
 }

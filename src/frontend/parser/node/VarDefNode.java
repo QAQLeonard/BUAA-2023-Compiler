@@ -3,11 +3,15 @@ package frontend.parser.node;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static frontend.parser.node.NodeUtil.parseArrayDimension;
+import static frontend.parser.ParserUtils.parseArrayDimension;
 
 /**
  * 变量定义 VarDef → Ident { '[' ConstExp ']' }<br>
@@ -46,5 +50,24 @@ public class VarDefNode extends Node {
             this.initValNode = new InitValNode();
             this.initValNode.parseNode();
         }
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFERToken.toString() + "\n", true);
+        for(int i = 0; i < this.LBRACKTokenList.size(); i++)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.LBRACKTokenList.get(i).toString() + "\n", true);
+            this.constExpNodeList.get(i).outputNode(destFile);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.RBRACKTokenList.get(i).toString() + "\n", true);
+        }
+        if(this.ASSIGNToken != null)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.ASSIGNToken.toString() + "\n", true);
+            this.initValNode.outputNode(destFile);
+        }
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
+
     }
 }

@@ -3,15 +3,22 @@ package frontend.parser.node;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 逻辑或表达式 LOrExp → LAndExp | LAndExp '||' LOrExp
  */
-public class LOrExpNode extends Node {
+public class LOrExpNode extends Node implements Expression
+{
 
     LAndExpNode lAndExpNode;
     LOrExpNode lOrExpNode;
     Token ORToken;
+
     public LOrExpNode()
     {
         super(NodeType.LOrExp);
@@ -27,12 +34,31 @@ public class LOrExpNode extends Node {
         if (token.getType() == TokenType.OR)
         {
             this.ORToken = Parser.getToken();
+            lOrExpNode = new LOrExpNode();
+            lOrExpNode.parseNode();
         }
-        else
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        this.lAndExpNode.outputNode(destFile);
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
+
+        if (this.ORToken != null)
         {
-            return ;
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.ORToken.toString() + "\n", true);
+            this.lOrExpNode.outputNode(destFile);
         }
-        lOrExpNode = new LOrExpNode();
-        lOrExpNode.parseNode();
+    }
+
+    @Override
+    public Token getOPToken()
+    {
+        if (this.ORToken != null)
+        {
+            return this.ORToken;
+        }
+        return null;
     }
 }

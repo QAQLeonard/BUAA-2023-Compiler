@@ -1,5 +1,8 @@
 package frontend.parser.node;
 
+import java.io.File;
+import java.io.IOException;
+
 public class Node
 {
     private String value;
@@ -10,7 +13,7 @@ public class Node
         this.type = type;
     }
 
-    public void outputNode()
+    public void outputNode(File destFile) throws IOException
     {
 
     }
@@ -18,6 +21,11 @@ public class Node
     public void parseNode()
     {
 
+    }
+
+    public NodeType getType()
+    {
+        return type;
     }
 
 }

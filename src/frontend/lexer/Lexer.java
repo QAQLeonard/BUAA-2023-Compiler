@@ -11,17 +11,15 @@ import static utils.FileOperate.*;
 public class Lexer
 {
     private int buffer = -1;
-    private ArrayList<Token> tokens = new ArrayList<>();
+    private static ArrayList<Token> tokens = new ArrayList<>();
 
     public void run() throws IOException
     {
         File srcFile = new File("testfile.txt");
-        File destFile = new File("output.txt");
         if (!srcFile.exists())
         {
             throw new FileNotFoundException("File not found!");
         }
-        CreateFileUsingJava7Files(destFile);
         try (FileReader fr = new FileReader(srcFile))
         {
             int c;
@@ -64,6 +62,7 @@ public class Lexer
     public void output() throws IOException
     {
         File destFile = new File("output.txt");
+        CreateFileUsingJava7Files(destFile);
         try
         {
             for(Token t : tokens)
@@ -186,7 +185,7 @@ public class Lexer
         tokens.add(generateStrToken(str.toString(), lineNum));
     }
 
-    public ArrayList<Token> getTokens()
+    public static ArrayList<Token> getTokens()
     {
         return tokens;
     }

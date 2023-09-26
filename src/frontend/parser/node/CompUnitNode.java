@@ -2,7 +2,11 @@ package frontend.parser.node;
 
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -43,6 +47,21 @@ public class CompUnitNode extends Node
 
         this.mainFuncDefNode = new MainFuncDefNode();
         this.mainFuncDefNode.parseNode();
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        for(DeclNode declNode : this.declNodeList)
+        {
+            declNode.outputNode(destFile);
+        }
+        for(FuncDefNode funcDefNode : this.funcDefNodeList)
+        {
+            funcDefNode.outputNode(destFile);
+        }
+        this.mainFuncDefNode.outputNode(destFile);
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
     }
 
 }

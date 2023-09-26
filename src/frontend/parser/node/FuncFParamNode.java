@@ -3,7 +3,11 @@ package frontend.parser.node;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -41,12 +45,28 @@ public class FuncFParamNode extends Node
 
             while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
             {
-                this.LBRACKTokenList.add(Parser.getToken());
-                ConstExpNode constExpNode = new ConstExpNode();
-                constExpNode.parseNode();
-                this.constExpNodeList.add(constExpNode);
-                this.RBRACKTokenList.add(Parser.getToken());
+                ParserUtils.parseArrayDimension(this.LBRACKTokenList, this.constExpNodeList, this.RBRACKTokenList);
             }
         }
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        this.bTypeNode.outputNode(destFile);
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFRToken.toString() + "\n", true);
+        if (this.LBRACKTokenList.size() > 0)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.LBRACKTokenList.get(0).toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.RBRACKTokenList.get(0).toString() + "\n", true);
+            for (int i = 0; i < this.constExpNodeList.size(); i++)
+            {
+                FileOperate.outputFileUsingUsingBuffer(destFile, this.LBRACKTokenList.get(i+1).toString() + "\n", true);
+                this.constExpNodeList.get(i).outputNode(destFile);
+                FileOperate.outputFileUsingUsingBuffer(destFile, this.RBRACKTokenList.get(i+1).toString() + "\n", true);
+            }
+        }
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
+
     }
 }

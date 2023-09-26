@@ -14,6 +14,7 @@ public class Compiler
             // lexer.output();
             Parser parser = new Parser();
             parser.run();
+            parser.output();
         }
         catch (IOException e)
         {

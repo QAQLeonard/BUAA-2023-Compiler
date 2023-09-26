@@ -3,7 +3,11 @@ package frontend.parser.node;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
+import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -44,5 +48,21 @@ public class FuncDefNode extends Node {
         this.blockNode = new BlockNode();
         this.blockNode.parseNode();
     }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        this.funcTypeNode.outputNode(destFile);
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFRToken.toString() + "\n", true);
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
+        if(this.funcFParamsNode != null)
+        {
+            this.funcFParamsNode.outputNode(destFile);
+        }
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
+        this.blockNode.outputNode(destFile);
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
+    }
+
 
 }

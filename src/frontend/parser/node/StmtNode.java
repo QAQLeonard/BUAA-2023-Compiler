@@ -4,7 +4,10 @@ import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -38,7 +41,7 @@ public class StmtNode extends Node
 
     LValNode lValNode;
     Token ASSIGNToken;
-    ExpNode expNode;
+    ArrayList<ExpNode> expNodeList;
     ArrayList<Token> SEMICNTokenList;
     BlockNode blockNode;
     Token IFTKToken;
@@ -48,12 +51,13 @@ public class StmtNode extends Node
     ArrayList<StmtNode> stmtNodeList;
     Token ELSETKToken;
     Token FORTKToken;
-    ArrayList<ForStmtNode> forStmtNodeList;
+    ForStmtNode forStmtNode1, forStmtNode2;
     Token BREAKTKToken;
     Token CONTINUETKToken;
     Token RETURNTKToken;
     Token GETINTTKToken;
     Token PRINTFTKToken;
+    ArrayList<Token> COMMATokenList;
     Token STRCONToken;  // FormatString
     StmtType stmtType;
 
@@ -62,7 +66,7 @@ public class StmtNode extends Node
         super(NodeType.Stmt);
         this.lValNode = null;
         this.ASSIGNToken = null;
-        this.expNode = null;
+        this.expNodeList = new ArrayList<>();
         this.SEMICNTokenList = new ArrayList<>();
         this.blockNode = null;
         this.IFTKToken = null;
@@ -72,12 +76,14 @@ public class StmtNode extends Node
         this.stmtNodeList = new ArrayList<>();
         this.ELSETKToken = null;
         this.FORTKToken = null;
-        this.forStmtNodeList = new ArrayList<>();
+        this.forStmtNode1 = null;
+        this.forStmtNode2 = null;
         this.BREAKTKToken = null;
         this.CONTINUETKToken = null;
         this.RETURNTKToken = null;
         this.GETINTTKToken = null;
         this.PRINTFTKToken = null;
+        this.COMMATokenList = new ArrayList<>();
         this.STRCONToken = null;
         this.stmtType = null;
     }
@@ -123,9 +129,9 @@ public class StmtNode extends Node
             this.LPARENTToken = Parser.getToken();
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.SEMICN)
             {
-                ForStmtNode forStmtNode1 = new ForStmtNode();
+                this.forStmtNode1 = new ForStmtNode();
                 forStmtNode1.parseNode();
-                this.forStmtNodeList.add(forStmtNode1);
+
             }
             this.SEMICNTokenList.add(Parser.getToken());
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.SEMICN)
@@ -136,9 +142,8 @@ public class StmtNode extends Node
             this.SEMICNTokenList.add(Parser.getToken());
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.RPARENT)
             {
-                ForStmtNode forStmtNode2 = new ForStmtNode();
+                this.forStmtNode2 = new ForStmtNode();
                 forStmtNode2.parseNode();
-                this.forStmtNodeList.add(forStmtNode2);
             }
             this.RPARENTToken = Parser.getToken();
             StmtNode stmtNode = new StmtNode();
@@ -172,8 +177,9 @@ public class StmtNode extends Node
             this.RETURNTKToken = Parser.getToken();
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.SEMICN)
             {
-                this.expNode = new ExpNode();
-                this.expNode.parseNode();
+                ExpNode expNode = new ExpNode();
+                expNode.parseNode();
+                this.expNodeList.add(expNode);
             }
             this.SEMICNTokenList.add(Parser.getToken());
             this.stmtType = StmtType.RETURN;
@@ -189,9 +195,10 @@ public class StmtNode extends Node
             this.STRCONToken = Parser.getToken();
             while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
             {
-                this.SEMICNTokenList.add(Parser.getToken());
-                this.expNode = new ExpNode();
-                this.expNode.parseNode();
+                this.COMMATokenList.add(Parser.getToken());
+                ExpNode expNode = new ExpNode();
+                expNode.parseNode();
+                this.expNodeList.add(expNode);
             }
             this.RPARENTToken = Parser.getToken();
             this.SEMICNTokenList.add(Parser.getToken());
@@ -205,11 +212,13 @@ public class StmtNode extends Node
         Token temp = ParserUtils.findNearestTokenByType(TokenType.ASSIGN);
         if (temp == null || temp.getLineNumber() != Objects.requireNonNull(Parser.peekToken(0)).getLineNumber())    //no '='
         {
+            // System.out.println(temp.getLineNumber());
             // [Exp] ';'
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.SEMICN)
             {
-                this.expNode = new ExpNode();
-                this.expNode.parseNode();
+                ExpNode expNode = new ExpNode();
+                expNode.parseNode();
+                this.expNodeList.add(expNode);
             }
             this.SEMICNTokenList.add(Parser.getToken());
             this.stmtType = StmtType.EXPRESSION;
@@ -232,13 +241,117 @@ public class StmtNode extends Node
         }
         else    //Exp ';'
         {
-            this.expNode = new ExpNode();
-            this.expNode.parseNode();
+            ExpNode expNode = new ExpNode();
+            expNode.parseNode();
+            this.expNodeList.add(expNode);
             this.SEMICNTokenList.add(Parser.getToken());
             this.stmtType = StmtType.ASSIGNMENT;
         }
         return;
 
+
+    }
+
+    @Override
+    public void outputNode(File destFile) throws IOException
+    {
+        if (this.stmtType == StmtType.ASSIGNMENT)
+        {
+            this.lValNode.outputNode(destFile);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.ASSIGNToken.toString() + "\n", true);
+            this.expNodeList.get(0).outputNode(destFile);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNTokenList.get(0).toString() + "\n", true);
+        }
+        else if (this.stmtType == StmtType.EXPRESSION)
+        {
+            if (this.expNodeList.size() != 0)
+            {
+                this.expNodeList.get(0).outputNode(destFile);
+            }
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNTokenList.get(0).toString() + "\n", true);
+        }
+
+        else if (this.stmtType == StmtType.BLOCK)
+        {
+            this.blockNode.outputNode(destFile);
+        }
+        else if (this.stmtType == StmtType.IF)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.IFTKToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
+            this.condNode.outputNode(destFile);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
+            this.stmtNodeList.get(0).outputNode(destFile);
+            if (this.ELSETKToken != null)
+            {
+                FileOperate.outputFileUsingUsingBuffer(destFile, this.ELSETKToken.toString() + "\n", true);
+                this.stmtNodeList.get(1).outputNode(destFile);
+            }
+        }
+        else if (this.stmtType == StmtType.FOR)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.FORTKToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
+            if (this.forStmtNode1 != null)
+            {
+                this.forStmtNode1.outputNode(destFile);
+            }
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNTokenList.get(0).toString() + "\n", true);
+            if (this.condNode != null)
+            {
+                this.condNode.outputNode(destFile);
+            }
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNTokenList.get(1).toString() + "\n", true);
+            if (this.forStmtNode2 != null)
+            {
+                this.forStmtNode2.outputNode(destFile);
+            }
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
+            this.stmtNodeList.get(0).outputNode(destFile);
+        }
+        else if (this.stmtType == StmtType.BREAK)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.BREAKTKToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNTokenList.get(0).toString() + "\n", true);
+        }
+        else if (this.stmtType == StmtType.CONTINUE)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.CONTINUETKToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNTokenList.get(0).toString() + "\n", true);
+        }
+        else if (this.stmtType == StmtType.RETURN)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.RETURNTKToken.toString() + "\n", true);
+            if (this.expNodeList.size() != 0)
+            {
+                this.expNodeList.get(0).outputNode(destFile);
+            }
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNTokenList.get(0).toString() + "\n", true);
+        }
+        else if (this.stmtType == StmtType.GETINT)
+        {
+            this.lValNode.outputNode(destFile);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.ASSIGNToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.GETINTTKToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNTokenList.get(0).toString() + "\n", true);
+        }
+        else if (this.stmtType == StmtType.PRINTF)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.PRINTFTKToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.STRCONToken.toString() + "\n", true);
+            for (int i = 0; i < this.COMMATokenList.size(); i++)
+            {
+                FileOperate.outputFileUsingUsingBuffer(destFile, this.COMMATokenList.get(i).toString() + "\n", true);
+                this.expNodeList.get(i).outputNode(destFile);
+            }
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.SEMICNTokenList.get(0).toString() + "\n", true);
+        }
+
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
 
     }
 }
