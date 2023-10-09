@@ -1,6 +1,7 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.TokenType;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
@@ -27,7 +28,7 @@ public class CompUnitNode extends Node
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
         // Parser.tokens.get(Parser.tokenIndex+2).getType()!=TokenType.LPARENT: 保证不是函数
         while(Objects.requireNonNull(Parser.peekToken(2)).getType()!=TokenType.LPARENT)

@@ -1,6 +1,7 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.TokenType;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 
 import java.io.File;
@@ -22,7 +23,7 @@ public class BlockItemNode extends Node {
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
         if(Objects.requireNonNull(Parser.peekToken(0)).getType()== TokenType.CONSTTK || Objects.requireNonNull(Parser.peekToken(0)).getType()== TokenType.INTTK)
         {

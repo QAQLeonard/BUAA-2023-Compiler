@@ -1,14 +1,14 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.Token;
-import frontend.lexer.token.TokenType;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -89,7 +89,7 @@ public class StmtNode extends Node
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
         // Stmt →  Block → '{' { BlockItem } '}'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACE)

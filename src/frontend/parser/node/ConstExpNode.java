@@ -1,6 +1,7 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.Token;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.Token;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
 
@@ -21,7 +22,7 @@ public class ConstExpNode extends Node implements Expression
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
         addExpNode = new AddExpNode();
         addExpNode.parseNode();

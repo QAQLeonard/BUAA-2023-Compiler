@@ -1,6 +1,8 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.Token;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import utils.FileOperate;
 
@@ -19,9 +21,9 @@ public class BTypeNode extends Node
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
-        this.INTTKToken = Parser.getToken();
+        this.INTTKToken = Parser.getToken(TokenType.INTTK);
     }
 
     @Override

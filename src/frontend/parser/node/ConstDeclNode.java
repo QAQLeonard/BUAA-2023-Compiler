@@ -1,7 +1,8 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.Token;
-import frontend.lexer.token.TokenType;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
@@ -33,9 +34,9 @@ public class ConstDeclNode extends Node {
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
-        this.CONSTTKToken = Parser.getToken();
+        this.CONSTTKToken = Parser.getToken(TokenType.CONSTTK);
         this.bTypeNode = new BTypeNode();
         this.bTypeNode.parseNode();
         ConstDefNode constDefNode = new ConstDefNode();
@@ -43,12 +44,12 @@ public class ConstDeclNode extends Node {
         this.constDefNodeList.add(constDefNode);
         while(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
         {
-            this.COMMATokenList.add(Parser.getToken());
+            this.COMMATokenList.add(Parser.getToken(TokenType.COMMA));
             constDefNode = new ConstDefNode();
             constDefNode.parseNode();
             this.constDefNodeList.add(constDefNode);
         }
-        this.SEMICNToken = Parser.getToken();
+        this.SEMICNToken = Parser.getToken(TokenType.SEMICN);
     }
 
     @Override

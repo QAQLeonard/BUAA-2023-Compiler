@@ -1,7 +1,5 @@
 package frontend.lexer;
 
-import frontend.lexer.token.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,19 +68,19 @@ public class LexerUtils
         TokenType tokenType = tokenMap.get(word);
         if (tokenType == null)
         {
-            return new IdentifierToken(TokenType.IDENFR, word, lineNum);
+            return new Token(TokenType.IDENFR, word, lineNum);
         }
-        return new KeywordToken(tokenType, word, lineNum);
+        return new Token(tokenType, word, lineNum);
     }
 
     public static Token generateNumToken(String number, int lineNum)
     {
-        return new LiteralToken(TokenType.INTCON, number, lineNum);
+        return new Token(TokenType.INTCON, number, lineNum);
     }
 
     public static Token generateStrToken(String str, int lineNum)
     {
-        return new IdentifierToken(TokenType.STRCON, str, lineNum);
+        return new Token(TokenType.STRCON, str, lineNum);
     }
 
     public static Token generateSymbolToken(String symbol, int lineNum)
@@ -96,8 +94,8 @@ public class LexerUtils
             {
                 return null;
             }
-            return new DelimiterToken(tokenType, String.valueOf(symbol), lineNum);
+            return new Token(tokenType, String.valueOf(symbol), lineNum);
         }
-        return new OperatorToken(tokenType, symbol, lineNum);
+        return new Token(tokenType, symbol, lineNum);
     }
 }

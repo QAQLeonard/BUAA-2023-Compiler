@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.Token;
+import frontend.lexer.Token;
 
 public interface Expression
 {

@@ -1,7 +1,7 @@
 package frontend.parser;
 
-import frontend.lexer.token.Token;
-import frontend.lexer.token.TokenType;
+import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.node.ConstExpNode;
 import frontend.parser.node.NodeType;
 

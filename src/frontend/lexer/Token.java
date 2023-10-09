@@ -1,4 +1,4 @@
-package frontend.lexer.token;
+package frontend.lexer;
 
 public class Token
 {

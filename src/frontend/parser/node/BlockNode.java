@@ -1,7 +1,8 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.Token;
-import frontend.lexer.token.TokenType;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
@@ -30,16 +31,16 @@ public class BlockNode extends Node
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
-        this.LBRACEToken = Parser.getToken();
+        this.LBRACEToken = Parser.getToken(TokenType.LBRACE);
         while (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.RBRACE)
         {
             BlockItemNode blockItemNode = new BlockItemNode();
             blockItemNode.parseNode();
             this.blockItemNodeList.add(blockItemNode);
         }
-        this.RBRACEToken = Parser.getToken();
+        this.RBRACEToken = Parser.getToken(TokenType.RBRACE);
     }
 
     @Override

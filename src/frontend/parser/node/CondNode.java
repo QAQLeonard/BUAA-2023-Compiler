@@ -1,4 +1,5 @@
 package frontend.parser.node;
+import backend.errorhandler.CompilerException;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
 
@@ -16,7 +17,7 @@ public class CondNode extends Node {
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
         this.lOrExpNode = new LOrExpNode();
         this.lOrExpNode.parseNode();

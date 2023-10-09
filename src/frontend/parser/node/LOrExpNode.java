@@ -1,7 +1,8 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.Token;
-import frontend.lexer.token.TokenType;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
@@ -25,7 +26,7 @@ public class LOrExpNode extends Node implements Expression
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
         lAndExpNode = new LAndExpNode();
         lAndExpNode.parseNode();

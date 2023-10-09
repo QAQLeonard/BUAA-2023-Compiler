@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.TokenType;
+import backend.errorhandler.CompilerException;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public abstract class Node
 
     }
 
-    public void parseNode()
+    public void parseNode()  throws CompilerException
     {
 
     }

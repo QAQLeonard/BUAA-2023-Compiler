@@ -1,7 +1,8 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.Token;
-import frontend.lexer.token.TokenType;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
@@ -38,7 +39,7 @@ public class ConstDefNode extends Node
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
         this.IDENFRToken = Parser.getToken();
         while(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)

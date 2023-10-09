@@ -1,7 +1,5 @@
 package frontend.lexer;
 
-import frontend.lexer.token.Token;
-
 import java.io.*;
 import java.util.ArrayList;
 

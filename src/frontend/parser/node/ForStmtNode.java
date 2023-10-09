@@ -1,6 +1,7 @@
 package frontend.parser.node;
 
-import frontend.lexer.token.Token;
+import backend.errorhandler.CompilerException;
+import frontend.lexer.Token;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
@@ -25,7 +26,7 @@ public class ForStmtNode extends Node
     }
 
     @Override
-    public void parseNode()
+    public void parseNode() throws CompilerException
     {
         this.lValNode = new LValNode();
         this.lValNode.parseNode();
