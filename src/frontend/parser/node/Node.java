@@ -1,9 +1,11 @@
 package frontend.parser.node;
 
+import frontend.lexer.token.TokenType;
+
 import java.io.File;
 import java.io.IOException;
 
-public class Node
+public abstract class Node
 {
     private String value;
     private NodeType type;
