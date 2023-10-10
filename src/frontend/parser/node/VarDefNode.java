@@ -40,14 +40,14 @@ public class VarDefNode extends Node {
     @Override
     public void parseNode() throws CompilerException
     {
-        this.IDENFERToken = Parser.getToken();
+        this.IDENFERToken = Parser.getToken(TokenType.IDENFR);
         while(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
         {
             parseArrayDimension(this.LBRACKTokenList, this.constExpNodeList, this.RBRACKTokenList);
         }
         if(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.ASSIGN)
         {
-            this.ASSIGNToken = Parser.getToken();
+            this.ASSIGNToken = Parser.getToken(TokenType.ASSIGN);
             this.initValNode = new InitValNode();
             this.initValNode.parseNode();
         }

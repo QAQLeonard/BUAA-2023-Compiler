@@ -2,6 +2,7 @@ package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
 import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
@@ -30,7 +31,7 @@ public class ForStmtNode extends Node
     {
         this.lValNode = new LValNode();
         this.lValNode.parseNode();
-        this.ASSIGNToken = Parser.getToken();
+        this.ASSIGNToken = Parser.getToken(TokenType.ASSIGN);
         this.expNode = new ExpNode();
         this.expNode.parseNode();
     }

@@ -1,6 +1,7 @@
 package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
+import backend.errorhandler.ExceptionType;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -29,17 +30,15 @@ public class UnaryOpNode extends Node implements Expression
     public void parseNode() throws CompilerException
     {
         Token token = Parser.peekToken(0);
-        if (Objects.requireNonNull(token).getType() == TokenType.PLUS)
+        switch (Objects.requireNonNull(token).getType())
         {
-            this.PLUSToken = Parser.getToken();
-        }
-        else if (Objects.requireNonNull(token).getType() == TokenType.MINU)
-        {
-            this.MINUSToken = Parser.getToken();
-        }
-        else
-        {
-            this.NOTToken = Parser.getToken();
+            case PLUS -> this.PLUSToken = Parser.getToken(TokenType.PLUS);
+            case MINU -> this.MINUSToken = Parser.getToken(TokenType.MINU);
+            case NOT -> this.NOTToken = Parser.getToken(TokenType.NOT);
+            default ->
+            {
+                throw new CompilerException(ExceptionType.UNEXPECTED_TOKEN, "UnaryOpNode: parse failed", token.getLineNumber());
+            }
         }
     }
 

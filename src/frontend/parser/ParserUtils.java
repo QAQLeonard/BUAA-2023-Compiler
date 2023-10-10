@@ -1,5 +1,6 @@
 package frontend.parser;
 
+import backend.errorhandler.CompilerException;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.node.ConstExpNode;
@@ -96,13 +97,13 @@ public class ParserUtils
 
     public static Set<TokenType> UnaryOpTokenTypes = EnumSet.of(TokenType.PLUS, TokenType.MINU, TokenType.NOT);
 
-    public static void parseArrayDimension(ArrayList<Token> LBRACKTokenList, ArrayList<ConstExpNode> constExpNodeList, ArrayList<Token> RBRACKTokenList)
+    public static void parseArrayDimension(ArrayList<Token> LBRACKTokenList, ArrayList<ConstExpNode> constExpNodeList, ArrayList<Token> RBRACKTokenList) throws CompilerException
     {
-        LBRACKTokenList.add(Parser.getToken());
+        LBRACKTokenList.add(Parser.getToken(TokenType.LBRACK));
         ConstExpNode constExpNode = new ConstExpNode();
         constExpNode.parseNode();
         constExpNodeList.add(constExpNode);
-        RBRACKTokenList.add(Parser.getToken());
+        RBRACKTokenList.add(Parser.getToken(TokenType.RBRACK));
     }
 
     private TokenType peekTokenType()

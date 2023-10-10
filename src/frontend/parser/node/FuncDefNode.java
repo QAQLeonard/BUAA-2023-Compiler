@@ -37,15 +37,15 @@ public class FuncDefNode extends Node {
     {
         this.funcTypeNode = new FuncTypeNode();
         this.funcTypeNode.parseNode();
-        this.IDENFRToken = Parser.getToken();
-        this.LPARENTToken = Parser.getToken();
+        this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
+        this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
         // not ()
         if(Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.RPARENT)
         {
             this.funcFParamsNode = new FuncFParamsNode();
             this.funcFParamsNode.parseNode();
         }
-        this.RPARENTToken = Parser.getToken();
+        this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
         this.blockNode = new BlockNode();
         this.blockNode.parseNode();
     }

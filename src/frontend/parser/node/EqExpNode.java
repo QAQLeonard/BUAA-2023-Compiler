@@ -35,11 +35,11 @@ public class EqExpNode extends Node implements Expression
         assert token != null;
         if (token.getType() == TokenType.EQL)
         {
-            this.EQLToken = Parser.getToken();
+            this.EQLToken = Parser.getToken(TokenType.EQL);
         }
         else if (token.getType() == TokenType.NEQ)
         {
-            this.NEQToken = Parser.getToken();
+            this.NEQToken = Parser.getToken(TokenType.NEQ);
         }
         else
         {

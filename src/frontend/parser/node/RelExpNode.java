@@ -34,25 +34,16 @@ public class RelExpNode extends Node implements Expression
         addExpNode.parseNode();
         Token token = Parser.peekToken(0);
         assert token != null;
-        if (token.getType() == TokenType.LSS)
+        switch (token.getType())
         {
-            LSSToken = Parser.getToken();
-        }
-        else if (token.getType() == TokenType.GRE)
-        {
-            GREToken = Parser.getToken();
-        }
-        else if (token.getType() == TokenType.LEQ)
-        {
-            LEQToken = Parser.getToken();
-        }
-        else if (token.getType() == TokenType.GEQ)
-        {
-            GEQToken = Parser.getToken();
-        }
-        else
-        {
-            return;
+            case LSS -> this.LSSToken = Parser.getToken(TokenType.LSS);
+            case GRE -> this.GREToken = Parser.getToken(TokenType.GRE);
+            case LEQ -> this.LEQToken = Parser.getToken(TokenType.LEQ);
+            case GEQ -> this.GEQToken = Parser.getToken(TokenType.GEQ);
+            default ->
+            {
+                return;
+            }
         }
         relExpNode = new RelExpNode();
         relExpNode.parseNode();

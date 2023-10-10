@@ -29,9 +29,9 @@ public class FuncTypeNode extends Node {
     public void parseNode() throws CompilerException
     {
         if(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.VOIDTK)
-            this.VOIDTKToken = Parser.getToken();
+            this.VOIDTKToken = Parser.getToken(TokenType.VOIDTK);
         else
-            this.INTTKToken = Parser.getToken();
+            this.INTTKToken = Parser.getToken(TokenType.INTTK);
     }
 
     @Override

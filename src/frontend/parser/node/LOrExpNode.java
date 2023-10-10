@@ -34,7 +34,7 @@ public class LOrExpNode extends Node implements Expression
         assert token != null;
         if (token.getType() == TokenType.OR)
         {
-            this.ORToken = Parser.getToken();
+            this.ORToken = Parser.getToken(TokenType.OR);
             lOrExpNode = new LOrExpNode();
             lOrExpNode.parseNode();
         }

@@ -103,17 +103,17 @@ public class StmtNode extends Node
         // Stmt → 'if' '(' Cond ')' Stmt [ 'else' Stmt ]
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.IFTK)
         {
-            this.IFTKToken = Parser.getToken();
-            this.LPARENTToken = Parser.getToken();
+            this.IFTKToken = Parser.getToken(TokenType.IFTK);
+            this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
             this.condNode = new CondNode();
             this.condNode.parseNode();
-            this.RPARENTToken = Parser.getToken();
+            this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
             StmtNode stmtNode1 = new StmtNode();
             stmtNode1.parseNode();
             this.stmtNodeList.add(stmtNode1);
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.ELSETK)
             {
-                this.ELSETKToken = Parser.getToken();
+                this.ELSETKToken = Parser.getToken(TokenType.ELSETK);
                 StmtNode stmtNode2 = new StmtNode();
                 stmtNode2.parseNode();
                 this.stmtNodeList.add(stmtNode2);
@@ -125,27 +125,27 @@ public class StmtNode extends Node
         // Stmt → 'for' '(' [ForStmt] ';' [Cond] ';' [forStmt] ')' Stmt
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.FORTK)
         {
-            this.FORTKToken = Parser.getToken();
-            this.LPARENTToken = Parser.getToken();
+            this.FORTKToken = Parser.getToken(TokenType.FORTK);
+            this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.SEMICN)
             {
                 this.forStmtNode1 = new ForStmtNode();
                 forStmtNode1.parseNode();
 
             }
-            this.SEMICNTokenList.add(Parser.getToken());
+            this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.SEMICN)
             {
                 this.condNode = new CondNode();
                 this.condNode.parseNode();
             }
-            this.SEMICNTokenList.add(Parser.getToken());
+            this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.RPARENT)
             {
                 this.forStmtNode2 = new ForStmtNode();
                 forStmtNode2.parseNode();
             }
-            this.RPARENTToken = Parser.getToken();
+            this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
             StmtNode stmtNode = new StmtNode();
             stmtNode.parseNode();
             this.stmtNodeList.add(stmtNode);
@@ -156,8 +156,8 @@ public class StmtNode extends Node
         // Stmt → 'break' ';'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.BREAKTK)
         {
-            this.BREAKTKToken = Parser.getToken();
-            this.SEMICNTokenList.add(Parser.getToken());
+            this.BREAKTKToken = Parser.getToken(TokenType.BREAKTK);
+            this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.BREAK;
             return;
         }
@@ -165,8 +165,8 @@ public class StmtNode extends Node
         // Stmt → 'continue' ';'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.CONTINUETK)
         {
-            this.CONTINUETKToken = Parser.getToken();
-            this.SEMICNTokenList.add(Parser.getToken());
+            this.CONTINUETKToken = Parser.getToken(TokenType.CONTINUETK);
+            this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.CONTINUE;
             return;
         }
@@ -174,14 +174,14 @@ public class StmtNode extends Node
         // Stmt → 'return' [Exp] ';'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.RETURNTK)
         {
-            this.RETURNTKToken = Parser.getToken();
+            this.RETURNTKToken = Parser.getToken(TokenType.RETURNTK);
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.SEMICN)
             {
                 ExpNode expNode = new ExpNode();
                 expNode.parseNode();
                 this.expNodeList.add(expNode);
             }
-            this.SEMICNTokenList.add(Parser.getToken());
+            this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.RETURN;
             return;
         }

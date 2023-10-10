@@ -45,14 +45,14 @@ public class UnaryExpNode extends Node implements Expression
         // UnaryExp → Ident '(' [FuncRParams] ')'
         else if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.IDENFR && Objects.requireNonNull(Parser.peekToken(1)).getType() == TokenType.LPARENT)
         {
-            this.IDENFRToken = Parser.getToken();
-            this.LPARENTToken = Parser.getToken();
+            this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
+            this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.RPARENT)
             {
                 this.funcRParamsNode = new FuncRParamsNode();
                 this.funcRParamsNode.parseNode();
             }
-            this.RPARENTToken = Parser.getToken();
+            this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
         }
         // UnaryExp → PrimaryExp
         else

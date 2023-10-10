@@ -38,11 +38,11 @@ public class FuncFParamNode extends Node
     {
         this.bTypeNode = new BTypeNode();
         this.bTypeNode.parseNode();
-        this.IDENFRToken = Parser.getToken();
+        this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
         {
-            this.LBRACKTokenList.add(Parser.getToken());
-            this.RBRACKTokenList.add(Parser.getToken());
+            this.LBRACKTokenList.add(Parser.getToken(TokenType.LBRACK));
+            this.RBRACKTokenList.add(Parser.getToken(TokenType.RBRACK));
 
             while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
             {

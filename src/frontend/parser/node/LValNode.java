@@ -35,14 +35,14 @@ public class LValNode extends Node
     @Override
     public void parseNode() throws CompilerException
     {
-        this.IDENFRToken = Parser.getToken();
+        this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
         while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
         {
-            this.LBRACKTokenList.add(Parser.getToken());
+            this.LBRACKTokenList.add(Parser.getToken(TokenType.LBRACK));
             ExpNode expNode = new ExpNode();
             expNode.parseNode();
             this.expNodeList.add(expNode);
-            this.RBRACKTokenList.add(Parser.getToken());
+            this.RBRACKTokenList.add(Parser.getToken(TokenType.RBRACK));
         }
     }
 

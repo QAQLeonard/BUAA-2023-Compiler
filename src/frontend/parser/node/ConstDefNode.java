@@ -41,12 +41,12 @@ public class ConstDefNode extends Node
     @Override
     public void parseNode() throws CompilerException
     {
-        this.IDENFRToken = Parser.getToken();
+        this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
         while(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
         {
             parseArrayDimension(this.LBRACKTokenList, this.constExpNodeList, this.RBRACKTokenList);
         }
-        this.ASSIGNToken = Parser.getToken();
+        this.ASSIGNToken = Parser.getToken(TokenType.ASSIGN);
         this.constInitValNode = new ConstInitValNode();
         this.constInitValNode.parseNode();
     }

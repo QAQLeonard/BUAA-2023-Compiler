@@ -34,31 +34,30 @@ public class ConstInitValNode extends Node
     @Override
     public void parseNode() throws CompilerException
     {
-        if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACE)
-        {
-            LBRACEToken = Parser.getToken();
-            if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.RBRACE)
-            {
-                RBRACEToken = Parser.getToken();
-                return;
-            }
-            ConstInitValNode constInitValNode = new ConstInitValNode();
-            constInitValNode.parseNode();
-            this.constInitValNodeList.add(constInitValNode);
-            while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
-            {
-                COMMATokenList.add(Parser.getToken());
-                constInitValNode = new ConstInitValNode();
-                constInitValNode.parseNode();
-                this.constInitValNodeList.add(constInitValNode);
-            }
-            RBRACEToken = Parser.getToken();
-        }
-        else
+        if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.LBRACE)
         {
             this.constExpNode = new ConstExpNode();
             this.constExpNode.parseNode();
+            return;
         }
+        LBRACEToken = Parser.getToken(TokenType.LBRACE);
+        if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.RBRACE)
+        {
+            RBRACEToken = Parser.getToken(TokenType.RBRACE);
+            return;
+        }
+        ConstInitValNode constInitValNode = new ConstInitValNode();
+        constInitValNode.parseNode();
+        this.constInitValNodeList.add(constInitValNode);
+        while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
+        {
+            COMMATokenList.add(Parser.getToken(TokenType.COMMA));
+            constInitValNode = new ConstInitValNode();
+            constInitValNode.parseNode();
+            this.constInitValNodeList.add(constInitValNode);
+        }
+        RBRACEToken = Parser.getToken(TokenType.RBRACE);
+
     }
 
     @Override

@@ -33,7 +33,7 @@ public class LAndExpNode extends Node implements Expression
         assert token != null;
         if (token.getType() == TokenType.AND)
         {
-            this.ANDToken = Parser.getToken();
+            this.ANDToken = Parser.getToken(TokenType.AND);
             lAndExpNode = new LAndExpNode();
             lAndExpNode.parseNode();
         }

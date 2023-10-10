@@ -37,31 +37,29 @@ public class InitValNode extends Node
     @Override
     public void parseNode() throws CompilerException
     {
-        if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACE)
-        {
-            LBRACEToken = Parser.getToken();
-            if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.RBRACE)
-            {
-                RBRACEToken = Parser.getToken();
-                return;
-            }
-            InitValNode initValNode = new InitValNode();
-            initValNode.parseNode();
-            this.initValNodeList.add(initValNode);
-            while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
-            {
-                COMMATokenList.add(Parser.getToken());
-                initValNode = new InitValNode();
-                initValNode.parseNode();
-                this.initValNodeList.add(initValNode);
-            }
-            RBRACEToken = Parser.getToken();
-        }
-        else
+        if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.LBRACE)
         {
             this.expNode = new ExpNode();
             this.expNode.parseNode();
+            return;
         }
+        LBRACEToken = Parser.getToken(TokenType.LBRACE);
+        if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.RBRACE)
+        {
+            RBRACEToken = Parser.getToken(TokenType.RBRACE);
+            return;
+        }
+        InitValNode initValNode = new InitValNode();
+        initValNode.parseNode();
+        this.initValNodeList.add(initValNode);
+        while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
+        {
+            COMMATokenList.add(Parser.getToken(TokenType.COMMA));
+            initValNode = new InitValNode();
+            initValNode.parseNode();
+            this.initValNodeList.add(initValNode);
+        }
+        RBRACEToken = Parser.getToken(TokenType.RBRACE);
     }
 
     @Override

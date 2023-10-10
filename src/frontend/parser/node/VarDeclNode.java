@@ -42,12 +42,12 @@ public class VarDeclNode extends Node
         this.varDefNodeList.add(varDefNode);
         while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
         {
-            this.COMMATokenList.add(Parser.getToken());
+            this.COMMATokenList.add(Parser.getToken(TokenType.COMMA));
             varDefNode = new VarDefNode();
             varDefNode.parseNode();
             this.varDefNodeList.add(varDefNode);
         }
-        this.SEMICNToken = Parser.getToken();
+        this.SEMICNToken = Parser.getToken(TokenType.SEMICN);
     }
 
     @Override

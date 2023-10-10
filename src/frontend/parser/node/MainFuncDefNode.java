@@ -2,6 +2,7 @@ package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
 import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
@@ -35,10 +36,10 @@ public class MainFuncDefNode extends Node
     @Override
     public void parseNode() throws CompilerException
     {
-        this.INTTKToken = Parser.getToken();
-        this.MAINTKToken = Parser.getToken();
-        this.LPARENTToken = Parser.getToken();
-        this.RPARENTToken = Parser.getToken();
+        this.INTTKToken = Parser.getToken(TokenType.INTTK);
+        this.MAINTKToken = Parser.getToken(TokenType.MAINTK);
+        this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
+        this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
         this.blockNode = new BlockNode();
         this.blockNode.parseNode();
     }

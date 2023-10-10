@@ -33,10 +33,10 @@ public class PrimaryExpNode extends Node implements Expression
     {
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LPARENT)
         {
-            this.LPARENTToken = Parser.getToken();
+            this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
             this.expNode = new ExpNode();
             this.expNode.parseNode();
-            this.RPARENTToken = Parser.getToken();
+            this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
         }
         else if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.IDENFR)
         {

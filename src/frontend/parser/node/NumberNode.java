@@ -2,6 +2,7 @@ package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
 import frontend.lexer.Token;
+import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
@@ -22,7 +23,7 @@ public class NumberNode extends Node {
     @Override
     public void parseNode() throws CompilerException
     {
-        this.INTCONToken = Parser.getToken();
+        this.INTCONToken = Parser.getToken(TokenType.INTCON);
         // System.out.println("NumberNode: " + this.INTCONToken.getLineNumber()+ " " + this.INTCONToken);
         this.value = Integer.parseInt(this.INTCONToken.getValue());
     }
