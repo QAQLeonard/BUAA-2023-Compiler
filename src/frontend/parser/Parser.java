@@ -3,7 +3,9 @@ package frontend.parser;
 // import static frontend.parser.ParserUtils.GenerateNodeClasses;
 
 import backend.errorhandler.CompilerException;
+import backend.errorhandler.ErrorHandler;
 import backend.errorhandler.ExceptionType;
+import backend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.Lexer;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -12,28 +14,29 @@ import frontend.parser.node.CompUnitNode;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static utils.FileOperate.CreateFileUsingJava7Files;
 
 public class Parser
 {
     public static int tokenIndex = 0;
-    public static ArrayList<Token> tokenList;
 
-    CompUnitNode compUnitNode;
+    public static SymbolTable RootSymbolTable = new SymbolTable();
+
+    static CompUnitNode compUnitNode;
+
+
 
     public void run()
     {
         // GenerateNodeClasses();
         try{
-            tokenList = Lexer.getTokens();
             compUnitNode = new CompUnitNode();
             compUnitNode.parseNode();
         }
         catch (CompilerException e)
         {
-            System.out.println(e.getMessage());
+            ErrorHandler.exceptionList.add(e);
         }
 
 
@@ -48,12 +51,12 @@ public class Parser
     public static Token getToken()
     {
         tokenIndex++;
-        return tokenList.get(tokenIndex - 1);
+        return Lexer.tokenList.get(tokenIndex - 1);
     }
 
     public static Token getToken(TokenType tokenType) throws CompilerException
     {
-        Token token = tokenList.get(tokenIndex);
+        Token token = Lexer.tokenList.get(tokenIndex);
         if (token.getType() == tokenType)
         {
             tokenIndex++;
@@ -74,10 +77,15 @@ public class Parser
 
     public static Token peekToken(int offset)
     {
-        if (tokenIndex + offset >= tokenList.size())
+        if (tokenIndex + offset >= Lexer.tokenList.size())
         {
             return null;
         }
-        return tokenList.get(tokenIndex + offset);
+        return Lexer.tokenList.get(tokenIndex + offset);
+    }
+
+    public static void parseSymbol()
+    {
+        compUnitNode.parseSymbol(RootSymbolTable);
     }
 }

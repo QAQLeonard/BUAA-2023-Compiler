@@ -1,6 +1,7 @@
 package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
+import backend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
@@ -64,6 +65,12 @@ public class CompUnitNode extends Node
         }
         this.mainFuncDefNode.outputNode(destFile);
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+
     }
 
 }

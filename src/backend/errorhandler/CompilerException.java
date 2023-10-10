@@ -1,6 +1,6 @@
 package backend.errorhandler;
 
-public class CompilerException extends Exception
+public class CompilerException extends Exception implements Comparable<CompilerException>
 {
     private ExceptionType type;
     private String message;
@@ -31,5 +31,10 @@ public class CompilerException extends Exception
         System.out.println("Error: " + this.type + " " + this.message + " at line " + this.line);
     }
 
+    @Override
+    public int compareTo(CompilerException other)
+    {
+        return this.line - other.line;
+    }
 
 }

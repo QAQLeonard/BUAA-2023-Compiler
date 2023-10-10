@@ -1,6 +1,7 @@
 package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
+import backend.errorhandler.symbol.SymbolTable;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +29,11 @@ public abstract class Node
     public NodeType getType()
     {
         return type;
+    }
+
+    public void parseSymbol(SymbolTable parent)
+    {
+
     }
 
 }

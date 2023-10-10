@@ -9,7 +9,7 @@ import static utils.FileOperate.*;
 public class Lexer
 {
     private int buffer = -1;
-    private static ArrayList<Token> tokens = new ArrayList<>();
+    public static ArrayList<Token> tokenList = new ArrayList<>();
 
     public void run() throws IOException
     {
@@ -63,7 +63,7 @@ public class Lexer
         CreateFileUsingJava7Files(destFile);
         try
         {
-            for(Token t : tokens)
+            for(Token t : tokenList)
             {
                 outputFileUsingUsingBuffer(destFile, t.toString()+"\n", true);
             }
@@ -99,7 +99,7 @@ public class Lexer
             c = getNextChar(fr);
         }
         UnGetCH(c);
-        tokens.add(generateWordToken(str.toString(), lineNum));
+        tokenList.add(generateWordToken(str.toString(), lineNum));
     }
 
     private void processNumber(FileReader fr, int firstChar, int lineNum) throws IOException
@@ -112,7 +112,7 @@ public class Lexer
             c = getNextChar(fr);
         }
         UnGetCH(c);
-        tokens.add(generateNumToken(str.toString(), lineNum));
+        tokenList.add(generateNumToken(str.toString(), lineNum));
     }
 
     private void processSymbol(FileReader fr, int firstChar, int lineNum) throws IOException
@@ -166,7 +166,7 @@ public class Lexer
             str.append((char) firstChar);
         }
 
-        tokens.add(generateSymbolToken(str.toString(), lineNum));
+        tokenList.add(generateSymbolToken(str.toString(), lineNum));
     }
 
     private void processStr(FileReader fr, int firstChar, int lineNum) throws IOException
@@ -180,12 +180,7 @@ public class Lexer
             c = getNextChar(fr);
         }
         str.append('"');
-        tokens.add(generateStrToken(str.toString(), lineNum));
-    }
-
-    public static ArrayList<Token> getTokens()
-    {
-        return tokens;
+        tokenList.add(generateStrToken(str.toString(), lineNum));
     }
 
 }

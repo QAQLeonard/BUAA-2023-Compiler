@@ -1,6 +1,7 @@
 package frontend.parser;
 
 import backend.errorhandler.CompilerException;
+import frontend.lexer.Lexer;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.node.ConstExpNode;
@@ -83,11 +84,11 @@ public class ParserUtils
     public static Token findNearestTokenByType(TokenType targetType)
     {
         int i = Parser.tokenIndex;
-        while (i < Parser.tokenList.size())
+        while (i < Lexer.tokenList.size())
         {
-            if (Parser.tokenList.get(i).getType() == targetType)
+            if (Lexer.tokenList.get(i).getType() == targetType)
             {
-                return Parser.tokenList.get(i);
+                return Lexer.tokenList.get(i);
             }
             i++;
         }
