@@ -1,4 +1,4 @@
-package backend.errorhandler.symbol;
+package frontend.parser.symbol;
 
 public abstract class Symbol
 {

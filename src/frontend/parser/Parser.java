@@ -5,7 +5,7 @@ package frontend.parser;
 import backend.errorhandler.CompilerException;
 import backend.errorhandler.ErrorHandler;
 import backend.errorhandler.ExceptionType;
-import backend.errorhandler.symbol.SymbolTable;
+import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Lexer;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -33,10 +33,12 @@ public class Parser
         try{
             compUnitNode = new CompUnitNode();
             compUnitNode.parseNode();
+            compUnitNode.parseSymbol(RootSymbolTable);
         }
         catch (CompilerException e)
         {
             ErrorHandler.exceptionList.add(e);
+            // System.out.println(e.getMessage());
         }
 
 
@@ -84,8 +86,8 @@ public class Parser
         return Lexer.tokenList.get(tokenIndex + offset);
     }
 
-    public static void parseSymbol()
+    public static void parseSymbol() throws CompilerException
     {
-        compUnitNode.parseSymbol(RootSymbolTable);
+
     }
 }

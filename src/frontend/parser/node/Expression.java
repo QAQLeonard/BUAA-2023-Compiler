@@ -5,4 +5,5 @@ import frontend.lexer.Token;
 public interface Expression
 {
     Token getOPToken();
+
 }

@@ -1,6 +1,8 @@
 package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
+import backend.errorhandler.ExceptionType;
+import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -61,6 +63,7 @@ public class StmtNode extends Node
     Token STRCONToken;  // FormatString
     StmtType stmtType;
 
+
     public StmtNode()
     {
         super(NodeType.Stmt);
@@ -109,12 +112,14 @@ public class StmtNode extends Node
             this.condNode.parseNode();
             this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
             StmtNode stmtNode1 = new StmtNode();
+//            stmtNode1.withinForLoop = this.withinForLoop;
             stmtNode1.parseNode();
             this.stmtNodeList.add(stmtNode1);
             if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.ELSETK)
             {
                 this.ELSETKToken = Parser.getToken(TokenType.ELSETK);
                 StmtNode stmtNode2 = new StmtNode();
+//                stmtNode2.withinForLoop = this.withinForLoop;
                 stmtNode2.parseNode();
                 this.stmtNodeList.add(stmtNode2);
             }
@@ -146,16 +151,23 @@ public class StmtNode extends Node
                 forStmtNode2.parseNode();
             }
             this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
+            ParserUtils.ForLoopCount++;
             StmtNode stmtNode = new StmtNode();
+//            stmtNode.withinForLoop = true;
             stmtNode.parseNode();
             this.stmtNodeList.add(stmtNode);
             this.stmtType = StmtType.FOR;
+            ParserUtils.ForLoopCount--;
             return;
         }
 
         // Stmt → 'break' ';'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.BREAKTK)
         {
+            if(ParserUtils.ForLoopCount == 0)
+            {
+                throw new CompilerException(ExceptionType.m, "break can only be used in for loop", Objects.requireNonNull(Parser.peekToken(0)).getLineNumber());
+            }
             this.BREAKTKToken = Parser.getToken(TokenType.BREAKTK);
             this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.BREAK;
@@ -165,6 +177,10 @@ public class StmtNode extends Node
         // Stmt → 'continue' ';'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.CONTINUETK)
         {
+            if(ParserUtils.ForLoopCount == 0)
+            {
+                throw new CompilerException(ExceptionType.m, "continue can only be used in for loop", Objects.requireNonNull(Parser.peekToken(0)).getLineNumber());
+            }
             this.CONTINUETKToken = Parser.getToken(TokenType.CONTINUETK);
             this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.CONTINUE;
@@ -353,5 +369,69 @@ public class StmtNode extends Node
 
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
 
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st) throws CompilerException
+    {
+        switch (this.stmtType)
+        {
+            case ASSIGNMENT:
+                this.lValNode.parseSymbol(st);
+                this.expNodeList.get(0).parseSymbol(st);
+                break;
+            case EXPRESSION:
+                if (this.expNodeList.size() != 0)
+                {
+                    this.expNodeList.get(0).parseSymbol(st);
+                }
+                break;
+            case BLOCK:
+                SymbolTable newSt = new SymbolTable(st);
+                this.blockNode.parseSymbol(newSt);
+                break;
+            case IF:
+                this.condNode.parseSymbol(st);
+                this.stmtNodeList.get(0).parseSymbol(st);
+                if (this.ELSETKToken != null)
+                {
+                    this.stmtNodeList.get(1).parseSymbol(st);
+                }
+                break;
+            case FOR:
+                if (this.forStmtNode1 != null)
+                {
+                    this.forStmtNode1.parseSymbol(st);
+                }
+                if (this.condNode != null)
+                {
+                    this.condNode.parseSymbol(st);
+                }
+                if (this.forStmtNode2 != null)
+                {
+                    this.forStmtNode2.parseSymbol(st);
+                }
+                this.stmtNodeList.get(0).parseSymbol(st);
+                break;
+            case BREAK:
+                break;
+            case CONTINUE:
+                break;
+            case RETURN:
+                if (!this.expNodeList.isEmpty())
+                {
+                    this.expNodeList.get(0).parseSymbol(st);
+                }
+                break;
+            case GETINT:
+                this.lValNode.parseSymbol(st);
+                break;
+            case PRINTF:
+                for (ExpNode expNode : expNodeList)
+                {
+                    expNode.parseSymbol(st);
+                }
+                break;
+        }
     }
 }

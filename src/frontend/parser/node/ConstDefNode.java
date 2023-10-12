@@ -1,6 +1,9 @@
 package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
+import frontend.parser.symbol.ARRAYSymbol;
+import frontend.parser.symbol.INTSymbol;
+import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -64,5 +67,19 @@ public class ConstDefNode extends Node
         FileOperate.outputFileUsingUsingBuffer(destFile, this.ASSIGNToken.toString() + "\n", true);
         this.constInitValNode.outputNode(destFile);
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st) throws CompilerException
+    {
+        if(LBRACKTokenList.isEmpty())
+        {
+            INTSymbol intSymbol = new INTSymbol(IDENFRToken.getValue(),true, true);
+            st.addSymbol(intSymbol);
+        }
+        else
+        {
+            ARRAYSymbol arraySymbol = new ARRAYSymbol(IDENFRToken.getValue(),LBRACKTokenList.size(),true, true);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package backend.errorhandler.symbol;
+package frontend.parser.symbol;
 
 import java.util.ArrayList;
 
@@ -7,9 +7,12 @@ public class FUNCSymbol extends Symbol
     private String FUNCName;
     private String returnType;
     private ArrayList<Symbol> parameters;
-    public FUNCSymbol(String name)
+    public FUNCSymbol(String name, String returnType, ArrayList<Symbol> parameters)
     {
         super(name, SymbolType.FUNCTION);
+        this.FUNCName = name;
+        this.returnType = returnType;
+        this.parameters = parameters;
     }
 
     public String getFUNCName()
@@ -23,5 +26,14 @@ public class FUNCSymbol extends Symbol
     public ArrayList<Symbol> getParameters()
     {
         return this.parameters;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "FUNCSymbol{" +
+                "FUNCName='" + FUNCName + '\'' +
+                ", returnType='" + returnType +
+                '}';
     }
 }

@@ -1,6 +1,5 @@
 package backend.errorhandler;
 
-import backend.errorhandler.symbol.SymbolTable;
 import frontend.parser.Parser;
 
 import java.util.ArrayList;
@@ -16,19 +15,11 @@ public class ErrorHandler
     }
     public void run()
     {
-        try
-        {
-            Parser.parseSymbol();
-            Parser.RootSymbolTable.check();
-        }
-        catch (CompilerException e)
-        {
-            exceptionList.add(e);
-        }
+
     }
 
     public void output()
     {
-        Collections.sort(exceptionList);
+
     }
 }

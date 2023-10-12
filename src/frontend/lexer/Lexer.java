@@ -28,7 +28,7 @@ public class Lexer
                 {
                     lineNum++;
                 }
-                else if (Character.isLetter(c))
+                else if (Character.isLetter(c)||c=='_')
                 {
                     processWord(fr, c, lineNum);
                 }

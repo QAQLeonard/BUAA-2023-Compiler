@@ -1,6 +1,7 @@
 package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
+import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -54,5 +55,15 @@ public class BlockNode extends Node
         }
         FileOperate.outputFileUsingUsingBuffer(destFile, this.RBRACEToken.toString() + "\n", true);
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st) throws CompilerException
+    {
+        SymbolTable childSt = new SymbolTable(st);
+        for (BlockItemNode blockItemNode : this.blockItemNodeList)
+        {
+            blockItemNode.parseSymbol(childSt);
+        }
     }
 }

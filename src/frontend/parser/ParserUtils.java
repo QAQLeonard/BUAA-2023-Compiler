@@ -53,6 +53,8 @@ public class ParserUtils
         nodeMap.put(NodeType.ConstExp, "<ConstExp>");
     }
 
+    public static int ForLoopCount = 0;
+
     public static void GenerateNodeClasses()
     {
         NodeType[] nodeMaps = NodeType.values();

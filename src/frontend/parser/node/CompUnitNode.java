@@ -1,7 +1,7 @@
 package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
-import backend.errorhandler.symbol.SymbolTable;
+import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
@@ -46,6 +46,7 @@ public class CompUnitNode extends Node
             FuncDefNode funcDefNode = new FuncDefNode();
             funcDefNode.parseNode();
             this.funcDefNodeList.add(funcDefNode);
+
         }
 
         this.mainFuncDefNode = new MainFuncDefNode();
@@ -68,8 +69,17 @@ public class CompUnitNode extends Node
     }
 
     @Override
-    public void parseSymbol(SymbolTable st)
+    public void parseSymbol(SymbolTable st) throws CompilerException
     {
+        for(DeclNode declNode : this.declNodeList)
+        {
+            declNode.parseSymbol(st);
+        }
+        for(FuncDefNode funcDefNode : this.funcDefNodeList)
+        {
+            funcDefNode.parseSymbol(st);
+        }
+        this.mainFuncDefNode.parseSymbol(st);
 
     }
 

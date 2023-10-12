@@ -1,3 +1,4 @@
+import backend.errorhandler.ErrorHandler;
 import frontend.lexer.Lexer;
 import frontend.parser.Parser;
 
@@ -12,9 +13,11 @@ public class Compiler
             Lexer lexer = new Lexer();
             lexer.run();
             // lexer.output();
+            ErrorHandler errorHandler = new ErrorHandler();
             Parser parser = new Parser();
             parser.run();
             parser.output();
+
         }
         catch (IOException e)
         {

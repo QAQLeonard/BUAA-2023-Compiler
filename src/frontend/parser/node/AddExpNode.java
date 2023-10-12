@@ -94,4 +94,23 @@ public class AddExpNode extends Node implements Expression
             return null;
         }
     }
+
+
+//    public int getValue()
+//    {
+//        int value = mulExpNode.getValue();
+//        Token OPToken = this.getOPToken();
+//        if (OPToken != null)
+//        {
+//            if (OPToken.getType() == TokenType.PLUS)
+//            {
+//                value += addExpNode.getValue();
+//            }
+//            else if (OPToken.getType() == TokenType.MINU)
+//            {
+//                value -= addExpNode.getValue();
+//            }
+//        }
+//        return value;
+//    }
 }

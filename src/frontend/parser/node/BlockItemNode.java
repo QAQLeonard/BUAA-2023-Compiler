@@ -1,6 +1,7 @@
 package frontend.parser.node;
 
 import backend.errorhandler.CompilerException;
+import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 
@@ -48,6 +49,19 @@ public class BlockItemNode extends Node {
         else
         {
             this.stmtNode.outputNode(destFile);
+        }
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st) throws CompilerException
+    {
+        if(this.declNode != null)
+        {
+            this.declNode.parseSymbol(st);
+        }
+        else
+        {
+            this.stmtNode.parseSymbol(st);
         }
     }
 }
