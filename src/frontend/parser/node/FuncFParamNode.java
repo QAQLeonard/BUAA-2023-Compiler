@@ -1,8 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
 import frontend.parser.symbol.ARRAYSymbol;
 import frontend.parser.symbol.INTSymbol;
+import frontend.parser.symbol.Symbol;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -37,7 +40,7 @@ public class FuncFParamNode extends Node
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.bTypeNode = new BTypeNode();
         this.bTypeNode.parseNode();
@@ -75,15 +78,28 @@ public class FuncFParamNode extends Node
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
         if(this.LBRACKTokenList.isEmpty())
         {
-            st.addSymbol(new INTSymbol(this.IDENFRToken.getValue(), false, false));
+            INTSymbol intSymbol = new INTSymbol(this.IDENFRToken.getValue(), false, false);
+            if(!st.isDefinitionUnique(intSymbol))
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFRToken.getValue(), this.IDENFRToken.getLineNumber()));
+                return;
+            }
+            st.addSymbol(intSymbol);
         }
         else
         {
-            st.addSymbol(new ARRAYSymbol(this.IDENFRToken.getValue(), this.LBRACKTokenList.size(), false, false));
+            //st.addSymbol(new ARRAYSymbol(this.IDENFRToken.getValue(), this.LBRACKTokenList.size(), false, false));
+            ARRAYSymbol arraySymbol = new ARRAYSymbol(this.IDENFRToken.getValue(), this.LBRACKTokenList.size(), false, false);
+            if(!st.isDefinitionUnique(arraySymbol))
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFRToken.getValue(), this.IDENFRToken.getLineNumber()));
+                return;
+            }
+            st.addSymbol(arraySymbol);
         }
     }
 }

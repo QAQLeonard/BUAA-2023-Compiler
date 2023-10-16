@@ -1,25 +1,31 @@
 package frontend.parser.symbol;
 
+import frontend.parser.node.ExpType;
+import frontend.parser.node.StmtNode;
+
 import java.util.ArrayList;
 
 public class FUNCSymbol extends Symbol
 {
     private String FUNCName;
-    private String returnType;
+    private ExpType returnType;
     private ArrayList<Symbol> parameters;
-    public FUNCSymbol(String name, String returnType, ArrayList<Symbol> parameters)
+
+    public ArrayList<StmtNode> ReturnStmtNodeList;
+    public FUNCSymbol(String name, ExpType returnType, ArrayList<Symbol> parameters)
     {
         super(name, SymbolType.FUNCTION);
         this.FUNCName = name;
         this.returnType = returnType;
         this.parameters = parameters;
+        this.ReturnStmtNodeList = new ArrayList<>();
     }
 
     public String getFUNCName()
     {
         return this.FUNCName;
     }
-    public String getReturnType()
+    public ExpType getReturnType()
     {
         return this.returnType;
     }

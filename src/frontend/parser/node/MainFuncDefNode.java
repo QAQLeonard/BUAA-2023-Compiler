@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.parser.symbol.FUNCSymbol;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
@@ -36,7 +36,7 @@ public class MainFuncDefNode extends Node
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.INTTKToken = Parser.getToken(TokenType.INTTK);
         this.MAINTKToken = Parser.getToken(TokenType.MAINTK);
@@ -58,9 +58,9 @@ public class MainFuncDefNode extends Node
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
-        FUNCSymbol funcSymbol = new FUNCSymbol("main", "int", null);
+        FUNCSymbol funcSymbol = new FUNCSymbol("main", ExpType.INT, null);
         st.addSymbol(funcSymbol);
         this.blockNode.parseSymbol(st);
     }

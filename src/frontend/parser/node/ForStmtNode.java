@@ -1,10 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -27,7 +28,7 @@ public class ForStmtNode extends Node
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.lValNode = new LValNode();
         this.lValNode.parseNode();
@@ -43,6 +44,13 @@ public class ForStmtNode extends Node
         FileOperate.outputFileUsingUsingBuffer(destFile, this.ASSIGNToken.toString() + "\n", true);
         this.expNode.outputNode(destFile);
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+        this.lValNode.parseSymbol(st);
+        this.expNode.parseSymbol(st);
     }
 
 }

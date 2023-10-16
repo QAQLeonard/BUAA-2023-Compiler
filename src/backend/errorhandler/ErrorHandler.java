@@ -7,19 +7,19 @@ import java.util.Collections;
 
 public class ErrorHandler
 {
-    public static ArrayList<CompilerException> exceptionList;
-
-    public ErrorHandler()
-    {
-        exceptionList = new ArrayList<>();
-    }
-    public void run()
-    {
-
-    }
+    public static ArrayList<CompilerError> exceptionList = new ArrayList<>();
 
     public void output()
     {
+        Collections.sort(exceptionList);
+        for (CompilerError e : exceptionList)
+        {
+            System.out.println(e.toString());
+        }
+    }
 
+    public static void addError(CompilerError e)
+    {
+        exceptionList.add(e);
     }
 }

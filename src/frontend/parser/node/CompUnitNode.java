@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -29,7 +29,7 @@ public class CompUnitNode extends Node
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         // Parser.tokens.get(Parser.tokenIndex+2).getType()!=TokenType.LPARENT: 保证不是函数
         while(Objects.requireNonNull(Parser.peekToken(2)).getType()!=TokenType.LPARENT)
@@ -69,7 +69,7 @@ public class CompUnitNode extends Node
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
         for(DeclNode declNode : this.declNodeList)
         {

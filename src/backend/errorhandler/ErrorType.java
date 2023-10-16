@@ -1,6 +1,6 @@
 package backend.errorhandler;
 
-public enum ExceptionType
+public enum ErrorType
 {
     /**
      * 非法符号,格式字符串中出现非法字符报错行号为 < FormatString > 所在行数。
@@ -53,5 +53,5 @@ public enum ExceptionType
     /**
      * 在非循环块中使用break和continue语句。报错行号为 ‘break’ 与 ’continue’ 所在行号。
      */
-    m, UNEXPECTED_TOKEN
+    m, UNEXPECTED_TOKEN, UNDEFINED
 }

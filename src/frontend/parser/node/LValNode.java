@@ -1,10 +1,13 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.*;
 import utils.FileOperate;
 
 import java.io.File;
@@ -22,6 +25,8 @@ public class LValNode extends Node
     ArrayList<Token> LBRACKTokenList;
     ArrayList<ExpNode> expNodeList;
     ArrayList<Token> RBRACKTokenList;
+    boolean isConstant;
+    ExpType expType;
 
     public LValNode()
     {
@@ -29,11 +34,12 @@ public class LValNode extends Node
         this.LBRACKTokenList = new ArrayList<>();
         this.expNodeList = new ArrayList<>();
         this.RBRACKTokenList = new ArrayList<>();
-
+        expType = ExpType.INT;
+        isConstant = false;
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
         while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
@@ -58,4 +64,65 @@ public class LValNode extends Node
         }
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
     }
+
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+        Symbol symbol = st.getSymbol(this.IDENFRToken.getValue());
+        if (symbol == null)
+        {
+            ErrorHandler.addError(new CompilerError(ErrorType.c, this.IDENFRToken.getValue() + "undefined", this.IDENFRToken.getLineNumber()));
+            expType = ExpType.ERROR;
+            return;
+        }
+        switch (symbol.getType())
+        {
+            case FUNCTION ->
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.UNDEFINED, this.IDENFRToken.getValue() + "is a function", this.IDENFRToken.getLineNumber()));
+                expType = ExpType.ERROR;
+            }
+            case INT ->
+            {
+                if (!LBRACKTokenList.isEmpty())
+                {
+                    ErrorHandler.addError(new CompilerError(ErrorType.UNDEFINED, this.IDENFRToken.getValue() + "is not an array", this.IDENFRToken.getLineNumber()));
+                    expType = ExpType.ERROR;
+                    return;
+                }
+                expType = ExpType.INT;
+                isConstant = ((INTSymbol) symbol).isConstant();
+            }
+            case ARRAY ->
+            {
+                for (ExpNode expNode : expNodeList)
+                {
+                    expNode.parseSymbol(st);
+                    if (expNode.getExpType() != ExpType.INT)
+                    {
+                        ErrorHandler.addError(new CompilerError(ErrorType.UNDEFINED, "array index must be int", this.IDENFRToken.getLineNumber()));
+                        expType = ExpType.ERROR;
+                        return;
+                    }
+                }
+                ARRAYSymbol arraySymbol = (ARRAYSymbol) symbol;
+                int temp = arraySymbol.getDim() - LBRACKTokenList.size();
+                switch (temp)
+                {
+                    case 0 -> expType = ExpType.INT;
+                    case 1 -> expType = ExpType.ARRAY1D;
+                    case 2 -> expType = ExpType.ARRAY2D;
+                    default -> expType = ExpType.ERROR;
+                }
+                isConstant = ((ARRAYSymbol) symbol).isConstant();
+            }
+
+        }
+    }
+
+    public ExpType getExpType()
+    {
+        return expType;
+    }
+
 }

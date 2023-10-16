@@ -10,16 +10,16 @@ public class Compiler
     {
         try
         {
+            ErrorHandler errorHandler = new ErrorHandler();
             Lexer lexer = new Lexer();
             lexer.run();
             // lexer.output();
-            ErrorHandler errorHandler = new ErrorHandler();
             Parser parser = new Parser();
             parser.run();
             parser.output();
-
+            // errorHandler.output();
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             System.out.println(e.getMessage());
         }

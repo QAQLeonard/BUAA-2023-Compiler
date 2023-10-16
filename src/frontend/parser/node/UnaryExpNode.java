@@ -1,15 +1,23 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.FUNCSymbol;
+import frontend.parser.symbol.Symbol;
+import frontend.parser.symbol.SymbolTable;
+import frontend.parser.symbol.SymbolType;
 import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+
+import static frontend.parser.ParserUtils.TypeEqual;
 
 /**
  * 一元表达式 UnaryExp → PrimaryExp <br>
@@ -26,13 +34,16 @@ public class UnaryExpNode extends Node implements Expression
     Token RPARENTToken;
     UnaryOpNode unaryOpNode;
     UnaryExpNode unaryExpNode;
+
+    ExpType expType;
+
     public UnaryExpNode()
     {
         super(NodeType.UnaryExp);
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         // UnaryExp → UnaryOp UnaryExp
         if (ParserUtils.UnaryOpTokenTypes.contains(Objects.requireNonNull(Parser.peekToken(0)).getType()))
@@ -53,6 +64,7 @@ public class UnaryExpNode extends Node implements Expression
                 this.funcRParamsNode.parseNode();
             }
             this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
+
         }
         // UnaryExp → PrimaryExp
         else
@@ -117,5 +129,82 @@ public class UnaryExpNode extends Node implements Expression
             temp += this.primaryExpNode.toString();
         }
         return temp;
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+        if (this.primaryExpNode != null)
+        {
+            this.primaryExpNode.parseSymbol(st);
+        }
+        else if (this.IDENFRToken != null)
+        {
+            Symbol symbol = st.getSymbol(this.IDENFRToken.getValue());
+            if (symbol == null)
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.b, "Not Defined Func", this.IDENFRToken.getLineNumber()));
+                expType = ExpType.ERROR;
+                return;
+            }
+            if (symbol.getType() != SymbolType.FUNCTION)
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.UNEXPECTED_TOKEN, "Not a FUNC", this.IDENFRToken.getLineNumber()));
+                expType = ExpType.ERROR;
+                return;
+            }
+            FUNCSymbol funcSymbol = (FUNCSymbol) symbol;
+            if (funcRParamsNode == null)
+            {
+                if (!funcSymbol.getParameters().isEmpty())
+                {
+                    ErrorHandler.addError(new CompilerError(ErrorType.d, "Error num of parameters", this.IDENFRToken.getLineNumber()));
+                    expType = ExpType.ERROR;
+                    return;
+                }
+                expType = funcSymbol.getReturnType();
+                return;
+            }
+            if (funcRParamsNode.expNodeList.size() != funcSymbol.getParameters().size())
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.d, "Error num of parameters", this.IDENFRToken.getLineNumber()));
+                expType = ExpType.ERROR;
+                return;
+            }
+            for (int i = 0; i < funcRParamsNode.expNodeList.size(); i++)
+            {
+                funcRParamsNode.expNodeList.get(i).parseSymbol(st);
+                if (TypeEqual(funcRParamsNode.expNodeList.get(i).getExpType(), funcSymbol.getParameters().get(i)))
+                {
+                    ErrorHandler.addError(new CompilerError(ErrorType.e, "Error type of parameters", this.IDENFRToken.getLineNumber()));
+                    expType = ExpType.ERROR;
+                    return;
+                }
+            }
+            expType = funcSymbol.getReturnType();
+        }
+        else if (this.unaryOpNode != null)
+        {
+            this.unaryExpNode.parseSymbol(st);
+        }
+    }
+
+    @Override
+    public ExpType getExpType()
+    {
+        if (this.primaryExpNode != null)
+        {
+            return this.primaryExpNode.getExpType();
+        }
+        else if (this.IDENFRToken != null)
+        {
+            return expType;
+
+        }
+        else if (this.unaryOpNode != null)
+        {
+            return this.unaryExpNode.getExpType();
+        }
+        return ExpType.ERROR;
     }
 }

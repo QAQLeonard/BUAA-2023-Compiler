@@ -1,10 +1,14 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.FUNCSymbol;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -26,14 +30,14 @@ public class FuncRParamsNode extends Node {
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         ExpNode expNode = new ExpNode();
         expNode.parseNode();
         this.expNodeList.add(expNode);
         while (Objects.requireNonNull(Parser.peekToken(0)).getType()== TokenType.COMMA)
         {
-            this.COMMATokenList.add(Parser.getToken());
+            this.COMMATokenList.add(Parser.getToken(TokenType.COMMA));
             expNode = new ExpNode();
             expNode.parseNode();
             this.expNodeList.add(expNode);
@@ -51,4 +55,5 @@ public class FuncRParamsNode extends Node {
         }
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
     }
+
 }

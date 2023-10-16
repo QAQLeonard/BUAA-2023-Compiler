@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -35,7 +35,7 @@ public class ConstDeclNode extends Node {
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.CONSTTKToken = Parser.getToken(TokenType.CONSTTK);
         this.bTypeNode = new BTypeNode();
@@ -69,7 +69,7 @@ public class ConstDeclNode extends Node {
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
         for(ConstDefNode constDefNode : this.constDefNodeList)
         {

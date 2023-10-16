@@ -1,5 +1,9 @@
 package frontend.lexer;
 
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +54,8 @@ public class LexerUtils
 
     public static final Map<Character, Character> twoCharSymbols = new HashMap<>();
 
-    static {
+    static
+    {
         twoCharSymbols.put('!', '=');
         twoCharSymbols.put('&', '&');
         twoCharSymbols.put('|', '|');
@@ -59,7 +64,8 @@ public class LexerUtils
         twoCharSymbols.put('=', '=');
     }
 
-    public static boolean isSymbol(char c) {
+    public static boolean isSymbol(char c)
+    {
         return "!&|+-*/%<>=;,()[]{}".indexOf(c) >= 0;
     }
 
@@ -80,6 +86,10 @@ public class LexerUtils
 
     public static Token generateStrToken(String str, int lineNum)
     {
+        if (!isValidFormatString(str))
+        {
+            ErrorHandler.addError(new CompilerError(ErrorType.a, "Error Format in FormatString", lineNum));
+        }
         return new Token(TokenType.STRCON, str, lineNum);
     }
 
@@ -97,5 +107,38 @@ public class LexerUtils
             return new Token(tokenType, String.valueOf(symbol), lineNum);
         }
         return new Token(tokenType, symbol, lineNum);
+    }
+
+    public static boolean isValidFormatString(String str)
+    {
+        // 检查字符串是否由双引号括起来
+        if (str == null || str.length() < 2 || str.charAt(0) != '"' || str.charAt(str.length() - 1) != '"')
+        {
+            return false;
+        }
+
+        // 检查字符串内部的字符
+        for (int i = 1; i < str.length() - 1; i++)
+        {
+            char c = str.charAt(i);
+
+            // 检查 <FormatChar>
+            if (c == '%')
+            {
+                if (i + 1 < str.length() - 1 && str.charAt(i + 1) == 'd')
+                {
+                    i++;  // 跳过 'd'
+                    continue;
+                }
+                return false;
+            }
+            // 检查 <NormalChar>
+            else if ((c >= 40 && c <= 126) || c == 32 || c == 33 || c == '\n')
+            {
+                continue;
+            }
+            return false;
+        }
+        return true;
     }
 }

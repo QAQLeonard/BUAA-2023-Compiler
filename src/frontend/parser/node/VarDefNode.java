@@ -1,8 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
 import frontend.parser.symbol.ARRAYSymbol;
 import frontend.parser.symbol.INTSymbol;
+import frontend.parser.symbol.Symbol;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -21,7 +24,8 @@ import static frontend.parser.ParserUtils.parseArrayDimension;
  * 变量定义 VarDef → Ident { '[' ConstExp ']' }<br>
  * | Ident { '[' ConstExp ']' } '=' InitVal
  */
-public class VarDefNode extends Node {
+public class VarDefNode extends Node
+{
 
     Token IDENFERToken;
     ArrayList<Token> LBRACKTokenList;
@@ -29,6 +33,7 @@ public class VarDefNode extends Node {
     ArrayList<Token> RBRACKTokenList;
     Token ASSIGNToken;
     InitValNode initValNode;
+
     public VarDefNode()
     {
         super(NodeType.VarDef);
@@ -41,14 +46,14 @@ public class VarDefNode extends Node {
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.IDENFERToken = Parser.getToken(TokenType.IDENFR);
-        while(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
+        while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
         {
             parseArrayDimension(this.LBRACKTokenList, this.constExpNodeList, this.RBRACKTokenList);
         }
-        if(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.ASSIGN)
+        if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.ASSIGN)
         {
             this.ASSIGNToken = Parser.getToken(TokenType.ASSIGN);
             this.initValNode = new InitValNode();
@@ -60,13 +65,13 @@ public class VarDefNode extends Node {
     public void outputNode(File destFile) throws IOException
     {
         FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFERToken.toString() + "\n", true);
-        for(int i = 0; i < this.LBRACKTokenList.size(); i++)
+        for (int i = 0; i < this.LBRACKTokenList.size(); i++)
         {
             FileOperate.outputFileUsingUsingBuffer(destFile, this.LBRACKTokenList.get(i).toString() + "\n", true);
             this.constExpNodeList.get(i).outputNode(destFile);
             FileOperate.outputFileUsingUsingBuffer(destFile, this.RBRACKTokenList.get(i).toString() + "\n", true);
         }
-        if(this.ASSIGNToken != null)
+        if (this.ASSIGNToken != null)
         {
             FileOperate.outputFileUsingUsingBuffer(destFile, this.ASSIGNToken.toString() + "\n", true);
             this.initValNode.outputNode(destFile);
@@ -76,15 +81,33 @@ public class VarDefNode extends Node {
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
-        if(this.LBRACKTokenList.isEmpty())
+        if (this.LBRACKTokenList.isEmpty())
         {
-            st.addSymbol(new INTSymbol(this.IDENFERToken.getValue(), false, this.ASSIGNToken != null));
+            INTSymbol intSymbol = new INTSymbol(this.IDENFERToken.getValue(), false, this.ASSIGNToken != null);
+            if (!st.isDefinitionUnique(intSymbol))
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFERToken.getValue(), this.IDENFERToken.getLineNumber()));
+                return;
+            }
+            st.addSymbol(intSymbol);
         }
-        else {
+        else
+        {
             int dimension = this.LBRACKTokenList.size();
-            st.addSymbol(new ARRAYSymbol(this.IDENFERToken.getValue(), dimension, false, this.ASSIGNToken != null));
+            ARRAYSymbol arraySymbol = new ARRAYSymbol(this.IDENFERToken.getValue(), dimension, false, this.ASSIGNToken != null);
+            if (!st.isDefinitionUnique(arraySymbol))
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFERToken.getValue(), this.IDENFERToken.getLineNumber()));
+                return;
+            }
+            st.addSymbol(arraySymbol);
+            for (ConstExpNode constExpNode : this.constExpNodeList)
+            {
+                constExpNode.parseSymbol(st);
+            }
+
         }
     }
 }

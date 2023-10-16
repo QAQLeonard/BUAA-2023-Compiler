@@ -1,10 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class LAndExpNode extends Node implements Expression
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         eqExpNode = new EqExpNode();
         eqExpNode.parseNode();
@@ -64,6 +65,36 @@ public class LAndExpNode extends Node implements Expression
         else
         {
             return null;
+        }
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+        this.eqExpNode.parseSymbol(st);
+        if (this.lAndExpNode != null)
+        {
+            this.lAndExpNode.parseSymbol(st);
+        }
+    }
+
+    @Override
+    public ExpType getExpType()
+    {
+        if (this.lAndExpNode == null)
+        {
+            return this.eqExpNode.getExpType();
+        }
+        else
+        {
+            if (this.eqExpNode.getExpType() == ExpType.INT && this.lAndExpNode.getExpType() == ExpType.INT)
+            {
+                return ExpType.INT;
+            }
+            else
+            {
+                return ExpType.ERROR;
+            }
         }
     }
 }

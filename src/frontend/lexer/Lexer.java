@@ -45,8 +45,6 @@ public class Lexer
                 {
                     processStr(fr, c, lineNum);
                 }
-
-
             }
         }
         catch (Exception e)

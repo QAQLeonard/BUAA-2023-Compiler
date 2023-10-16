@@ -1,10 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -35,11 +36,12 @@ public class InitValNode extends Node
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.LBRACE)
         {
             this.expNode = new ExpNode();
+
             this.expNode.parseNode();
             return;
         }
@@ -50,6 +52,7 @@ public class InitValNode extends Node
             return;
         }
         InitValNode initValNode = new InitValNode();
+
         initValNode.parseNode();
         this.initValNodeList.add(initValNode);
         while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
@@ -81,5 +84,18 @@ public class InitValNode extends Node
             FileOperate.outputFileUsingUsingBuffer(destFile, RBRACEToken.toString() + "\n", true);
         }
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+        if (this.expNode != null) this.expNode.parseSymbol(st);
+        else
+        {
+            for (InitValNode initValNode : this.initValNodeList)
+            {
+                initValNode.parseSymbol(st);
+            }
+        }
     }
 }

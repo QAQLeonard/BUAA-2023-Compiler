@@ -2,9 +2,9 @@ package frontend.parser;
 
 // import static frontend.parser.ParserUtils.GenerateNodeClasses;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import backend.errorhandler.ErrorHandler;
-import backend.errorhandler.ExceptionType;
+import backend.errorhandler.ErrorType;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Lexer;
 import frontend.lexer.Token;
@@ -20,28 +20,15 @@ import static utils.FileOperate.CreateFileUsingJava7Files;
 public class Parser
 {
     public static int tokenIndex = 0;
-
     public static SymbolTable RootSymbolTable = new SymbolTable();
-
     static CompUnitNode compUnitNode;
-
-
 
     public void run()
     {
         // GenerateNodeClasses();
-        try{
-            compUnitNode = new CompUnitNode();
-            compUnitNode.parseNode();
-            compUnitNode.parseSymbol(RootSymbolTable);
-        }
-        catch (CompilerException e)
-        {
-            ErrorHandler.exceptionList.add(e);
-            // System.out.println(e.getMessage());
-        }
-
-
+        compUnitNode = new CompUnitNode();
+        compUnitNode.parseNode();
+        // compUnitNode.parseSymbol(RootSymbolTable);
     }
 
     public void output() throws IOException
@@ -50,13 +37,14 @@ public class Parser
         CreateFileUsingJava7Files(destFile);
         compUnitNode.outputNode(destFile);
     }
+
     public static Token getToken()
     {
         tokenIndex++;
         return Lexer.tokenList.get(tokenIndex - 1);
     }
 
-    public static Token getToken(TokenType tokenType) throws CompilerException
+    public static Token getToken(TokenType tokenType)
     {
         Token token = Lexer.tokenList.get(tokenIndex);
         if (token.getType() == tokenType)
@@ -64,16 +52,18 @@ public class Parser
             tokenIndex++;
             return token;
         }
-        else {
-            ExceptionType exceptionType;
+        else
+        {
+            ErrorType errorType;
             switch (tokenType)
             {
-                case SEMICN -> exceptionType = ExceptionType.i;
-                case RPARENT -> exceptionType = ExceptionType.j;
-                case RBRACK -> exceptionType = ExceptionType.k;
-                default -> exceptionType = ExceptionType.UNEXPECTED_TOKEN;
+                case SEMICN -> errorType = ErrorType.i;
+                case RPARENT -> errorType = ErrorType.j;
+                case RBRACK -> errorType = ErrorType.k;
+                default -> errorType = ErrorType.UNEXPECTED_TOKEN;
             }
-            throw new CompilerException(exceptionType, "Expect " + tokenType + " but get " + token.getType(), token.getLineNumber());
+            ErrorHandler.addError(new CompilerError(errorType, "Expect " + tokenType + " but get " + token.getType(), token.getLineNumber()));
+            return null;
         }
     }
 
@@ -86,8 +76,4 @@ public class Parser
         return Lexer.tokenList.get(tokenIndex + offset);
     }
 
-    public static void parseSymbol() throws CompilerException
-    {
-
-    }
 }

@@ -1,10 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -19,14 +20,13 @@ public class LOrExpNode extends Node implements Expression
     LAndExpNode lAndExpNode;
     LOrExpNode lOrExpNode;
     Token ORToken;
-
     public LOrExpNode()
     {
         super(NodeType.LOrExp);
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         lAndExpNode = new LAndExpNode();
         lAndExpNode.parseNode();
@@ -61,5 +61,35 @@ public class LOrExpNode extends Node implements Expression
             return this.ORToken;
         }
         return null;
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable parent)
+    {
+        this.lAndExpNode.parseSymbol(parent);
+        if(this.lOrExpNode != null)
+        {
+            this.lOrExpNode.parseSymbol(parent);
+        }
+    }
+
+    @Override
+    public ExpType getExpType()
+    {
+        if(this.lOrExpNode == null)
+        {
+            return this.lAndExpNode.getExpType();
+        }
+        else
+        {
+            if(this.lAndExpNode.getExpType() == ExpType.INT && this.lOrExpNode.getExpType() == ExpType.INT)
+            {
+                return ExpType.INT;
+            }
+            else
+            {
+                return ExpType.ERROR;
+            }
+        }
     }
 }

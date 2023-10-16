@@ -1,9 +1,9 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
-import frontend.parser.symbol.ARRAYSymbol;
-import frontend.parser.symbol.INTSymbol;
-import frontend.parser.symbol.SymbolTable;
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
+import frontend.parser.symbol.*;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -42,10 +42,10 @@ public class ConstDefNode extends Node
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
-        while(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
+        while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACK)
         {
             parseArrayDimension(this.LBRACKTokenList, this.constExpNodeList, this.RBRACKTokenList);
         }
@@ -58,7 +58,7 @@ public class ConstDefNode extends Node
     public void outputNode(File destFile) throws IOException
     {
         FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFRToken.toString() + "\n", true);
-        for(int i = 0; i < this.LBRACKTokenList.size(); i++)
+        for (int i = 0; i < this.LBRACKTokenList.size(); i++)
         {
             FileOperate.outputFileUsingUsingBuffer(destFile, this.LBRACKTokenList.get(i).toString() + "\n", true);
             this.constExpNodeList.get(i).outputNode(destFile);
@@ -70,16 +70,35 @@ public class ConstDefNode extends Node
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
-        if(LBRACKTokenList.isEmpty())
+        if (LBRACKTokenList.isEmpty())
         {
-            INTSymbol intSymbol = new INTSymbol(IDENFRToken.getValue(),true, true);
+            INTSymbol intSymbol = new INTSymbol(IDENFRToken.getValue(), true, true);
+            if (!st.isDefinitionUnique(intSymbol))
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + IDENFRToken.getValue(), IDENFRToken.getLineNumber()));
+                return;
+            }
             st.addSymbol(intSymbol);
         }
         else
         {
-            ARRAYSymbol arraySymbol = new ARRAYSymbol(IDENFRToken.getValue(),LBRACKTokenList.size(),true, true);
+            ARRAYSymbol arraySymbol = new ARRAYSymbol(IDENFRToken.getValue(), LBRACKTokenList.size(), true, true);
+            if (!st.isDefinitionUnique(arraySymbol))
+            {
+                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + IDENFRToken.getValue(), IDENFRToken.getLineNumber()));
+                return;
+            }
+            st.addSymbol(arraySymbol);
+            for (ConstExpNode constExpNode : constExpNodeList)
+            {
+                constExpNode.parseSymbol(st);
+            }
+        }
+        if (constInitValNode != null)
+        {
+            constInitValNode.parseSymbol(st);
         }
     }
 }

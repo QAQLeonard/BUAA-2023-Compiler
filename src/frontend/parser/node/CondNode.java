@@ -1,6 +1,7 @@
 package frontend.parser.node;
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -17,7 +18,7 @@ public class CondNode extends Node {
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.lOrExpNode = new LOrExpNode();
         this.lOrExpNode.parseNode();
@@ -28,5 +29,11 @@ public class CondNode extends Node {
     {
         this.lOrExpNode.outputNode(destFile);
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable parent)
+    {
+        this.lOrExpNode.parseSymbol(parent);
     }
 }

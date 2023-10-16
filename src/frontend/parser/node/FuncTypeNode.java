@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -26,7 +26,7 @@ public class FuncTypeNode extends Node {
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         if(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.VOIDTK)
             this.VOIDTKToken = Parser.getToken(TokenType.VOIDTK);
@@ -42,5 +42,13 @@ public class FuncTypeNode extends Node {
         else
             FileOperate.outputFileUsingUsingBuffer(destFile, this.INTTKToken.toString() + "\n", true);
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
+    }
+
+    public ExpType getExpType()
+    {
+        if(this.VOIDTKToken != null)
+            return ExpType.VOID;
+        else
+            return ExpType.INT;
     }
 }

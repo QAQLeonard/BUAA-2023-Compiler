@@ -1,6 +1,8 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
 import frontend.parser.symbol.FUNCSymbol;
 import frontend.parser.symbol.Symbol;
 import frontend.parser.symbol.SymbolTable;
@@ -14,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static frontend.parser.ParserUtils.funcSymbolStack;
 
 /**
  * 函数定义 FuncDef → FuncType Ident '(' [FuncFParams] ')' Block
@@ -37,7 +41,7 @@ public class FuncDefNode extends Node {
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.funcTypeNode = new FuncTypeNode();
         this.funcTypeNode.parseNode();
@@ -70,17 +74,32 @@ public class FuncDefNode extends Node {
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
         SymbolTable funcTable = new SymbolTable(st);
-        funcFParamsNode.parseSymbol(funcTable);
+        if(this.funcFParamsNode != null)
+        {
+            funcFParamsNode.parseSymbol(funcTable);
+        }
         ArrayList<Symbol> paramList = new ArrayList<>(funcTable.getSymbolList());
-        Symbol funcSymbol = new FUNCSymbol(this.IDENFRToken.getValue(), this.funcTypeNode.getType().toString(), paramList);
+        FUNCSymbol funcSymbol = new FUNCSymbol(this.IDENFRToken.getValue(), this.funcTypeNode.getExpType(), paramList);
+        if(!st.isDefinitionUnique(funcSymbol))
+        {
+            ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of function " + this.IDENFRToken.getValue(), this.IDENFRToken.getLineNumber()));
+            return;
+        }
         st.addSymbol(funcSymbol);
+        funcSymbolStack.push(funcSymbol);
         for (BlockItemNode blockItemNode : blockNode.blockItemNodeList)
         {
             blockItemNode.parseSymbol(funcTable);
         }
+        funcSymbolStack.pop();
+        if(funcSymbol.ReturnStmtNodeList.isEmpty()&&funcSymbol.getReturnType()!=ExpType.VOID)
+        {
+            ErrorHandler.addError(new CompilerError(ErrorType.h, "Function " + this.IDENFRToken.getValue() + " has no return statement", this.IDENFRToken.getLineNumber()));
+        }
+
     }
 
 

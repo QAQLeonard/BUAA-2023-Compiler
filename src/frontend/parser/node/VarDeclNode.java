@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -34,7 +34,7 @@ public class VarDeclNode extends Node
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.bTypeNode = new BTypeNode();
         this.bTypeNode.parseNode();
@@ -67,7 +67,7 @@ public class VarDeclNode extends Node
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
         for (VarDefNode varDefNode : varDefNodeList)
         {

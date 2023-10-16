@@ -15,4 +15,9 @@ public abstract class Symbol
     {
         return this.name;
     }
+
+    public SymbolType getType()
+    {
+        return this.type;
+    }
 }

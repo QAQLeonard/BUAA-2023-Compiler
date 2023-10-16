@@ -1,12 +1,16 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
-import backend.errorhandler.ExceptionType;
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
+import frontend.parser.symbol.FUNCSymbol;
+import frontend.parser.symbol.Symbol;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolType;
 import utils.FileOperate;
 
 import java.io.File;
@@ -92,7 +96,7 @@ public class StmtNode extends Node
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         // Stmt →  Block → '{' { BlockItem } '}'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LBRACE)
@@ -164,9 +168,9 @@ public class StmtNode extends Node
         // Stmt → 'break' ';'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.BREAKTK)
         {
-            if(ParserUtils.ForLoopCount == 0)
+            if (ParserUtils.ForLoopCount == 0)
             {
-                throw new CompilerException(ExceptionType.m, "break can only be used in for loop", Objects.requireNonNull(Parser.peekToken(0)).getLineNumber());
+                ErrorHandler.addError(new CompilerError(ErrorType.m, "break can only be used in for loop", Objects.requireNonNull(Parser.peekToken(0)).getLineNumber()));
             }
             this.BREAKTKToken = Parser.getToken(TokenType.BREAKTK);
             this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
@@ -177,9 +181,10 @@ public class StmtNode extends Node
         // Stmt → 'continue' ';'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.CONTINUETK)
         {
-            if(ParserUtils.ForLoopCount == 0)
+            if (ParserUtils.ForLoopCount == 0)
             {
-                throw new CompilerException(ExceptionType.m, "continue can only be used in for loop", Objects.requireNonNull(Parser.peekToken(0)).getLineNumber());
+                // throw new CompilerError(ErrorType.m, "continue can only be used in for loop", Objects.requireNonNull(Parser.peekToken(0)).getLineNumber());
+                ErrorHandler.addError(new CompilerError(ErrorType.m, "continue can only be used in for loop", Objects.requireNonNull(Parser.peekToken(0)).getLineNumber()));
             }
             this.CONTINUETKToken = Parser.getToken(TokenType.CONTINUETK);
             this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
@@ -206,18 +211,18 @@ public class StmtNode extends Node
         // Stmt → 'printf''('FormatString{','Exp}')'';'
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.PRINTFTK)
         {
-            this.PRINTFTKToken = Parser.getToken();
-            this.LPARENTToken = Parser.getToken();
-            this.STRCONToken = Parser.getToken();
+            this.PRINTFTKToken = Parser.getToken(TokenType.PRINTFTK);
+            this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
+            this.STRCONToken = Parser.getToken(TokenType.STRCON);
             while (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.COMMA)
             {
-                this.COMMATokenList.add(Parser.getToken());
+                this.COMMATokenList.add(Parser.getToken(TokenType.COMMA));
                 ExpNode expNode = new ExpNode();
                 expNode.parseNode();
                 this.expNodeList.add(expNode);
             }
-            this.RPARENTToken = Parser.getToken();
-            this.SEMICNTokenList.add(Parser.getToken());
+            this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
+            this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.PRINTF;
             return;
         }
@@ -236,7 +241,7 @@ public class StmtNode extends Node
                 expNode.parseNode();
                 this.expNodeList.add(expNode);
             }
-            this.SEMICNTokenList.add(Parser.getToken());
+            this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.EXPRESSION;
             return;
         }
@@ -246,13 +251,13 @@ public class StmtNode extends Node
         //LVal '='
         this.lValNode = new LValNode();
         this.lValNode.parseNode();
-        this.ASSIGNToken = Parser.getToken();
+        this.ASSIGNToken = Parser.getToken(TokenType.ASSIGN);
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.GETINTTK)  // 'getint''('')'';'
         {
-            this.GETINTTKToken = Parser.getToken();
-            this.LPARENTToken = Parser.getToken();
-            this.RPARENTToken = Parser.getToken();
-            this.SEMICNTokenList.add(Parser.getToken());
+            this.GETINTTKToken = Parser.getToken(TokenType.GETINTTK);
+            this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
+            this.RPARENTToken = Parser.getToken(TokenType.RPARENT);
+            this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.GETINT;
         }
         else    //Exp ';'
@@ -260,7 +265,7 @@ public class StmtNode extends Node
             ExpNode expNode = new ExpNode();
             expNode.parseNode();
             this.expNodeList.add(expNode);
-            this.SEMICNTokenList.add(Parser.getToken());
+            this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.ASSIGNMENT;
         }
         return;
@@ -372,16 +377,24 @@ public class StmtNode extends Node
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
         switch (this.stmtType)
         {
             case ASSIGNMENT:
                 this.lValNode.parseSymbol(st);
                 this.expNodeList.get(0).parseSymbol(st);
+                if (this.lValNode.isConstant)
+                {
+                    ErrorHandler.addError(new CompilerError(ErrorType.h, "Cannot assign value to constant", this.lValNode.IDENFRToken.getLineNumber()));
+                }
+                if (this.lValNode.getExpType() != this.expNodeList.get(0).getExpType())
+                {
+                    ErrorHandler.addError(new CompilerError(ErrorType.UNDEFINED, "Type mismatch", this.lValNode.IDENFRToken.getLineNumber()));
+                }
                 break;
             case EXPRESSION:
-                if (this.expNodeList.size() != 0)
+                if (!this.expNodeList.isEmpty())
                 {
                     this.expNodeList.get(0).parseSymbol(st);
                 }
@@ -418,10 +431,25 @@ public class StmtNode extends Node
             case CONTINUE:
                 break;
             case RETURN:
+                FUNCSymbol symbol = ParserUtils.funcSymbolStack.peek();
+                if (symbol == null)
+                {
+                    ErrorHandler.addError(new CompilerError(ErrorType.g, "Return statement not in function", this.RETURNTKToken.getLineNumber()));
+                    return;
+                }
                 if (!this.expNodeList.isEmpty())
                 {
                     this.expNodeList.get(0).parseSymbol(st);
                 }
+
+                if (symbol.getReturnType() == ExpType.VOID && !this.expNodeList.isEmpty())
+                {
+                    ErrorHandler.addError(new CompilerError(ErrorType.f, "Return type mismatch", this.RETURNTKToken.getLineNumber()));
+                    return;
+                }
+                symbol.ReturnStmtNodeList.add(this);
+
+
                 break;
             case GETINT:
                 this.lValNode.parseSymbol(st);
@@ -430,6 +458,11 @@ public class StmtNode extends Node
                 for (ExpNode expNode : expNodeList)
                 {
                     expNode.parseSymbol(st);
+                }
+                String str = STRCONToken.getValue();
+                if ((str.split("%d").length - 1) != expNodeList.size())
+                {
+                    ErrorHandler.addError(new CompilerError(ErrorType.l, "Number of parameters does not match", this.STRCONToken.getLineNumber()));
                 }
                 break;
         }

@@ -1,10 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class RelExpNode extends Node implements Expression
     Token GREToken;
     Token LEQToken;
     Token GEQToken;
+    boolean isInt;
 
     public RelExpNode()
     {
@@ -28,7 +30,7 @@ public class RelExpNode extends Node implements Expression
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         addExpNode = new AddExpNode();
         addExpNode.parseNode();
@@ -46,6 +48,7 @@ public class RelExpNode extends Node implements Expression
             }
         }
         relExpNode = new RelExpNode();
+        relExpNode.isInt = this.isInt;
         relExpNode.parseNode();
     }
 
@@ -84,6 +87,29 @@ public class RelExpNode extends Node implements Expression
         {
             FileOperate.outputFileUsingUsingBuffer(destFile, OPToken.toString() + "\n", true);
             this.relExpNode.outputNode(destFile);
+        }
+    }
+
+    @Override
+    public ExpType getExpType()
+    {
+        if(this.relExpNode == null)
+            return this.addExpNode.getExpType();
+        else
+        {
+            if(this.addExpNode.getExpType() == ExpType.INT && this.relExpNode.getExpType() == ExpType.INT)
+                return ExpType.INT;
+            else
+                return ExpType.ERROR;
+        }
+    }
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+        this.addExpNode.parseSymbol(st);
+        if (this.relExpNode != null)
+        {
+            this.relExpNode.parseSymbol(st);
         }
     }
 }

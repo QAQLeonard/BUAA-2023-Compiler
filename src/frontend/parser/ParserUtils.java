@@ -1,15 +1,18 @@
 package frontend.parser;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Lexer;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.node.ConstExpNode;
+import frontend.parser.node.ExpType;
 import frontend.parser.node.NodeType;
+import frontend.parser.symbol.ARRAYSymbol;
+import frontend.parser.symbol.FUNCSymbol;
+import frontend.parser.symbol.Symbol;
+import frontend.parser.symbol.SymbolType;
+import java.util.Stack;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public class ParserUtils
@@ -55,33 +58,7 @@ public class ParserUtils
 
     public static int ForLoopCount = 0;
 
-    public static void GenerateNodeClasses()
-    {
-        NodeType[] nodeMaps = NodeType.values();
-
-        String outputPath = "src/frontend/parser/node/";
-
-        for (NodeType nodeMap : nodeMaps)
-        {
-            String enumName = nodeMap.name();
-            String className = enumName.substring(0, 1).toUpperCase() + enumName.substring(1) + "Node";
-
-            String fileName = className + ".java";
-            String fileContent = "package frontend.parser.node;\n\npublic class " + className + " extends Node {\n\n}\n";
-
-            try
-            {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath + fileName));
-                writer.write(fileContent);
-                writer.close();
-                System.out.println("Generated " + fileName);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
+    public static Stack<FUNCSymbol> funcSymbolStack = new Stack<>();
 
     public static Token findNearestTokenByType(TokenType targetType)
     {
@@ -100,7 +77,7 @@ public class ParserUtils
 
     public static Set<TokenType> UnaryOpTokenTypes = EnumSet.of(TokenType.PLUS, TokenType.MINU, TokenType.NOT);
 
-    public static void parseArrayDimension(ArrayList<Token> LBRACKTokenList, ArrayList<ConstExpNode> constExpNodeList, ArrayList<Token> RBRACKTokenList) throws CompilerException
+    public static void parseArrayDimension(ArrayList<Token> LBRACKTokenList, ArrayList<ConstExpNode> constExpNodeList, ArrayList<Token> RBRACKTokenList)
     {
         LBRACKTokenList.add(Parser.getToken(TokenType.LBRACK));
         ConstExpNode constExpNode = new ConstExpNode();
@@ -109,9 +86,26 @@ public class ParserUtils
         RBRACKTokenList.add(Parser.getToken(TokenType.RBRACK));
     }
 
-    private TokenType peekTokenType()
+    public static boolean TypeEqual(ExpType expType, Symbol parameter)
     {
-        return Objects.requireNonNull(Parser.peekToken(0)).getType();
+        if (expType == ExpType.INT && parameter.getType() == SymbolType.INT)
+        {
+            return true;
+        }
+        else if (parameter.getType() == SymbolType.ARRAY)
+        {
+            if (expType == ExpType.ARRAY1D && ((ARRAYSymbol) parameter).getDim() == 1)
+            {
+                return true;
+            }
+            else if (expType == ExpType.ARRAY2D && ((ARRAYSymbol) parameter).getDim() == 2)
+            {
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
+
 
 }

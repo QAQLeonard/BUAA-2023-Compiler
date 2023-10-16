@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -32,7 +32,7 @@ public class BlockNode extends Node
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.LBRACEToken = Parser.getToken(TokenType.LBRACE);
         while (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.RBRACE)
@@ -58,7 +58,7 @@ public class BlockNode extends Node
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
         SymbolTable childSt = new SymbolTable(st);
         for (BlockItemNode blockItemNode : this.blockItemNodeList)

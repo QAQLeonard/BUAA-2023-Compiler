@@ -1,5 +1,6 @@
 package frontend.parser.symbol;
-import backend.errorhandler.CompilerException;
+
+import backend.errorhandler.CompilerError;
 
 import java.util.ArrayList;
 
@@ -40,12 +41,20 @@ public class SymbolTable
                 return symbol;
             }
         }
+        if (parent != null) return parent.getSymbol(name);
         return null;
     }
 
-    public void check() throws CompilerException
+    public Symbol getSymbol(String name, SymbolType type)
     {
-
+        for (Symbol symbol : this.symbolList)
+        {
+            if (symbol.getName().equals(name) && symbol.getType() == type)
+            {
+                return symbol;
+            }
+        }
+        return null;
     }
 
     public ArrayList<Symbol> getSymbolList()
@@ -60,6 +69,32 @@ public class SymbolTable
             this.children = new ArrayList<>();
         }
         this.children.add(child);
+    }
+
+    public boolean isDefinitionUnique(Symbol symbol)
+    {
+        for (Symbol s : this.symbolList)
+        {
+            if (s.getName().equals(symbol.getName()))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public SymbolTable getParent()
+    {
+        return this.parent;
+    }
+
+    public Symbol getLastSymbol()
+    {
+        if (!this.symbolList.isEmpty())
+        {
+            return this.symbolList.get(this.symbolList.size() - 1);
+        }
+        return null;
     }
 
 }

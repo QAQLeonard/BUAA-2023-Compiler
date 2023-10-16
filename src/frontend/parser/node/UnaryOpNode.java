@@ -1,11 +1,13 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
-import backend.errorhandler.ExceptionType;
+import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -15,7 +17,7 @@ import java.util.Objects;
 /**
  * 单目运算符 UnaryOp → '+' | '−' | '!'
  */
-public class UnaryOpNode extends Node implements Expression
+public class UnaryOpNode extends Node
 {
     Token PLUSToken;
     Token MINUSToken;
@@ -27,7 +29,7 @@ public class UnaryOpNode extends Node implements Expression
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         Token token = Parser.peekToken(0);
         switch (Objects.requireNonNull(token).getType())
@@ -37,12 +39,12 @@ public class UnaryOpNode extends Node implements Expression
             case NOT -> this.NOTToken = Parser.getToken(TokenType.NOT);
             default ->
             {
-                throw new CompilerException(ExceptionType.UNEXPECTED_TOKEN, "UnaryOpNode: parse failed", token.getLineNumber());
+                //throw new CompilerError(ErrorType.UNEXPECTED_TOKEN, "UnaryOpNode: parse failed", token.getLineNumber());
+                ErrorHandler.addError(new CompilerError(ErrorType.UNEXPECTED_TOKEN, "UnaryOpNode: parse failed", token.getLineNumber()));
             }
         }
     }
 
-    @Override
     public Token getOPToken()
     {
         if (this.PLUSToken != null)
@@ -73,4 +75,5 @@ public class UnaryOpNode extends Node implements Expression
         Token OPToken = this.getOPToken();
         return OPToken.getValue();
     }
+
 }

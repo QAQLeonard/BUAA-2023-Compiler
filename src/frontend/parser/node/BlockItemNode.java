@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -24,7 +24,7 @@ public class BlockItemNode extends Node {
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         if(Objects.requireNonNull(Parser.peekToken(0)).getType()== TokenType.CONSTTK || Objects.requireNonNull(Parser.peekToken(0)).getType()== TokenType.INTTK)
         {
@@ -53,7 +53,7 @@ public class BlockItemNode extends Node {
     }
 
     @Override
-    public void parseSymbol(SymbolTable st) throws CompilerException
+    public void parseSymbol(SymbolTable st)
     {
         if(this.declNode != null)
         {

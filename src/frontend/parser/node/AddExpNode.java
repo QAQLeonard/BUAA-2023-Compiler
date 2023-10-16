@@ -1,10 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public class AddExpNode extends Node implements Expression
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         mulExpNode = new MulExpNode();
         mulExpNode.parseNode();
@@ -37,11 +38,11 @@ public class AddExpNode extends Node implements Expression
         assert token != null;
         if (token.getType() == TokenType.PLUS)
         {
-            PLUSToken = Parser.getToken();
+            PLUSToken = Parser.getToken(TokenType.PLUS);
         }
         else if (token.getType() == TokenType.MINU)
         {
-            MINUSToken = Parser.getToken();
+            MINUSToken = Parser.getToken(TokenType.MINU);
         }
         else
         {
@@ -95,22 +96,35 @@ public class AddExpNode extends Node implements Expression
         }
     }
 
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+        mulExpNode.parseSymbol(st);
+        if (addExpNode != null)
+        {
+            addExpNode.parseSymbol(st);
+        }
+    }
 
-//    public int getValue()
-//    {
-//        int value = mulExpNode.getValue();
-//        Token OPToken = this.getOPToken();
-//        if (OPToken != null)
-//        {
-//            if (OPToken.getType() == TokenType.PLUS)
-//            {
-//                value += addExpNode.getValue();
-//            }
-//            else if (OPToken.getType() == TokenType.MINU)
-//            {
-//                value -= addExpNode.getValue();
-//            }
-//        }
-//        return value;
-//    }
+    @Override
+    public ExpType getExpType()
+    {
+        if (this.addExpNode == null)
+        {
+            return this.mulExpNode.getExpType();
+        }
+        else
+        {
+            ExpType expType1 = this.mulExpNode.getExpType();
+            ExpType expType2 = this.addExpNode.getExpType();
+            if (expType1 == ExpType.INT && expType2 == ExpType.INT)
+            {
+                return ExpType.INT;
+            }
+            else
+            {
+                return ExpType.ERROR;
+            }
+        }
+    }
 }

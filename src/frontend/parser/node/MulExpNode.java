@@ -1,10 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class MulExpNode extends Node implements Expression
     Token MULTToken;
     Token DIVToken;
     Token MODToken;
-
+    boolean isInt;
 
     public MulExpNode()
     {
@@ -36,7 +37,7 @@ public class MulExpNode extends Node implements Expression
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         this.unaryExpNode = new UnaryExpNode();
         this.unaryExpNode.parseNode();
@@ -54,6 +55,7 @@ public class MulExpNode extends Node implements Expression
             }
         }
         mulExpNode = new MulExpNode();
+        mulExpNode.isInt = this.isInt;
         mulExpNode.parseNode();
     }
 
@@ -104,5 +106,35 @@ public class MulExpNode extends Node implements Expression
             temp += this.mulExpNode.toString();
         }
         return temp;
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+        this.unaryExpNode.parseSymbol(st);
+        if (this.mulExpNode != null)
+        {
+            this.mulExpNode.parseSymbol(st);
+        }
+    }
+
+    @Override
+    public ExpType getExpType()
+    {
+        if (this.mulExpNode == null)
+        {
+            return this.unaryExpNode.getExpType();
+        }
+        else
+        {
+            if (this.unaryExpNode.getExpType() == ExpType.INT && this.mulExpNode.getExpType() == ExpType.INT)
+            {
+                return ExpType.INT;
+            }
+            else
+            {
+                return ExpType.ERROR;
+            }
+        }
     }
 }

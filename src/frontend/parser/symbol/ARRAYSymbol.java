@@ -45,4 +45,9 @@ public class ARRAYSymbol extends Symbol
                 '}';
     }
 
+    public int getDim()
+    {
+        return dimension;
+    }
+
 }

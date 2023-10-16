@@ -1,10 +1,11 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerException;
+import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
+import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public class PrimaryExpNode extends Node implements Expression
     }
 
     @Override
-    public void parseNode() throws CompilerException
+    public void parseNode()
     {
         if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.LPARENT)
         {
@@ -45,10 +46,8 @@ public class PrimaryExpNode extends Node implements Expression
         }
         else
         {
-
             this.numberNode = new NumberNode();
             this.numberNode.parseNode();
-
         }
     }
 
@@ -97,5 +96,35 @@ public class PrimaryExpNode extends Node implements Expression
             temp += this.numberNode.toString();
         }
         return temp;
+    }
+
+    @Override
+    public void parseSymbol(SymbolTable st)
+    {
+        if (this.expNode != null)
+        {
+            this.expNode.parseSymbol(st);
+        }
+        if (this.lValNode != null)
+        {
+            this.lValNode.parseSymbol(st);
+        }
+    }
+
+    @Override
+    public ExpType getExpType()
+    {
+        if (this.expNode != null)
+        {
+            return this.expNode.getExpType();
+        }
+        else if (this.lValNode != null)
+        {
+            return this.lValNode.getExpType();
+        }
+        else
+        {
+            return ExpType.INT;
+        }
     }
 }
