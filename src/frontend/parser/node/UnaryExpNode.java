@@ -16,6 +16,7 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Set;
 
 import static frontend.parser.ParserUtils.TypeEqual;
 
@@ -58,7 +59,8 @@ public class UnaryExpNode extends Node implements Expression
         {
             this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
             this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
-            if (Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.RPARENT)
+            Set<TokenType> FIRST_FuncRParams = Set.of(TokenType.INTCON, TokenType.IDENFR, TokenType.LPARENT, TokenType.PLUS, TokenType.MINU);
+            if (FIRST_FuncRParams.contains(Objects.requireNonNull(Parser.peekToken(0)).getType()))
             {
                 this.funcRParamsNode = new FuncRParamsNode();
                 this.funcRParamsNode.parseNode();
@@ -143,13 +145,13 @@ public class UnaryExpNode extends Node implements Expression
             Symbol symbol = st.getSymbol(this.IDENFRToken.getValue());
             if (symbol == null)
             {
-                ErrorHandler.addError(new CompilerError(ErrorType.b, "Not Defined Func", this.IDENFRToken.getLineNumber()));
+                ErrorHandler.addError(new CompilerError(ErrorType.c, "Not Defined Func", this.IDENFRToken.getLineNumber()));
                 expType = ExpType.ERROR;
                 return;
             }
             if (symbol.getType() != SymbolType.FUNCTION)
             {
-                ErrorHandler.addError(new CompilerError(ErrorType.UNEXPECTED_TOKEN, "Not a FUNC", this.IDENFRToken.getLineNumber()));
+                ErrorHandler.addError(new CompilerError(ErrorType.UNDEFINED, "Not a FUNC", this.IDENFRToken.getLineNumber()));
                 expType = ExpType.ERROR;
                 return;
             }
@@ -174,8 +176,9 @@ public class UnaryExpNode extends Node implements Expression
             for (int i = 0; i < funcRParamsNode.expNodeList.size(); i++)
             {
                 funcRParamsNode.expNodeList.get(i).parseSymbol(st);
-                if (TypeEqual(funcRParamsNode.expNodeList.get(i).getExpType(), funcSymbol.getParameters().get(i)))
+                if (!TypeEqual(funcRParamsNode.expNodeList.get(i).getExpType(), funcSymbol.getParameters().get(i)))
                 {
+                    // System.out.println(funcRParamsNode.expNodeList.get(i).getExpType()+"---"+funcSymbol.getParameters().get(i).getType());
                     ErrorHandler.addError(new CompilerError(ErrorType.e, "Error type of parameters", this.IDENFRToken.getLineNumber()));
                     expType = ExpType.ERROR;
                     return;
@@ -199,7 +202,6 @@ public class UnaryExpNode extends Node implements Expression
         else if (this.IDENFRToken != null)
         {
             return expType;
-
         }
         else if (this.unaryOpNode != null)
         {

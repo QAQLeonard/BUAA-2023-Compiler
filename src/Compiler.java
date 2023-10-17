@@ -13,11 +13,11 @@ public class Compiler
             ErrorHandler errorHandler = new ErrorHandler();
             Lexer lexer = new Lexer();
             lexer.run();
-            // lexer.output();
+            lexer.output();
             Parser parser = new Parser();
             parser.run();
-            parser.output();
-            // errorHandler.output();
+            // parser.output();
+            errorHandler.output();
         }
         catch (Exception e)
         {

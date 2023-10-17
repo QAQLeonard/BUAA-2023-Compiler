@@ -48,7 +48,7 @@ public class FuncDefNode extends Node {
         this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
         this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
         // not ()
-        if(Objects.requireNonNull(Parser.peekToken(0)).getType() != TokenType.RPARENT)
+        if(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.INTTK)
         {
             this.funcFParamsNode = new FuncFParamsNode();
             this.funcFParamsNode.parseNode();
@@ -83,7 +83,7 @@ public class FuncDefNode extends Node {
         }
         ArrayList<Symbol> paramList = new ArrayList<>(funcTable.getSymbolList());
         FUNCSymbol funcSymbol = new FUNCSymbol(this.IDENFRToken.getValue(), this.funcTypeNode.getExpType(), paramList);
-        if(!st.isDefinitionUnique(funcSymbol))
+        if(!st.isDefinitionUnique(this.IDENFRToken.getValue()))
         {
             ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of function " + this.IDENFRToken.getValue(), this.IDENFRToken.getLineNumber()));
             return;
@@ -97,8 +97,11 @@ public class FuncDefNode extends Node {
         funcSymbolStack.pop();
         if(funcSymbol.ReturnStmtNodeList.isEmpty()&&funcSymbol.getReturnType()!=ExpType.VOID)
         {
-            ErrorHandler.addError(new CompilerError(ErrorType.h, "Function " + this.IDENFRToken.getValue() + " has no return statement", this.IDENFRToken.getLineNumber()));
+            // System.out.println(this.blockNode.RBRACEToken.getValue()+"111"+this.blockNode.RBRACEToken.getLineNumber());
+            ErrorHandler.addError(new CompilerError(ErrorType.g, "Function " + this.IDENFRToken.getValue() + " has no return statement", this.blockNode.RBRACEToken.getLineNumber()));
         }
+
+
 
     }
 

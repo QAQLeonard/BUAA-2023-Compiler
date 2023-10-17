@@ -83,25 +83,21 @@ public class VarDefNode extends Node
     @Override
     public void parseSymbol(SymbolTable st)
     {
+        if (!st.isDefinitionUnique(IDENFERToken.getValue()))
+        {
+            ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFERToken.getValue(), this.IDENFERToken.getLineNumber()));
+            return;
+        }
+
         if (this.LBRACKTokenList.isEmpty())
         {
             INTSymbol intSymbol = new INTSymbol(this.IDENFERToken.getValue(), false, this.ASSIGNToken != null);
-            if (!st.isDefinitionUnique(intSymbol))
-            {
-                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFERToken.getValue(), this.IDENFERToken.getLineNumber()));
-                return;
-            }
             st.addSymbol(intSymbol);
         }
         else
         {
             int dimension = this.LBRACKTokenList.size();
             ARRAYSymbol arraySymbol = new ARRAYSymbol(this.IDENFERToken.getValue(), dimension, false, this.ASSIGNToken != null);
-            if (!st.isDefinitionUnique(arraySymbol))
-            {
-                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFERToken.getValue(), this.IDENFERToken.getLineNumber()));
-                return;
-            }
             st.addSymbol(arraySymbol);
             for (ConstExpNode constExpNode : this.constExpNodeList)
             {

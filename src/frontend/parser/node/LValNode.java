@@ -107,6 +107,7 @@ public class LValNode extends Node
                 }
                 ARRAYSymbol arraySymbol = (ARRAYSymbol) symbol;
                 int temp = arraySymbol.getDim() - LBRACKTokenList.size();
+                // System.out.println(temp);
                 switch (temp)
                 {
                     case 0 -> expType = ExpType.INT;

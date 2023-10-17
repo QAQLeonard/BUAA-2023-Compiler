@@ -31,6 +31,10 @@ public class FuncFParamsNode extends Node {
     public void parseNode()
     {
         FuncFParamNode funcFParamNode = new FuncFParamNode();
+        if(Parser.peekToken(0).getType()!= TokenType.INTTK)
+        {
+            return;
+        }
         funcFParamNode.parseNode();
         this.funcFParamNodeList.add(funcFParamNode);
         while (Objects.requireNonNull(Parser.peekToken(0)).getType().equals(TokenType.COMMA))

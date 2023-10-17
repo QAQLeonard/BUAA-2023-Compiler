@@ -36,5 +36,13 @@ public class CompilerError implements Comparable<CompilerError>
     {
         return this.line - other.line;
     }
-    
+
+    public ErrorType getType()
+    {
+        return type;
+    }
+    public int getLine()
+    {
+        return line;
+    }
 }

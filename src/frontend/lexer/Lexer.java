@@ -11,6 +11,8 @@ public class Lexer
     private int buffer = -1;
     public static ArrayList<Token> tokenList = new ArrayList<>();
 
+    public static int lineNum = 1;
+
     public void run() throws IOException
     {
         File srcFile = new File("testfile.txt");
@@ -21,29 +23,24 @@ public class Lexer
         try (FileReader fr = new FileReader(srcFile))
         {
             int c;
-            int lineNum = 1;
             while ((c = getNextChar(fr)) != -1)
             {
-                if (c == '\n')
+                if (Character.isLetter(c)||c=='_')
                 {
-                    lineNum++;
-                }
-                else if (Character.isLetter(c)||c=='_')
-                {
-                    processWord(fr, c, lineNum);
+                    processWord(fr, c);
                 }
                 else if (Character.isDigit(c))
                 {
-                    processNumber(fr, c, lineNum);
+                    processNumber(fr, c);
                 }
                 else if (isSymbol((char) c))
                 {
-                    processSymbol(fr, c, lineNum);
+                    processSymbol(fr, c);
                 }
 
                 else if (c == '"')
                 {
-                    processStr(fr, c, lineNum);
+                    processStr(fr, c);
                 }
             }
         }
@@ -77,17 +74,24 @@ public class Lexer
         {
             int c = buffer;
             buffer = -1;
+            if (c == '\n') lineNum++;
             return c;
         }
-        return fr.read();
+        int temp = fr.read();
+        if(temp == '\n')
+        {
+            lineNum++;
+        }
+        return temp;
     }
 
     private void UnGetCH(int c)
     {
         buffer = c;
+        if(c == '\n') lineNum--;
     }
 
-    private void processWord(FileReader fr, int firstChar, int lineNum) throws IOException
+    private void processWord(FileReader fr, int firstChar) throws IOException
     {
         StringBuilder str = new StringBuilder();
         int c = firstChar;
@@ -100,7 +104,7 @@ public class Lexer
         tokenList.add(generateWordToken(str.toString(), lineNum));
     }
 
-    private void processNumber(FileReader fr, int firstChar, int lineNum) throws IOException
+    private void processNumber(FileReader fr, int firstChar) throws IOException
     {
         StringBuilder str = new StringBuilder();
         int c = firstChar;
@@ -113,7 +117,7 @@ public class Lexer
         tokenList.add(generateNumToken(str.toString(), lineNum));
     }
 
-    private void processSymbol(FileReader fr, int firstChar, int lineNum) throws IOException
+    private void processSymbol(FileReader fr, int firstChar) throws IOException
     {
         /* if a comment */
         if (firstChar == '/')
@@ -167,7 +171,7 @@ public class Lexer
         tokenList.add(generateSymbolToken(str.toString(), lineNum));
     }
 
-    private void processStr(FileReader fr, int firstChar, int lineNum) throws IOException
+    private void processStr(FileReader fr, int firstChar) throws IOException
     {
         StringBuilder str = new StringBuilder();
         str.append((char) firstChar);

@@ -1,6 +1,8 @@
 package frontend.parser.node;
 
 import backend.errorhandler.CompilerError;
+import backend.errorhandler.ErrorHandler;
+import backend.errorhandler.ErrorType;
 import frontend.parser.symbol.FUNCSymbol;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
@@ -62,7 +64,13 @@ public class MainFuncDefNode extends Node
     {
         FUNCSymbol funcSymbol = new FUNCSymbol("main", ExpType.INT, null);
         st.addSymbol(funcSymbol);
+        ParserUtils.funcSymbolStack.push(funcSymbol);
         this.blockNode.parseSymbol(st);
+        ParserUtils.funcSymbolStack.pop();
+        if (funcSymbol.ReturnStmtNodeList.isEmpty())
+        {
+            ErrorHandler.addError(new CompilerError(ErrorType.g, "main函数缺少return语句", this.blockNode.RBRACEToken.getLineNumber()));
+        }
     }
 
 }

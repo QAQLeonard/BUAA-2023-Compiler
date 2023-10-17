@@ -4,13 +4,11 @@ import backend.errorhandler.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import backend.errorhandler.ErrorType;
 import frontend.parser.symbol.FUNCSymbol;
-import frontend.parser.symbol.Symbol;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
-import frontend.parser.symbol.SymbolType;
 import utils.FileOperate;
 
 import java.io.File;
@@ -268,9 +266,6 @@ public class StmtNode extends Node
             this.SEMICNTokenList.add(Parser.getToken(TokenType.SEMICN));
             this.stmtType = StmtType.ASSIGNMENT;
         }
-        return;
-
-
     }
 
     @Override
@@ -285,7 +280,7 @@ public class StmtNode extends Node
         }
         else if (this.stmtType == StmtType.EXPRESSION)
         {
-            if (this.expNodeList.size() != 0)
+            if (!this.expNodeList.isEmpty())
             {
                 this.expNodeList.get(0).outputNode(destFile);
             }
@@ -305,7 +300,7 @@ public class StmtNode extends Node
             this.stmtNodeList.get(0).outputNode(destFile);
             if (this.ELSETKToken != null)
             {
-                FileOperate.outputFileUsingUsingBuffer(destFile, this.ELSETKToken.toString() + "\n", true);
+                FileOperate.outputFileUsingUsingBuffer(destFile, this.ELSETKToken + "\n", true);
                 this.stmtNodeList.get(1).outputNode(destFile);
             }
         }
@@ -343,7 +338,7 @@ public class StmtNode extends Node
         else if (this.stmtType == StmtType.RETURN)
         {
             FileOperate.outputFileUsingUsingBuffer(destFile, this.RETURNTKToken.toString() + "\n", true);
-            if (this.expNodeList.size() != 0)
+            if (!this.expNodeList.isEmpty())
             {
                 this.expNodeList.get(0).outputNode(destFile);
             }
@@ -390,6 +385,7 @@ public class StmtNode extends Node
                 }
                 if (this.lValNode.getExpType() != this.expNodeList.get(0).getExpType())
                 {
+                    // System.out.println(this.lValNode.getExpType() + "---" + this.expNodeList.get(0).getExpType());
                     ErrorHandler.addError(new CompilerError(ErrorType.UNDEFINED, "Type mismatch", this.lValNode.IDENFRToken.getLineNumber()));
                 }
                 break;
@@ -426,9 +422,7 @@ public class StmtNode extends Node
                 }
                 this.stmtNodeList.get(0).parseSymbol(st);
                 break;
-            case BREAK:
-                break;
-            case CONTINUE:
+            case BREAK, CONTINUE:
                 break;
             case RETURN:
                 FUNCSymbol symbol = ParserUtils.funcSymbolStack.peek();

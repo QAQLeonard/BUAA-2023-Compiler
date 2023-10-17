@@ -72,24 +72,20 @@ public class ConstDefNode extends Node
     @Override
     public void parseSymbol(SymbolTable st)
     {
+        if (!st.isDefinitionUnique(IDENFRToken.getValue()))
+        {
+            ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + IDENFRToken.getValue(), IDENFRToken.getLineNumber()));
+            return;
+        }
+
         if (LBRACKTokenList.isEmpty())
         {
             INTSymbol intSymbol = new INTSymbol(IDENFRToken.getValue(), true, true);
-            if (!st.isDefinitionUnique(intSymbol))
-            {
-                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + IDENFRToken.getValue(), IDENFRToken.getLineNumber()));
-                return;
-            }
             st.addSymbol(intSymbol);
         }
         else
         {
             ARRAYSymbol arraySymbol = new ARRAYSymbol(IDENFRToken.getValue(), LBRACKTokenList.size(), true, true);
-            if (!st.isDefinitionUnique(arraySymbol))
-            {
-                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + IDENFRToken.getValue(), IDENFRToken.getLineNumber()));
-                return;
-            }
             st.addSymbol(arraySymbol);
             for (ConstExpNode constExpNode : constExpNodeList)
             {

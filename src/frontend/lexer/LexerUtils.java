@@ -121,7 +121,6 @@ public class LexerUtils
         for (int i = 1; i < str.length() - 1; i++)
         {
             char c = str.charAt(i);
-
             // 检查 <FormatChar>
             if (c == '%')
             {
@@ -137,6 +136,7 @@ public class LexerUtils
             {
                 continue;
             }
+
             return false;
         }
         return true;

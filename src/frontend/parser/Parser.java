@@ -14,6 +14,7 @@ import frontend.parser.node.CompUnitNode;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import static utils.FileOperate.CreateFileUsingJava7Files;
 
@@ -28,7 +29,7 @@ public class Parser
         // GenerateNodeClasses();
         compUnitNode = new CompUnitNode();
         compUnitNode.parseNode();
-        // compUnitNode.parseSymbol(RootSymbolTable);
+        compUnitNode.parseSymbol(RootSymbolTable);
     }
 
     public void output() throws IOException
@@ -62,7 +63,7 @@ public class Parser
                 case RBRACK -> errorType = ErrorType.k;
                 default -> errorType = ErrorType.UNEXPECTED_TOKEN;
             }
-            ErrorHandler.addError(new CompilerError(errorType, "Expect " + tokenType + " but get " + token.getType(), token.getLineNumber()));
+            ErrorHandler.addError(new CompilerError(errorType, "Expect " + tokenType + " but get " + token.getType(), Objects.requireNonNull(Parser.peekToken(-1)).getLineNumber()));
             return null;
         }
     }

@@ -71,11 +71,11 @@ public class SymbolTable
         this.children.add(child);
     }
 
-    public boolean isDefinitionUnique(Symbol symbol)
+    public boolean isDefinitionUnique(String symbolName)
     {
         for (Symbol s : this.symbolList)
         {
-            if (s.getName().equals(symbol.getName()))
+            if (s.getName().equals(symbolName))
             {
                 return false;
             }

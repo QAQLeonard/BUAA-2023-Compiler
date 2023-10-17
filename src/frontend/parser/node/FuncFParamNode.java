@@ -80,25 +80,21 @@ public class FuncFParamNode extends Node
     @Override
     public void parseSymbol(SymbolTable st)
     {
+        if (!st.isDefinitionUnique(IDENFRToken.getValue()))
+        {
+            ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFRToken.getValue(), this.IDENFRToken.getLineNumber()));
+            return;
+        }
+
         if(this.LBRACKTokenList.isEmpty())
         {
             INTSymbol intSymbol = new INTSymbol(this.IDENFRToken.getValue(), false, false);
-            if(!st.isDefinitionUnique(intSymbol))
-            {
-                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFRToken.getValue(), this.IDENFRToken.getLineNumber()));
-                return;
-            }
             st.addSymbol(intSymbol);
         }
         else
         {
             //st.addSymbol(new ARRAYSymbol(this.IDENFRToken.getValue(), this.LBRACKTokenList.size(), false, false));
             ARRAYSymbol arraySymbol = new ARRAYSymbol(this.IDENFRToken.getValue(), this.LBRACKTokenList.size(), false, false);
-            if(!st.isDefinitionUnique(arraySymbol))
-            {
-                ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of variable " + this.IDENFRToken.getValue(), this.IDENFRToken.getLineNumber()));
-                return;
-            }
             st.addSymbol(arraySymbol);
         }
     }
