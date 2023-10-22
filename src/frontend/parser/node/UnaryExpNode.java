@@ -92,13 +92,13 @@ public class UnaryExpNode extends Node implements Expression
         }
         else if (this.IDENFRToken != null)
         {
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFRToken.toString() + "\n", true);
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFRToken + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken + "\n", true);
             if (this.funcRParamsNode != null)
             {
                 this.funcRParamsNode.outputNode(destFile);
             }
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken + "\n", true);
         }
         else
         {

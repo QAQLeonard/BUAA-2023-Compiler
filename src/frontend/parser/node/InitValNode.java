@@ -1,6 +1,5 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -72,7 +71,7 @@ public class InitValNode extends Node
         else
         {
             FileOperate.outputFileUsingUsingBuffer(destFile, LBRACEToken.toString() + "\n", true);
-            if (this.initValNodeList.size() > 0)
+            if (!this.initValNodeList.isEmpty())
             {
                 this.initValNodeList.get(0).outputNode(destFile);
                 for (int i = 0; i < COMMATokenList.size(); i++)

@@ -2,8 +2,8 @@ package frontend.parser.symbol;
 
 public class INTSymbol extends Symbol
 {
-    private boolean isConstant;
-    private boolean isInitialized;
+    private final boolean isConstant;
+    private final boolean isInitialized;
 
     public INTSymbol(String name, boolean isConstant, boolean isInitialized)
     {

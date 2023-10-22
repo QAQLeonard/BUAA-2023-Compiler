@@ -5,7 +5,6 @@ import backend.errorhandler.ErrorHandler;
 import backend.errorhandler.ErrorType;
 import frontend.parser.symbol.ARRAYSymbol;
 import frontend.parser.symbol.INTSymbol;
-import frontend.parser.symbol.Symbol;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -62,7 +61,7 @@ public class FuncFParamNode extends Node
     {
         this.bTypeNode.outputNode(destFile);
         FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFRToken.toString() + "\n", true);
-        if (this.LBRACKTokenList.size() > 0)
+        if (!this.LBRACKTokenList.isEmpty())
         {
             FileOperate.outputFileUsingUsingBuffer(destFile, this.LBRACKTokenList.get(0).toString() + "\n", true);
             FileOperate.outputFileUsingUsingBuffer(destFile, this.RBRACKTokenList.get(0).toString() + "\n", true);

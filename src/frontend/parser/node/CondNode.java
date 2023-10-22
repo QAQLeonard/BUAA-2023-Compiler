@@ -1,5 +1,4 @@
 package frontend.parser.node;
-import backend.errorhandler.CompilerError;
 import frontend.parser.ParserUtils;
 import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;

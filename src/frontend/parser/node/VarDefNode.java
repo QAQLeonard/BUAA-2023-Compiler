@@ -5,7 +5,6 @@ import backend.errorhandler.ErrorHandler;
 import backend.errorhandler.ErrorType;
 import frontend.parser.symbol.ARRAYSymbol;
 import frontend.parser.symbol.INTSymbol;
-import frontend.parser.symbol.Symbol;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -18,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static frontend.parser.ParserUtils.outputArrayDimension;
 import static frontend.parser.ParserUtils.parseArrayDimension;
 
 /**
@@ -64,16 +64,11 @@ public class VarDefNode extends Node
     @Override
     public void outputNode(File destFile) throws IOException
     {
-        FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFERToken.toString() + "\n", true);
-        for (int i = 0; i < this.LBRACKTokenList.size(); i++)
-        {
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.LBRACKTokenList.get(i).toString() + "\n", true);
-            this.constExpNodeList.get(i).outputNode(destFile);
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.RBRACKTokenList.get(i).toString() + "\n", true);
-        }
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFERToken + "\n", true);
+        outputArrayDimension(destFile, this.LBRACKTokenList, this.constExpNodeList, this.RBRACKTokenList);
         if (this.ASSIGNToken != null)
         {
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.ASSIGNToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.ASSIGNToken + "\n", true);
             this.initValNode.outputNode(destFile);
         }
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);

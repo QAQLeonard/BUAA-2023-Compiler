@@ -1,6 +1,5 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -48,7 +47,7 @@ public class LOrExpNode extends Node implements Expression
 
         if (this.ORToken != null)
         {
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.ORToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.ORToken + "\n", true);
             this.lOrExpNode.outputNode(destFile);
         }
     }

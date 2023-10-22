@@ -6,6 +6,7 @@ import backend.errorhandler.ErrorType;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class LexerUtils
 {
@@ -72,11 +73,7 @@ public class LexerUtils
     public static Token generateWordToken(String word, int lineNum)
     {
         TokenType tokenType = tokenMap.get(word);
-        if (tokenType == null)
-        {
-            return new Token(TokenType.IDENFR, word, lineNum);
-        }
-        return new Token(tokenType, word, lineNum);
+        return new Token(Objects.requireNonNullElse(tokenType, TokenType.IDENFR), word, lineNum);
     }
 
     public static Token generateNumToken(String number, int lineNum)

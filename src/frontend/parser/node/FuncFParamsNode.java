@@ -1,6 +1,5 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
 import frontend.parser.symbol.SymbolTable;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -31,7 +30,7 @@ public class FuncFParamsNode extends Node {
     public void parseNode()
     {
         FuncFParamNode funcFParamNode = new FuncFParamNode();
-        if(Parser.peekToken(0).getType()!= TokenType.INTTK)
+        if(Objects.requireNonNull(Parser.peekToken(0)).getType()!= TokenType.INTTK)
         {
             return;
         }

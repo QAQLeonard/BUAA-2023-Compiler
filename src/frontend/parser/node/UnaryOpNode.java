@@ -7,7 +7,6 @@ import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
-import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -38,10 +37,7 @@ public class UnaryOpNode extends Node
             case MINU -> this.MINUSToken = Parser.getToken(TokenType.MINU);
             case NOT -> this.NOTToken = Parser.getToken(TokenType.NOT);
             default ->
-            {
-                //throw new CompilerError(ErrorType.UNEXPECTED_TOKEN, "UnaryOpNode: parse failed", token.getLineNumber());
-                ErrorHandler.addError(new CompilerError(ErrorType.UNEXPECTED_TOKEN, "UnaryOpNode: parse failed", token.getLineNumber()));
-            }
+                    ErrorHandler.addError(new CompilerError(ErrorType.UNEXPECTED_TOKEN, "UnaryOpNode: parse failed", token.getLineNumber()));
         }
     }
 

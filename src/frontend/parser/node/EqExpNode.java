@@ -1,6 +1,5 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;

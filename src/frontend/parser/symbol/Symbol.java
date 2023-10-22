@@ -2,8 +2,8 @@ package frontend.parser.symbol;
 
 public abstract class Symbol
 {
-    private String name;
-    private SymbolType type;
+    private final String name;
+    private final SymbolType type;
 
     public Symbol(String name, SymbolType type)
     {

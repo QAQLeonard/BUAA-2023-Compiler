@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static frontend.parser.ParserUtils.outputArrayDimension;
 import static frontend.parser.ParserUtils.parseArrayDimension;
 
 /**
@@ -58,16 +59,13 @@ public class ConstDefNode extends Node
     public void outputNode(File destFile) throws IOException
     {
         FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFRToken.toString() + "\n", true);
-        for (int i = 0; i < this.LBRACKTokenList.size(); i++)
-        {
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.LBRACKTokenList.get(i).toString() + "\n", true);
-            this.constExpNodeList.get(i).outputNode(destFile);
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.RBRACKTokenList.get(i).toString() + "\n", true);
-        }
+        outputArrayDimension(destFile, this.LBRACKTokenList, this.constExpNodeList, this.RBRACKTokenList);
         FileOperate.outputFileUsingUsingBuffer(destFile, this.ASSIGNToken.toString() + "\n", true);
         this.constInitValNode.outputNode(destFile);
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
     }
+
+
 
     @Override
     public void parseSymbol(SymbolTable st)

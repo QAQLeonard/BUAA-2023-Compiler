@@ -1,14 +1,9 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
-import backend.errorhandler.ErrorHandler;
-import backend.errorhandler.ErrorType;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
-import frontend.parser.symbol.FUNCSymbol;
-import frontend.parser.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;

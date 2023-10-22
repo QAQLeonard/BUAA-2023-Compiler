@@ -1,6 +1,5 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -85,7 +84,7 @@ public class RelExpNode extends Node implements Expression
         Token OPToken = this.getOPToken();
         if (OPToken != null)
         {
-            FileOperate.outputFileUsingUsingBuffer(destFile, OPToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, OPToken + "\n", true);
             this.relExpNode.outputNode(destFile);
         }
     }

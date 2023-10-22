@@ -1,6 +1,5 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -49,7 +48,7 @@ public class LAndExpNode extends Node implements Expression
 
         if (this.ANDToken != null)
         {
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.ANDToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.ANDToken + "\n", true);
             this.lAndExpNode.outputNode(destFile);
         }
 

@@ -1,14 +1,12 @@
 package frontend.parser.symbol;
 
-import backend.errorhandler.CompilerError;
-
 import java.util.ArrayList;
 
 public class SymbolTable
 {
-    private ArrayList<Symbol> symbolList;
+    private final ArrayList<Symbol> symbolList;
 
-    private SymbolTable parent;
+    private final SymbolTable parent;
 
     private ArrayList<SymbolTable> children;
 
@@ -44,19 +42,6 @@ public class SymbolTable
         if (parent != null) return parent.getSymbol(name);
         return null;
     }
-
-    public Symbol getSymbol(String name, SymbolType type)
-    {
-        for (Symbol symbol : this.symbolList)
-        {
-            if (symbol.getName().equals(name) && symbol.getType() == type)
-            {
-                return symbol;
-            }
-        }
-        return null;
-    }
-
     public ArrayList<Symbol> getSymbolList()
     {
         return this.symbolList;
@@ -88,13 +73,5 @@ public class SymbolTable
         return this.parent;
     }
 
-    public Symbol getLastSymbol()
-    {
-        if (!this.symbolList.isEmpty())
-        {
-            return this.symbolList.get(this.symbolList.size() - 1);
-        }
-        return null;
-    }
 
 }

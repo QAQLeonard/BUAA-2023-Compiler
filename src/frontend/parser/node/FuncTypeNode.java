@@ -1,6 +1,5 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -38,7 +37,7 @@ public class FuncTypeNode extends Node {
     public void outputNode(File destFile) throws IOException
     {
         if(this.VOIDTKToken != null)
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.VOIDTKToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.VOIDTKToken + "\n", true);
         else
             FileOperate.outputFileUsingUsingBuffer(destFile, this.INTTKToken.toString() + "\n", true);
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);

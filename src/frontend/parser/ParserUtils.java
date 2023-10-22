@@ -1,6 +1,5 @@
 package frontend.parser;
 
-import backend.errorhandler.CompilerError;
 import frontend.lexer.Lexer;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
@@ -11,6 +10,10 @@ import frontend.parser.symbol.ARRAYSymbol;
 import frontend.parser.symbol.FUNCSymbol;
 import frontend.parser.symbol.Symbol;
 import frontend.parser.symbol.SymbolType;
+import utils.FileOperate;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
 
 import java.util.*;
@@ -85,7 +88,15 @@ public class ParserUtils
         constExpNodeList.add(constExpNode);
         RBRACKTokenList.add(Parser.getToken(TokenType.RBRACK));
     }
-
+    public static void outputArrayDimension(File destFile, ArrayList<Token> lbrackTokenList, ArrayList<ConstExpNode> constExpNodeList, ArrayList<Token> rbrackTokenList) throws IOException
+    {
+        for (int i = 0; i < lbrackTokenList.size(); i++)
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, lbrackTokenList.get(i).toString() + "\n", true);
+            constExpNodeList.get(i).outputNode(destFile);
+            FileOperate.outputFileUsingUsingBuffer(destFile, rbrackTokenList.get(i).toString() + "\n", true);
+        }
+    }
     public static boolean TypeEqual(ExpType expType, Symbol parameter)
     {
         if (expType == ExpType.INT && parameter.getType() == SymbolType.INT)
@@ -98,11 +109,7 @@ public class ParserUtils
             {
                 return true;
             }
-            else if (expType == ExpType.ARRAY2D && ((ARRAYSymbol) parameter).getDim() == 2)
-            {
-                return true;
-            }
-            return false;
+            else return expType == ExpType.ARRAY2D && ((ARRAYSymbol) parameter).getDim() == 2;
         }
         return false;
     }

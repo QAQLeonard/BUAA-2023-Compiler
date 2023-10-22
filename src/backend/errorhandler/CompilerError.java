@@ -2,9 +2,9 @@ package backend.errorhandler;
 
 public class CompilerError implements Comparable<CompilerError>
 {
-    private ErrorType type;
-    private String message;
-    private int line;
+    private final ErrorType type;
+    private final String message;
+    private final int line;
 
     public CompilerError()
     {
@@ -24,12 +24,6 @@ public class CompilerError implements Comparable<CompilerError>
     {
         return this.line + " " + this.type;
     }
-
-//    @Override
-//    public void printStackTrace()
-//    {
-//        System.out.println("Error: " + this.type + " " + this.message + " at line " + this.line);
-//    }
 
     @Override
     public int compareTo(CompilerError other)

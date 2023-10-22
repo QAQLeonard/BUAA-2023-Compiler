@@ -1,6 +1,5 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -88,7 +87,7 @@ public class MulExpNode extends Node implements Expression
         Token OPtoken = this.getOPToken();
         if (OPtoken != null)
         {
-            FileOperate.outputFileUsingUsingBuffer(destFile, OPtoken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, OPtoken + "\n", true);
             this.mulExpNode.outputNode(destFile);
         }
 

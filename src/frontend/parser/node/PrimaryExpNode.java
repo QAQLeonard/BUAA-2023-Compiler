@@ -1,6 +1,5 @@
 package frontend.parser.node;
 
-import backend.errorhandler.CompilerError;
 import frontend.lexer.Token;
 import frontend.lexer.TokenType;
 import frontend.parser.Parser;
@@ -62,7 +61,7 @@ public class PrimaryExpNode extends Node implements Expression
     {
         if (this.LPARENTToken != null)
         {
-            FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken + "\n", true);
             this.expNode.outputNode(destFile);
             FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
         }
