@@ -26,7 +26,8 @@ int main({
     {
         func(a,a;
     }
-    printf("%d111%d%d",b,b,b;
+    printf("%d111%d%d",b,b,b);
+    printf("\n");
 
     return 0;
 }

@@ -128,8 +128,19 @@ public class LexerUtils
                 }
                 return false;
             }
+
+            if(c=='\\')
+            {
+                if(i+1<str.length()-1&&str.charAt(i+1)=='n')
+                {
+                    i++;
+                    continue;
+                }
+                return false;
+            }
+            
             // 检查 <NormalChar>
-            else if ((c >= 40 && c <= 126) || c == 32 || c == 33 || c == '\n')
+            else if (((c >= 40 && c <= 126) || c == 32 || c == 33 || c == '\n'))
             {
                 continue;
             }
