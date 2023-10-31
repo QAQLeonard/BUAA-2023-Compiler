@@ -2,14 +2,14 @@ package frontend.parser;
 
 // import static frontend.parser.ParserUtils.GenerateNodeClasses;
 
-import backend.errorhandler.CompilerError;
+import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
-import backend.errorhandler.ErrorType;
-import frontend.parser.symbol.SymbolTable;
+import error.ErrorType;
+import symbol.SymbolTable;
 import frontend.lexer.Lexer;
-import frontend.lexer.Token;
-import frontend.lexer.TokenType;
-import frontend.parser.node.CompUnitNode;
+import token.Token;
+import token.TokenType;
+import node.CompUnitNode;
 
 
 import java.io.File;
@@ -27,7 +27,7 @@ public class Parser
     public void run()
     {
         // GenerateNodeClasses();
-        compUnitNode = new CompUnitNode();
+        compUnitNode = CompUnitNode.getInstance();
         compUnitNode.parseNode();
         compUnitNode.parseSymbol(RootSymbolTable);
     }

@@ -1,5 +1,8 @@
 package backend.errorhandler;
 
+import error.CompilerError;
+import error.ErrorType;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

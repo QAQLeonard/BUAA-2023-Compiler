@@ -1,15 +1,15 @@
 package frontend.parser;
 
 import frontend.lexer.Lexer;
-import frontend.lexer.Token;
-import frontend.lexer.TokenType;
-import frontend.parser.node.ConstExpNode;
-import frontend.parser.node.ExpType;
-import frontend.parser.node.NodeType;
-import frontend.parser.symbol.ARRAYSymbol;
-import frontend.parser.symbol.FUNCSymbol;
-import frontend.parser.symbol.Symbol;
-import frontend.parser.symbol.SymbolType;
+import token.Token;
+import token.TokenType;
+import node.ConstExpNode;
+import node.ExpType;
+import node.NodeType;
+import symbol.ARRAYSymbol;
+import symbol.FUNCSymbol;
+import symbol.Symbol;
+import symbol.SymbolType;
 import utils.FileOperate;
 
 import java.io.File;
