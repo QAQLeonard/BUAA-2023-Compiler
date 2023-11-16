@@ -50,4 +50,12 @@ public class FuncTypeNode extends Node {
         else
             return ExpType.INT;
     }
+
+    public Token getTypeToken()
+    {
+        if(this.VOIDTKToken != null)
+            return this.VOIDTKToken;
+        else
+            return this.INTTKToken;
+    }
 }

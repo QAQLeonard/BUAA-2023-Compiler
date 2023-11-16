@@ -1,5 +1,6 @@
 package node;
 
+import ir.type.IntegerType;
 import symbol.SymbolTable;
 import token.Token;
 import token.TokenType;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import static ir.LLVMGenerator.*;
 
 /**
  * 变量声明 VarDecl → BType VarDef { ',' VarDef } ';'
@@ -71,6 +73,17 @@ public class VarDeclNode extends Node
         for (VarDefNode varDefNode : varDefNodeList)
         {
             varDefNode.parseSymbol(st);
+        }
+    }
+
+    @Override
+    public void parseIR()
+    {
+        // VarDecl -> BType VarDef { ',' VarDef } ';'
+        tmpType = IntegerType.i32;
+        for (VarDefNode varDefNode : varDefNodeList)
+        {
+            varDefNode.parseIR();
         }
     }
 }

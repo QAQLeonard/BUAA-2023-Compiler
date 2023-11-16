@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static ir.LLVMGenerator.*;
+
 /**
  * 函数形参表 FuncFParams → FuncFParam { ',' FuncFParam }
  */
@@ -63,6 +65,30 @@ public class FuncFParamsNode extends Node {
         for (FuncFParamNode funcFParamNode : funcFParamNodeList)
         {
             funcFParamNode.parseSymbol(st);
+        }
+    }
+
+    @Override
+    public void parseIR()
+    {
+        // FuncFParams -> FuncFParam { ',' FuncFParam }
+        if (isRegister)
+        {
+            tmpIndex = 0;
+            for (FuncFParamNode funcFParamNode : funcFParamNodeList)
+            {
+                funcFParamNode.parseIR();
+                tmpIndex++;
+            }
+        }
+        else
+        {
+            tmpTypeList = new ArrayList<>();
+            for (FuncFParamNode funcFParamNode : funcFParamNodeList)
+            {
+                funcFParamNode.parseIR();
+                tmpTypeList.add(tmpType);
+            }
         }
     }
 }

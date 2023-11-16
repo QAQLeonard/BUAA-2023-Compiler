@@ -3,6 +3,10 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
+import ir.LLVMGenerator;
+import ir.value.ConstInt;
+import ir.value.Function;
+import ir.value.instructions.Operator;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -12,9 +16,11 @@ import symbol.Symbol;
 import symbol.SymbolTable;
 import symbol.SymbolType;
 import utils.FileOperate;
+import ir.value.BuildFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
 
@@ -209,4 +215,52 @@ public class UnaryExpNode extends Node implements Expression
         }
         return ExpType.ERROR;
     }
+
+    @Override
+    public void parseIR()
+    {
+        // UnaryExp -> PrimaryExp | Ident '(' [FuncRParams] ')' | UnaryOp UnaryExp
+        if (primaryExpNode != null)
+        {
+            primaryExpNode.parseIR();
+        }
+        else if (this.IDENFRToken != null)
+        {
+            // Ident '(' [FuncRParams] ')'
+            LLVMGenerator.tmpList = new ArrayList<>();
+            if (funcRParamsNode != null)
+            {
+                funcRParamsNode.parseIR();
+            }
+
+            LLVMGenerator.tmpValue = BuildFactory.buildCall(LLVMGenerator.blockStack.peek(), (Function) LLVMGenerator.getValue(IDENFRToken.getValue()), LLVMGenerator.tmpList);
+        }
+        else
+        {
+            // UnaryOp UnaryExp
+            // UnaryOp 直接在这里处理即可
+            if (unaryOpNode.getOPToken().getType() == TokenType.PLUS)
+            {
+                unaryExpNode.parseIR();
+            }
+            else if (unaryOpNode.getOPToken().getType() == TokenType.MINU)
+            {
+                unaryExpNode.parseIR();
+                if (LLVMGenerator.isConst)
+                {
+                    LLVMGenerator.saveValue = -LLVMGenerator.saveValue;
+                }
+                else
+                {
+                    LLVMGenerator.tmpValue = BuildFactory.buildBinary(LLVMGenerator.blockStack.peek(), Operator.Sub, ConstInt.ZERO, LLVMGenerator.tmpValue);
+                }
+            }
+            else
+            {
+                unaryExpNode.parseIR();
+                LLVMGenerator.tmpValue = BuildFactory.buildNot(LLVMGenerator.blockStack.peek(), LLVMGenerator.tmpValue);
+            }
+        }
+    }
+
 }

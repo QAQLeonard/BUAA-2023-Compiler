@@ -1,5 +1,7 @@
 package node;
 
+import ir.value.BasicBlock;
+import ir.value.BuildFactory;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -9,6 +11,8 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
+
+import static ir.LLVMGenerator.*;
 
 /**
  * 逻辑与表达式 LAndExp → EqExp | EqExp '&&' LAndExp
@@ -96,4 +100,31 @@ public class LAndExpNode extends Node implements Expression
             }
         }
     }
+
+    @Override
+    public void parseIR()
+    {
+        // LAndExp -> EqExp | EqExp '&&' LAndExp
+        BasicBlock trueBlock = curTrueBlock;
+        BasicBlock falseBlock = curFalseBlock;
+        BasicBlock tmpTrueBlock = curTrueBlock;
+        BasicBlock thenBlock = null;
+        if (lAndExpNode != null)
+        {
+            thenBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+            tmpTrueBlock = thenBlock;
+        }
+        curTrueBlock = tmpTrueBlock;
+        tmpValue = null;
+        eqExpNode.parseIR();
+        BuildFactory.buildBr(blockStack.peek(), tmpValue, curTrueBlock, curFalseBlock);
+        curTrueBlock = trueBlock;
+        curFalseBlock = falseBlock;
+        if (lAndExpNode != null)
+        {
+            blockStack.push(thenBlock);
+            lAndExpNode.parseIR();
+        }
+    }
+
 }

@@ -1,6 +1,9 @@
 import backend.errorhandler.ErrorHandler;
 import frontend.lexer.Lexer;
 import frontend.parser.Parser;
+import ir.LLVMGenerator;
+
+import java.io.IOException;
 
 
 public class Compiler
@@ -16,9 +19,11 @@ public class Compiler
             Parser parser = new Parser();
             parser.run();
             // parser.output();
-            errorHandler.output();
+            // errorHandler.output();
+            LLVMGenerator.run();
+            LLVMGenerator.output();
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             System.out.println(e.getMessage());
         }

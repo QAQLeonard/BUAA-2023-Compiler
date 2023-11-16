@@ -1,33 +1,16 @@
-int a[10;
-int b;
-int func(int a, int b){
-    return a+b;
-}
-void fun1()
-{
-    return;
-    break;
-}
-
-int main({
-    int a=2;
-    e;
-    f;
-    for(;;)
-    {
-        a;
-    }
-
-    {
-        break;
-    }
-
-    if(a==2
-    {
-        func(a,a;
-    }
-    printf("%d111%d%d",b,b,b);
-    printf("\n");
-
-    return 0;
+const int a=1;
+const int b=2+a;
+int c=3*(b+ -+-+-+-+-+-10);
+int main(){
+  int d=4+c;
+  int e=5*d;
+  {
+    int d=a+5;
+    int c=c*2;
+    d=b;
+    int f=20;
+    e=e+a*20;
+  }
+  int f=10;
+  return e*f;
 }

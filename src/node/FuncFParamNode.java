@@ -3,6 +3,9 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
+import ir.type.IntegerType;
+import ir.value.BuildFactory;
+import ir.value.Value;
 import symbol.ARRAYSymbol;
 import symbol.INTSymbol;
 import symbol.SymbolTable;
@@ -15,8 +18,10 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import static ir.LLVMGenerator.*;
 /**
  * 函数形参 FuncFParam → BType Ident ['[' ']' { '[' ConstExp ']' }]
  */
@@ -95,6 +100,49 @@ public class FuncFParamNode extends Node
             //st.addSymbol(new ARRAYSymbol(this.IDENFRToken.getValue(), this.LBRACKTokenList.size(), false, false));
             ARRAYSymbol arraySymbol = new ARRAYSymbol(this.IDENFRToken.getValue(), this.LBRACKTokenList.size(), false, false);
             st.addSymbol(arraySymbol);
+        }
+    }
+
+    @Override
+    public void parseIR()
+    {
+        // BType Ident [ '[' ']' { '[' ConstExp ']' }]
+        if (isRegister)
+        {
+            int i = tmpIndex;
+            Value value = BuildFactory.buildVar(blockStack.peek(), funcArgsList.get(i), false, tmpTypeList.get(i));
+            addSymbol(IDENFRToken.getValue(), value);
+        }
+        else
+        {
+            if (LBRACKTokenList.isEmpty())
+            {
+                tmpType = IntegerType.i32;
+            }
+            else
+            {
+                List<Integer> dims = new ArrayList<>();
+                dims.add(-1);
+                if (!constExpNodeList.isEmpty())
+                {
+                    for (ConstExpNode constExpNode : constExpNodeList)
+                    {
+                        isConst = true;
+                        constExpNode.parseIR();
+                        dims.add(saveValue);
+                        isConst = false;
+                    }
+                }
+                tmpType = null;
+                for (int i = dims.size() - 1; i >= 0; i--)
+                {
+                    if (tmpType == null)
+                    {
+                        tmpType = IntegerType.i32;
+                    }
+                    tmpType = BuildFactory.getArrayType(tmpType, dims.get(i));
+                }
+            }
         }
     }
 }

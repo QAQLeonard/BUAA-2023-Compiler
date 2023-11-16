@@ -34,7 +34,7 @@ public abstract class Node
         System.out.println("Node parseSymbol ERROR when parsing " + this.getType());
     }
 
-    public void parseLLVM()
+    public void parseIR()
     {
         System.out.println("Node parseCode ERROR when parsing " + this.getType());
     }

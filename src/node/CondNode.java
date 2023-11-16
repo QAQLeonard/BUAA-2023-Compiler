@@ -35,4 +35,10 @@ public class CondNode extends Node {
     {
         this.lOrExpNode.parseSymbol(parent);
     }
+
+    @Override
+    public void parseIR()
+    {
+        this.lOrExpNode.parseIR();
+    }
 }

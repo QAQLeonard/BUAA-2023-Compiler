@@ -7,7 +7,7 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
-
+import static ir.LLVMGenerator.*;
 /**
  * 常量表达式 ConstExp → AddExp
  */
@@ -52,4 +52,15 @@ public class ConstExpNode extends Node implements Expression
     {
         return this.addExpNode.getExpType();
     }
+
+    @Override
+    public void parseIR()
+    {
+        // ConstExp -> AddExp
+        isConst = true;
+        saveValue = null;
+        addExpNode.parseIR();
+        isConst = false;
+    }
+
 }

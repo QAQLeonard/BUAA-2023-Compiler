@@ -1,5 +1,10 @@
 package node;
 
+import ir.type.ArrayType;
+import ir.type.PointerType;
+import ir.value.BuildFactory;
+import ir.value.ConstInt;
+import ir.value.Value;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -10,8 +15,9 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
+import static ir.LLVMGenerator.*;
 /**
  * 常量初值 ConstInitVal → ConstExp<br>
  * | '{' [ ConstInitVal { ',' ConstInitVal } ] '}'
@@ -96,6 +102,61 @@ public class ConstInitValNode extends Node
             for (ConstInitValNode constInitValNode : this.constInitValNodeList)
             {
                 constInitValNode.parseSymbol(st);
+            }
+        }
+    }
+
+    @Override
+    public void parseIR()
+    {
+        // ConstInitVal -> ConstExp | '{' [ ConstInitVal { ',' ConstInitVal } ] '}'
+        if (constExpNode != null && !isArray)
+        {
+            // is not an array
+            constExpNode.parseIR();
+        }
+        else
+        {
+            // '{' [ ConstInitVal { ',' ConstInitVal } ] '}'
+            if (constExpNode != null)
+            {
+                tmpValue = null;
+                constExpNode.parseIR();
+                tmpDepth = 1;
+                tmpValue = BuildFactory.getConstInt(saveValue);
+                if (isGlobal)
+                {
+                    BuildFactory.buildInitArray(curArray, tmpOffset, tmpValue);
+                }
+                else
+                {
+                    BuildFactory.buildStore(blockStack.peek(), BuildFactory.buildGEP(blockStack.peek(), curArray, tmpOffset), tmpValue);
+                }
+                StringBuilder name = new StringBuilder(tmpName);
+                List<Value> args = ((ArrayType) ((PointerType) curArray.getType()).getTargetType()).offset2Index(tmpOffset);
+                for (Value v : args)
+                {
+                    name.append(((ConstInt) v).getValue()).append(";");
+                }
+                addConst(name.toString(), saveValue);
+                tmpOffset++;
+            }
+            else if (!constInitValNodeList.isEmpty())
+            {
+                int depth = 0, offset = tmpOffset;
+                for (ConstInitValNode constInitValNode1 : constInitValNodeList)
+                {
+                    constInitValNode1.parseIR();
+                    depth = Math.max(depth, tmpDepth);
+                }
+                depth++;
+                int size = 1;
+                for (int i = 1; i < depth; i++)
+                {
+                    size *= tmpDims.get(tmpDims.size() - i);
+                }
+                tmpOffset = Math.max(tmpOffset, offset + size);
+                tmpDepth = depth;
             }
         }
     }

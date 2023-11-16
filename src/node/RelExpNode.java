@@ -1,5 +1,8 @@
 package node;
 
+import ir.value.BuildFactory;
+import ir.value.Value;
+import ir.value.instructions.Operator;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -9,6 +12,9 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
+
+import static ir.LLVMGenerator.*;
+
 /**
  * 关系表达式 RelExp → AddExp | AddExp ('<' | '>' | '<=' | '>=') RelExp
  */
@@ -109,6 +115,41 @@ public class RelExpNode extends Node implements Expression
         if (this.relExpNode != null)
         {
             this.relExpNode.parseSymbol(st);
+        }
+    }
+
+    @Override
+    public void parseIR()
+    {
+        // RelExp -> AddExp | AddExp ('<' | '>' | '<=' | '>=') RelExp
+        Value value = tmpValue;
+        Operator op = tmpOp;
+        tmpValue = null;
+        addExpNode.parseIR();
+        if (value != null)
+        {
+            tmpValue = BuildFactory.buildBinary(blockStack.peek(), op, value, tmpValue);
+        }
+        if (relExpNode != null)
+        {
+            switch (getOPToken().getType())
+            {
+                case LSS:
+                    tmpOp = Operator.Lt;
+                    break;
+                case LEQ:
+                    tmpOp = Operator.Le;
+                    break;
+                case GRE:
+                    tmpOp = Operator.Gt;
+                    break;
+                case GEQ:
+                    tmpOp = Operator.Ge;
+                    break;
+                default:
+                    throw new RuntimeException("Unknown operator");
+            }
+            relExpNode.parseIR();
         }
     }
 }

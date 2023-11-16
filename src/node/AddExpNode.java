@@ -1,5 +1,9 @@
 package node;
 
+import ir.LLVMGenerator;
+import ir.value.Value;
+import ir.value.instructions.Operator;
+import ir.value.BuildFactory;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -9,6 +13,9 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
+
+import static ir.utils.LLVMUtils.calculate;
 
 /**
  * AddExp → MulExp <br>
@@ -123,6 +130,44 @@ public class AddExpNode extends Node implements Expression
             else
             {
                 return ExpType.ERROR;
+            }
+        }
+    }
+
+    @Override
+    public void parseIR()
+    {
+        if (LLVMGenerator.isConst)
+        {
+            Integer value = LLVMGenerator.saveValue;
+            Operator op = LLVMGenerator.saveOp;
+            LLVMGenerator.saveValue = null;
+            this.mulExpNode.parseIR();
+            if (value != null)
+            {
+                LLVMGenerator.saveValue = calculate(op, value, LLVMGenerator.saveValue);
+            }
+            if (this.addExpNode != null)
+            {
+                LLVMGenerator.saveOp = getOPToken().getType() == TokenType.PLUS ? Operator.Add : Operator.Sub;
+                addExpNode.parseIR();
+            }
+        }
+        else
+        {
+            Value value = LLVMGenerator.tmpValue;
+            Operator op = LLVMGenerator.tmpOp;
+
+            LLVMGenerator.tmpValue = null;
+            this.mulExpNode.parseIR();
+            if (value != null)
+            {
+                LLVMGenerator.tmpValue = BuildFactory.buildBinary(LLVMGenerator.blockStack.peek(), op, value, LLVMGenerator.tmpValue);
+            }
+            if (addExpNode != null)
+            {
+                LLVMGenerator.tmpOp = getOPToken().getType() == TokenType.PLUS ? Operator.Add : Operator.Sub;
+                this.addExpNode.parseIR();
             }
         }
     }

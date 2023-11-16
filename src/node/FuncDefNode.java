@@ -1,8 +1,13 @@
 package node;
 
+import ir.value.BuildFactory;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
+import ir.type.IntegerType;
+import ir.type.Type;
+import ir.type.VoidType;
+import ir.value.Function;
 import symbol.FUNCSymbol;
 import symbol.Symbol;
 import symbol.SymbolTable;
@@ -18,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static frontend.parser.ParserUtils.funcSymbolStack;
+import static ir.LLVMGenerator.*;
 
 /**
  * 函数定义 FuncDef → FuncType Ident '(' [FuncFParams] ')' Block
@@ -100,10 +106,37 @@ public class FuncDefNode extends Node {
             // System.out.println(this.blockNode.RBRACEToken.getValue()+"111"+this.blockNode.RBRACEToken.getLineNumber());
             ErrorHandler.addError(new CompilerError(ErrorType.g, "Function " + this.IDENFRToken.getValue() + " has no return statement", this.blockNode.RBRACEToken.getLineNumber()));
         }
-
-
-
     }
 
+    @Override
+    public void parseIR()
+    {
+        // FuncDef -> FuncType Ident '(' [FuncFParams] ')' Block
+        isGlobal = false;
+        String funcName = IDENFRToken.getValue();
+        Type type = funcTypeNode.INTTKToken == null ? IntegerType.i32 : VoidType.voidType;
+        tmpTypeList = new ArrayList<>();
+        if (funcFParamsNode != null)
+        {
+            funcFParamsNode.parseIR();
+        }
+        Function function = BuildFactory.getFunction(funcName, type, tmpTypeList);
+        functionStack.push(function);
+        addSymbol(funcName, function);
+        addSymbolAndConstTable();
+        addSymbol(funcName, function);
+        blockStack.push(BuildFactory.buildBasicBlock(functionStack.peek()));
+        funcArgsList = BuildFactory.getFunctionArguments(functionStack.peek());
+        isRegister = true;
+        if (funcFParamsNode != null)
+        {
+            funcFParamsNode.parseIR();
+        }
+        isRegister = false;
+        blockNode.parseIR();
+        isGlobal = true;
+        removeSymbolAndConstTable();
+        BuildFactory.checkBlockEnd(blockStack.peek());
+    }
 
 }

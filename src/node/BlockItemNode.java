@@ -63,4 +63,17 @@ public class BlockItemNode extends Node {
             this.stmtNode.parseSymbol(st);
         }
     }
+
+    @Override
+    public void parseIR()
+    {
+        if(this.declNode != null)
+        {
+            this.declNode.parseIR();
+        }
+        else
+        {
+            this.stmtNode.parseIR();
+        }
+    }
 }

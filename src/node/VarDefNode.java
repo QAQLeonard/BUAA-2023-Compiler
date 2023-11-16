@@ -3,6 +3,8 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
+import ir.type.Type;
+import ir.value.BuildFactory;
 import symbol.ARRAYSymbol;
 import symbol.INTSymbol;
 import symbol.SymbolTable;
@@ -15,10 +17,11 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import static frontend.parser.ParserUtils.outputArrayDimension;
-import static frontend.parser.ParserUtils.parseArrayDimension;
+import static frontend.parser.ParserUtils.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 变量定义 VarDef → Ident { '[' ConstExp ']' }<br>
@@ -99,6 +102,90 @@ public class VarDefNode extends Node
                 constExpNode.parseSymbol(st);
             }
 
+        }
+    }
+
+    @Override
+    public void parseIR()
+    {
+        // VarDef -> Ident { '[' ConstExp ']' } [ '=' InitVal ]
+        String name = IDENFERToken.getValue();
+        // is not an array
+        if (constExpNodeList.isEmpty())
+        {
+            if (initValNode != null)
+            {
+                tmpValue = null;
+                if (isGlobal)
+                {
+                    isConst = true;
+                    saveValue = null;
+                }
+                initValNode.parseIR();
+                isConst = false;// initVal must be a const
+            }
+            else
+            {
+                tmpValue = null;
+                if (isGlobal)
+                {
+                    saveValue = null;
+                }
+            }
+            if (isGlobal)
+            {
+                tmpValue = BuildFactory.buildGlobalVar(name, tmpType, false, BuildFactory.getConstInt(saveValue == null ? 0 : saveValue));
+                addSymbol(name, tmpValue);
+            }
+            else
+            {
+                tmpValue = BuildFactory.buildVar(blockStack.peek(), tmpValue, isConst, tmpType);
+                addSymbol(name, tmpValue);
+            }
+        }
+        else    // is an array
+        {
+            isConst = true;
+            List<Integer> dims = new ArrayList<>();
+            for (ConstExpNode constExpNode : constExpNodeList)
+            {
+                constExpNode.parseIR();
+                dims.add(saveValue);
+            }
+            isConst = false;
+            tmpDims = new ArrayList<>(dims);
+            Type type = null;
+            for (int i = dims.size() - 1; i >= 0; i--)
+            {
+                if (type == null)
+                {
+                    type = BuildFactory.getArrayType(tmpType, dims.get(i));
+                }
+                else
+                {
+                    type = BuildFactory.getArrayType(type, dims.get(i));
+                }
+            }
+            if (isGlobal)
+            {
+                tmpValue = BuildFactory.buildGlobalArray(name, type, false);
+            }
+            else
+            {
+                tmpValue = BuildFactory.buildArray(blockStack.peek(), false, type);
+            }
+            addSymbol(name, tmpValue);
+            curArray = tmpValue;
+            if (initValNode != null)
+            {
+                isArray = true;
+                tmpName = name;
+                tmpDepth = 0;
+                tmpOffset = 0;
+                initValNode.parseIR();
+                isArray = false;
+            }
+            isConst = false;
         }
     }
 }

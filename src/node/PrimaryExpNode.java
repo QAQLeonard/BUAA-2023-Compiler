@@ -126,4 +126,21 @@ public class PrimaryExpNode extends Node implements Expression
             return ExpType.INT;
         }
     }
+
+    @Override
+    public void parseIR()
+    {
+        if (this.expNode != null)
+        {
+            this.expNode.parseIR();
+        }
+        else if (this.lValNode != null)
+        {
+            this.lValNode.parseIR();
+        }
+        else
+        {
+            this.numberNode.parseIR();
+        }
+    }
 }

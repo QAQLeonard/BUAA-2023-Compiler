@@ -1,9 +1,12 @@
 package node;
 
-import backend.codegen.CodeGenModule;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
+import ir.LLVMGenerator;
+import ir.type.IntegerType;
+import ir.value.Function;
+import ir.value.BuildFactory;
 import symbol.FUNCSymbol;
 import symbol.SymbolTable;
 import token.Token;
@@ -14,6 +17,7 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * MainFuncDef -> 'int' 'main' '(' ')' Block
@@ -75,13 +79,19 @@ public class MainFuncDefNode extends Node
     }
 
     @Override
-    public void parseLLVM()
+    public void parseIR()
     {
-        CodeGenModule.LLVMIRCode.add("define dso_local i32 @main() {");
-        for(BlockItemNode blockItemNode : this.blockNode.blockItemNodeList)
-        {
-            blockItemNode.parseLLVM();
-        }
-        CodeGenModule.LLVMIRCode.add("}");
+        LLVMGenerator.isGlobal = false;
+        Function function = BuildFactory.getFunction("main", IntegerType.i32, new ArrayList<>());
+        LLVMGenerator.functionStack.push(function);
+        LLVMGenerator.addSymbol("main", function);
+        LLVMGenerator.addSymbolAndConstTable();
+        LLVMGenerator.addSymbol("main", function);
+        LLVMGenerator.blockStack.push(BuildFactory.buildBasicBlock(LLVMGenerator.functionStack.peek()));
+        LLVMGenerator.funcArgsList = BuildFactory.getFunctionArguments(LLVMGenerator.functionStack.peek());
+        this.blockNode.parseIR();
+        LLVMGenerator.isGlobal = true;
+        LLVMGenerator.removeSymbolAndConstTable();
+        BuildFactory.checkBlockEnd(LLVMGenerator.blockStack.peek());
     }
 }

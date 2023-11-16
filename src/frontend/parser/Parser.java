@@ -29,7 +29,7 @@ public class Parser
         // GenerateNodeClasses();
         compUnitNode = CompUnitNode.getInstance();
         compUnitNode.parseNode();
-        compUnitNode.parseSymbol(RootSymbolTable);
+        // compUnitNode.parseSymbol(RootSymbolTable);
     }
 
     public void output() throws IOException

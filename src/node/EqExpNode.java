@@ -1,5 +1,8 @@
 package node;
 
+import ir.value.BuildFactory;
+import ir.value.Value;
+import ir.value.instructions.Operator;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -9,6 +12,8 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
+
+import static ir.LLVMGenerator.*;
 
 /**
  * 相等性表达式 EqExp → RelExp | RelExp ('==' | '!=') EqExp
@@ -109,4 +114,24 @@ public class EqExpNode extends Node implements Expression
             }
         }
     }
+
+    @Override
+    public void parseIR()
+    {
+        // EqExp -> RelExp | RelExp ('==' | '!=') EqExp
+        Value value = tmpValue;
+        Operator op = tmpOp;
+        tmpValue = null;
+        relExpNode.parseIR();
+        if (value != null)
+        {
+            tmpValue = BuildFactory.buildBinary(blockStack.peek(), op, value, tmpValue);
+        }
+        if (eqExpNode != null)
+        {
+            tmpOp = getOPToken().getType() == TokenType.EQL ? Operator.Eq : Operator.Ne;
+            eqExpNode.parseIR();
+        }
+    }
+
 }

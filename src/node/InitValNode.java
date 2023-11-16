@@ -1,5 +1,6 @@
 package node;
 
+import ir.value.BuildFactory;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -11,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static ir.LLVMGenerator.*;
 
 /**
  * InitVal → Exp <br>
@@ -94,6 +97,60 @@ public class InitValNode extends Node
             for (InitValNode initValNode : this.initValNodeList)
             {
                 initValNode.parseSymbol(st);
+            }
+        }
+    }
+    // InitVal -> Exp | '{' [ InitVal { ',' InitVal } ] '}'
+    @Override
+    public void parseIR()
+    {
+
+        if (expNode != null && !isArray)
+        {
+            // Exp
+            expNode.parseIR();
+        }
+        else
+        {
+            // '{' [ InitVal { ',' InitVal } ] '}' | ArrayEXP
+            if (expNode != null)//ArrayEXP
+            {
+                if (isGlobal)
+                {
+                    isConst = true;
+                }
+                saveValue = null;
+                tmpValue = null;
+                expNode.parseIR();
+                isConst = false;
+                tmpDepth = 1;
+                if (isGlobal)
+                {
+                    tmpValue = BuildFactory.getConstInt(saveValue);
+                    BuildFactory.buildInitArray(curArray, tmpOffset, tmpValue);
+                }
+                else
+                {
+                    BuildFactory.buildStore(blockStack.peek(), BuildFactory.buildGEP(blockStack.peek(), curArray, tmpOffset), tmpValue);
+                }
+                tmpOffset++;
+            }
+            else if (!initValNodeList.isEmpty())
+            {
+                int depth = 0, offset = tmpOffset;
+                for (InitValNode initValNode1 : initValNodeList)
+                {
+                    initValNode1.parseIR();
+                    depth = Math.max(depth, tmpDepth);
+                }
+                depth++;
+                int size = 1;
+                for (int i = 1; i < depth; i++)
+                {
+                    size *= tmpDims.get(tmpDims.size() - i);
+                }
+                tmpOffset = Math.max(tmpOffset, offset + size);
+                tmpDepth = depth;
             }
         }
     }

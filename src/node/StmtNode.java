@@ -3,6 +3,10 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
+import ir.LLVMGenerator;
+import ir.type.PointerType;
+import ir.type.Type;
+import ir.value.*;
 import symbol.FUNCSymbol;
 import symbol.SymbolTable;
 import token.Token;
@@ -14,7 +18,10 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import static ir.LLVMGenerator.*;
 
 /**
  * 语句 Stmt → LVal '=' Exp ';'
@@ -459,6 +466,237 @@ public class StmtNode extends Node
                     ErrorHandler.addError(new CompilerError(ErrorType.l, "Number of parameters does not match", this.STRCONToken.getLineNumber()));
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void parseIR()
+    {
+        switch (this.stmtType)
+        {
+            case ASSIGNMENT:
+                if (lValNode.expNodeList.isEmpty())
+                {
+                    // is not an array
+                    Value input = getValue(lValNode.IDENFRToken.getValue());
+                    expNodeList.get(0).parseIR();
+                    tmpValue = BuildFactory.buildStore(blockStack.peek(), input, tmpValue);
+                }
+                else
+                {
+                    // is an array
+                    List<Value> indexList = new ArrayList<>();
+                    for (ExpNode expNode : lValNode.expNodeList)
+                    {
+                        expNode.parseIR();
+                        indexList.add(tmpValue);
+                    }
+                    tmpValue = getValue(lValNode.IDENFRToken.getValue());
+                    Value addr;
+                    Type type = tmpValue.getType(), targetType = ((PointerType) type).getTargetType();
+                    if (targetType instanceof PointerType)
+                    {
+                        // arr[][3]
+                        tmpValue = BuildFactory.buildLoad(blockStack.peek(), tmpValue);
+                    }
+                    else
+                    {
+                        // arr[3][2]
+                        indexList.add(0, ConstInt.ZERO);
+                    }
+                    addr = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
+                    expNodeList.get(0).parseIR();
+                    tmpValue = BuildFactory.buildStore(blockStack.peek(), addr, tmpValue);
+                }
+                break;
+            case EXPRESSION:
+                if (!expNodeList.isEmpty()) expNodeList.get(0).parseIR();
+                break;
+            case BLOCK:
+                addSymbolAndConstTable();
+                blockNode.parseIR();
+                removeSymbolAndConstTable();
+                break;
+            case IF:
+                if (ELSETKToken == null)
+                {
+                    // basicBlock;
+                    // if (...) {
+                    //    trueBlock;
+                    // }
+                    // finalBlock;
+                    BasicBlock basicBlock = blockStack.peek();
+
+                    BasicBlock trueBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                    blockStack.push(trueBlock);
+                    stmtNodeList.get(0).parseIR();
+                    BasicBlock finalBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                    BuildFactory.buildBr(blockStack.peek(), finalBlock);
+
+                    curTrueBlock = trueBlock;
+                    curFalseBlock = finalBlock;
+                    blockStack.pop();
+                    blockStack.push(basicBlock);
+                    condNode.parseIR();
+
+                    blockStack.push(finalBlock);
+                }
+                else
+                {
+                    // basicBlock;
+                    // if (...) {
+                    //    trueBlock;
+                    //    ...
+                    //    trueEndBlock;
+                    // } else {
+                    //    falseBlock;
+                    //    ...
+                    //    falseEndBlock;
+                    // }
+                    // finalBlock;
+                    BasicBlock basicBlock = blockStack.peek();
+
+                    BasicBlock trueBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                    blockStack.push(trueBlock);
+                    stmtNodeList.get(0).parseIR();
+                    BasicBlock trueEndBlock = blockStack.pop();
+
+                    BasicBlock falseBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                    blockStack.push(falseBlock);
+                    stmtNodeList.get(1).parseIR();
+                    BasicBlock falseEndBlock = blockStack.pop();
+
+                    blockStack.push(basicBlock);
+                    curTrueBlock = trueBlock;
+                    curFalseBlock = falseBlock;
+                    condNode.parseIR();
+
+                    BasicBlock finalBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                    BuildFactory.buildBr(trueEndBlock, finalBlock);
+                    BuildFactory.buildBr(falseEndBlock, finalBlock);
+                    blockStack.push(finalBlock);
+                }
+                break;
+            case FOR:
+                // basicBlock;
+                // for (initBlock; condBlock; iterBlock) {
+                //    forBlock;
+                // }
+                // forFinalBlock;
+                if (forStmtNode1 != null)
+                {
+                    forStmtNode1.parseIR();
+                }
+                BasicBlock basicBlock = blockStack.peek();
+                BasicBlock tmpContinueBlock = continueBlock;
+                BasicBlock tmpForFinalBlock = curForFinalBlock;
+
+                BasicBlock judgeBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                BuildFactory.buildBr(basicBlock, judgeBlock);
+
+                BasicBlock forBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                blockStack.push(forBlock);
+                continueBlock = judgeBlock;
+
+                BasicBlock forFinalBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                curForFinalBlock = forFinalBlock;
+
+                stmtNodeList.get(0).parseIR();
+                if (forStmtNode2 != null)
+                {
+                    forStmtNode2.parseIR();
+                }
+
+                BuildFactory.buildBr(blockStack.peek(), judgeBlock);
+
+                continueBlock = tmpContinueBlock;
+                curForFinalBlock = tmpForFinalBlock;
+
+                curTrueBlock = forBlock;
+                curFalseBlock = forFinalBlock;
+                blockStack.push(judgeBlock);
+                condNode.parseIR();
+
+                blockStack.push(forFinalBlock);
+                break;
+            case BREAK:
+                BuildFactory.buildBr(blockStack.peek(), curForFinalBlock);
+                break;
+            case CONTINUE:
+                BuildFactory.buildBr(blockStack.peek(), continueBlock);
+                break;
+            case RETURN:
+                if (!this.expNodeList.isEmpty())
+                {
+                    this.expNodeList.get(0).parseIR();
+                    BuildFactory.buildRet(LLVMGenerator.blockStack.peek(), LLVMGenerator.tmpValue);
+                    return;
+                }
+                BuildFactory.buildRet(LLVMGenerator.blockStack.peek(), null);
+
+                break;
+            case GETINT:
+                if (lValNode.expNodeList.isEmpty())
+                {
+                    Value input = getValue(lValNode.IDENFRToken.getValue());
+                    tmpValue = BuildFactory.buildCall(blockStack.peek(), (Function) getValue("getint"), new ArrayList<>());
+                    BuildFactory.buildStore(blockStack.peek(), input, tmpValue);
+                }
+                else
+                {
+                    List<Value> indexList = new ArrayList<>();
+                    for (ExpNode expNode : lValNode.expNodeList)
+                    {
+                        expNode.parseIR();
+                        indexList.add(tmpValue);
+                    }
+                    tmpValue = getValue(lValNode.IDENFRToken.getValue());
+                    Value addr;
+                    Type type = tmpValue.getType(), targetType = ((PointerType) type).getTargetType();
+                    if (targetType instanceof PointerType)
+                    {
+                        // arr[][3]
+                        tmpValue = BuildFactory.buildLoad(blockStack.peek(), tmpValue);
+                    }
+                    else
+                    {
+                        // arr[3][2]
+                        indexList.add(0, ConstInt.ZERO);
+                    }
+                    addr = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
+                    Value input = BuildFactory.buildCall(blockStack.peek(), (Function) getValue("getint"), new ArrayList<>());
+                    tmpValue = BuildFactory.buildStore(blockStack.peek(), addr, input);
+                }
+                break;
+            case PRINTF:
+                String formatStrings = STRCONToken.getValue().replace("\\n", "\n").replace("\"", "");
+                List<Value> args = new ArrayList<>();
+                for (ExpNode expNode : expNodeList)
+                {
+                    expNode.parseIR();
+                    args.add(tmpValue);
+                }
+                for (int i = 0; i < formatStrings.length(); i++)
+                {
+                    if (formatStrings.charAt(i) == '%')
+                    {
+                        BuildFactory.buildCall(blockStack.peek(), (Function) getValue("putint"), new ArrayList<Value>()
+                        {{
+                            add(args.remove(0));
+                        }});
+                        i++;
+                    }
+                    else
+                    {
+                        int finalI = i;
+                        BuildFactory.buildCall(blockStack.peek(), (Function) getValue("putch"), new ArrayList<Value>()
+                        {{
+                            add(BuildFactory.getConstInt(formatStrings.charAt(finalI)));
+                        }});
+                    }
+                }
+                break;
+
         }
     }
 }

@@ -65,4 +65,14 @@ public class BlockNode extends Node
             blockItemNode.parseSymbol(childSt);
         }
     }
+
+    @Override
+    public void parseIR()
+    {
+        for (BlockItemNode blockItemNode : this.blockItemNodeList)
+        {
+            blockItemNode.parseIR();
+        }
+    }
+
 }

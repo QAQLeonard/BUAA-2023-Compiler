@@ -1,5 +1,6 @@
 package node;
 
+import ir.LLVMGenerator;
 import token.Token;
 import frontend.parser.ParserUtils;
 import symbol.SymbolTable;
@@ -15,7 +16,7 @@ public class ExpNode extends Node implements Expression
 {
 
     AddExpNode addExpNode;
-
+    String LLVMIRResult;
 
     public ExpNode()
     {
@@ -59,4 +60,12 @@ public class ExpNode extends Node implements Expression
     {
         return this.addExpNode.getExpType();
     }
+    @Override
+    public void parseIR()
+    {
+        LLVMGenerator.tmpValue = null;
+        LLVMGenerator.saveValue = null;
+        this.addExpNode.parseIR();
+    }
+
 }

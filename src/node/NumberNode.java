@@ -1,5 +1,7 @@
 package node;
 
+import ir.LLVMGenerator;
+import ir.value.BuildFactory;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -39,6 +41,19 @@ public class NumberNode extends Node {
     public String toString()
     {
         return this.INTCONToken.getValue();
+    }
+
+    @Override
+    public void parseIR()
+    {
+        if (LLVMGenerator.isConst)
+        {
+            LLVMGenerator.saveValue = Integer.parseInt(INTCONToken.getValue());
+        }
+        else
+        {
+            LLVMGenerator.tmpValue = BuildFactory.getConstInt(Integer.parseInt(INTCONToken.getValue()));
+        }
     }
 
 

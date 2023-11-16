@@ -65,4 +65,17 @@ public class DeclNode extends Node
         }
     }
 
+    @Override
+    public void parseIR()
+    {
+        if(this.constDeclNode != null)
+        {
+            this.constDeclNode.parseIR();
+        }
+        else
+        {
+            this.varDeclNode.parseIR();
+        }
+    }
+
 }

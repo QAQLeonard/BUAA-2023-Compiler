@@ -3,6 +3,13 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
+import ir.LLVMGenerator;
+import ir.type.ArrayType;
+import ir.type.PointerType;
+import ir.type.Type;
+import ir.value.BuildFactory;
+import ir.value.ConstInt;
+import ir.value.Value;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -13,8 +20,10 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import static ir.LLVMGenerator.*;
 /**
  * LVal → Ident {'[' Exp ']'}
  */
@@ -124,6 +133,81 @@ public class LValNode extends Node
     public ExpType getExpType()
     {
         return expType;
+    }
+
+    @Override
+    public void parseIR()
+    {
+        // LVal -> Ident {'[' Exp ']'}
+        if (isConst)
+        {
+            StringBuilder name = new StringBuilder(IDENFRToken.getValue());
+            if (!expNodeList.isEmpty())
+            {
+                name.append("0;");
+                for (ExpNode expNode : expNodeList)
+                {
+                    expNode.parseIR();
+                    name.append(BuildFactory.getConstInt(saveValue == null ? 0 : saveValue).getValue()).append(";");
+                }
+            }
+            saveValue = getConst(name.toString());
+        }
+        else
+        {
+            if (expNodeList.isEmpty())
+            {
+                Value addr = getValue(IDENFRToken.getValue());
+                tmpValue = addr;
+                Type type = addr.getType();
+                if (!(((PointerType) type).getTargetType() instanceof ArrayType))
+                {
+                    tmpValue = BuildFactory.buildLoad(blockStack.peek(), tmpValue);
+                }
+                else
+                {
+                    List<Value> indexList = new ArrayList<>();
+                    indexList.add(ConstInt.ZERO);
+                    indexList.add(ConstInt.ZERO);
+                    tmpValue = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
+                }
+            }
+            else
+            {
+                // is an array, maybe arr[1][2] or arr[][2]
+                List<Value> indexList = new ArrayList<>();
+                for (ExpNode expNode : expNodeList)
+                {
+                    expNode.parseIR();
+                    indexList.add(tmpValue);
+                }
+                tmpValue = getValue(IDENFRToken.getValue());
+                Value addr;
+                Type type = tmpValue.getType(), targetType = ((PointerType) type).getTargetType();
+                if (targetType instanceof PointerType)
+                {
+                    // arr[][3]
+                    tmpValue = BuildFactory.buildLoad(blockStack.peek(), tmpValue);
+                }
+                else
+                {
+                    // arr[1][2]
+                    indexList.add(0, ConstInt.ZERO);
+                }
+                addr = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
+                if (((PointerType) addr.getType()).getTargetType() instanceof ArrayType)
+                {
+                    List<Value> indexList2 = new ArrayList<>();
+                    indexList2.add(ConstInt.ZERO);
+                    indexList2.add(ConstInt.ZERO);
+                    tmpValue = BuildFactory.buildGEP(blockStack.peek(), addr, indexList2);
+                }
+                else
+                {
+                    tmpValue = BuildFactory.buildLoad(blockStack.peek(), addr);
+                }
+            }
+        }
     }
 
 }

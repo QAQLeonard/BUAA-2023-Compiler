@@ -1,5 +1,9 @@
 package node;
 
+import ir.LLVMGenerator;
+import ir.value.BuildFactory;
+import ir.value.Value;
+import ir.value.instructions.Operator;
 import token.Token;
 import token.TokenType;
 import frontend.parser.Parser;
@@ -9,6 +13,8 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
+
+import static ir.utils.LLVMUtils.calculate;
 
 /**
  * 乘除模表达式 MulExp → UnaryExp <br>
@@ -133,6 +139,68 @@ public class MulExpNode extends Node implements Expression
             else
             {
                 return ExpType.ERROR;
+            }
+        }
+    }
+
+    @Override
+    public void parseIR()
+    {
+        // UnaryExp | UnaryExp ('*' | '/' | '%') MulExp
+        if (LLVMGenerator.isConst)
+        {
+            Integer value = LLVMGenerator.saveValue;
+            Operator op = LLVMGenerator.saveOp;
+            LLVMGenerator.saveValue = null;
+            unaryExpNode.parseIR();
+            if (value != null)
+            {
+                LLVMGenerator.saveValue = calculate(op, value, LLVMGenerator.saveValue);
+            }
+            if (mulExpNode != null)
+            {
+                switch (getOPToken().getType())
+                {
+                    case MULT:
+                        LLVMGenerator.saveOp = Operator.Mul;
+                        break;
+                    case DIV:
+                        LLVMGenerator.saveOp = Operator.Div;
+                        break;
+                    case MOD:
+                        LLVMGenerator.saveOp = Operator.Mod;
+                        break;
+                    default:
+                        throw new RuntimeException("unknown operator");
+                }
+                this.mulExpNode.parseIR();
+            }
+        }
+        else
+        {
+            Value value = LLVMGenerator.tmpValue;
+            Operator op = LLVMGenerator.tmpOp;
+            LLVMGenerator.tmpValue = null;
+            unaryExpNode.parseIR();
+            if (value != null)
+            {
+                LLVMGenerator.tmpValue = BuildFactory.buildBinary(LLVMGenerator.blockStack.peek(), op, value, LLVMGenerator.tmpValue);
+            }
+            if (mulExpNode != null)
+            {
+                if (getOPToken().getType() == TokenType.MULT)
+                {
+                    LLVMGenerator.tmpOp = Operator.Mul;
+                }
+                else if (getOPToken().getType() == TokenType.DIV)
+                {
+                    LLVMGenerator.tmpOp = Operator.Div;
+                }
+                else
+                {
+                    LLVMGenerator.tmpOp = Operator.Mod;
+                }
+                mulExpNode.parseIR();
             }
         }
     }
