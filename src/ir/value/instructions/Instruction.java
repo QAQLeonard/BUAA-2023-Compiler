@@ -1,5 +1,6 @@
 package ir.value.instructions;
 
+import ir.IRModule;
 import ir.type.Type;
 import ir.value.BasicBlock;
 import ir.value.User;
@@ -20,7 +21,7 @@ public abstract class Instruction extends User
         this.op = op;
         this.node = new IRListNode<>(this);
         this.handler = HANDLER++;
-        this.getModule().addInstruction(handler, this);
+        IRModule.getInstance().addInstruction(handler, this);
     }
 
     public Operator getOperator()

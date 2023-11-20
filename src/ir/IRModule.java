@@ -11,10 +11,10 @@ import java.util.List;
 
 public class IRModule
 {
-    private static final IRModule module = new IRModule();
-    private List<GlobalVar> globalVars;
-    private IRLinkedList<Function, IRModule> functions;
-    private HashMap<Integer, Instruction> instructions;
+    private static final IRModule instance = new IRModule();
+    List<GlobalVar> globalVars;
+    IRLinkedList<Function, IRModule> functions;
+    HashMap<Integer, Instruction> instructions;
 
     private IRModule()
     {
@@ -25,7 +25,7 @@ public class IRModule
 
     public static IRModule getInstance()
     {
-        return module;
+        return instance;
     }
 
     public void addInstruction(int handle, Instruction instruction)
@@ -55,7 +55,7 @@ public class IRModule
                 {
                     if (basicBlock.getValue().getInstructions().isEmpty())
                     {
-                        BuildFactory.getInstance().checkBlockEnd(basicBlock.getValue());
+                        BuildFactory.checkBlockEnd(basicBlock.getValue());
                     }
                     basicBlock.getValue().setName(String.valueOf(Value.REG_NUMBER++));
                     basicBlock.getValue().refreshReg();

@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Value
 {
-    final IRModule module = IRModule.getInstance();
     String name;
     Type type;
     ArrayList<Use> useList; // def-use
@@ -19,11 +18,6 @@ public class Value
         this.name = name;
         this.type = type;
         this.useList = new ArrayList<>();
-    }
-
-    public IRModule getModule()
-    {
-        return module;
     }
 
     public String getName()
