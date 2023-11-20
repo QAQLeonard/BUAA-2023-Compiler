@@ -27,14 +27,14 @@ public class User extends Value {
         }
         this.operands.set(posOfOperand, operand);
         if (operand != null) {
-            operand.addUse(new Use(operand, this, posOfOperand));
+            operand.useList.add(new Use(operand, this, posOfOperand));
         }
     }
 
     public void addOperand(Value operand) {
         this.operands.add(operand);
         if (operand != null) {
-            operand.addUse(new Use(operand, this, operands.size() - 1));
+            operand.useList.add(new Use(operand, this, operands.size() - 1));
         }
     }
 

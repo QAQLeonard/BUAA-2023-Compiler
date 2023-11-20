@@ -3,15 +3,15 @@ package ir.value;
 import ir.IRModule;
 import ir.type.FunctionType;
 import ir.type.Type;
-import ir.utils.IList;
-import ir.utils.INode;
+import ir.utils.IRLinkedList;
+import ir.utils.IRListNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Function extends Value {
-    private final IList<BasicBlock, Function> list;
-    private final INode<Function, IRModule> node;
+    private final IRLinkedList<BasicBlock, Function> list;
+    private final IRListNode<Function, IRModule> node;
     private final List<Argument> arguments;
     private final List<Function> predecessors;
     private final List<Function> successors;
@@ -20,8 +20,8 @@ public class Function extends Value {
     public Function(String name, Type type, boolean isLibraryFunction) {
         super(name, type);
         REG_NUMBER = 0;
-        this.list = new IList<>(this);
-        this.node = new INode<>(this);
+        this.list = new IRLinkedList<>(this);
+        this.node = new IRListNode<>(this);
         this.arguments = new ArrayList<>();
         this.predecessors = new ArrayList<>();
         this.successors = new ArrayList<>();
@@ -29,14 +29,14 @@ public class Function extends Value {
         for (Type t : ((FunctionType) type).getParametersType()) {
             arguments.add(new Argument(t, ((FunctionType) type).getParametersType().indexOf(t), isLibraryFunction));
         }
-        this.node.insertAtEnd(IRModule.getInstance().getFunctions());
+        this.node.insertAtTail(IRModule.getInstance().getFunctions());
     }
 
-    public IList<BasicBlock, Function> getList() {
+    public IRLinkedList<BasicBlock, Function> getList() {
         return list;
     }
 
-    public INode<Function, IRModule> getNode() {
+    public IRListNode<Function, IRModule> getNode() {
         return node;
     }
 

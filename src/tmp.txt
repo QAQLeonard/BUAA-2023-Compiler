@@ -4,7 +4,6 @@ leonard@leonard-virtual-machine:~/Desktop/Study/2023_Fall/Compiler/Compiler/src$
 │   └── errorhandler
 │       └── ErrorHandler.java
 ├── Compiler.java
-├── Config.java
 ├── error
 │   ├── CompilerError.java
 │   └── ErrorType.java

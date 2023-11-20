@@ -5,12 +5,12 @@ import ir.value.BasicBlock;
 import ir.value.User;
 import ir.value.instructions.terminator.BrInst;
 import ir.value.instructions.terminator.RetInst;
-import ir.utils.INode;
+import ir.utils.IRListNode;
 
 public abstract class Instruction extends User
 {
     private Operator op;
-    private INode<Instruction, BasicBlock> node;
+    private IRListNode<Instruction, BasicBlock> node;
     private int handler;
     private static int HANDLER = 0;
 
@@ -18,7 +18,7 @@ public abstract class Instruction extends User
     {
         super("", type);
         this.op = op;
-        this.node = new INode<>(this);
+        this.node = new IRListNode<>(this);
         this.handler = HANDLER++;
         this.getModule().addInstruction(handler, this);
     }
@@ -33,12 +33,12 @@ public abstract class Instruction extends User
         this.op = op;
     }
 
-    public INode<Instruction, BasicBlock> getNode()
+    public IRListNode<Instruction, BasicBlock> getNode()
     {
         return node;
     }
 
-    public void setNode(INode<Instruction, BasicBlock> node)
+    public void setNode(IRListNode<Instruction, BasicBlock> node)
     {
         this.node = node;
     }
@@ -65,14 +65,14 @@ public abstract class Instruction extends User
 
     public BasicBlock getParent()
     {
-        return this.getNode().getParent().getValue();
+        return this.getNode().getParentList().getContainer();
     }
 
     public void addInstToBlock(BasicBlock basicBlock)
     {
-        if (basicBlock.getInstructions().getEnd() == null || (!(basicBlock.getInstructions().getEnd().getValue() instanceof BrInst) && !(basicBlock.getInstructions().getEnd().getValue() instanceof RetInst)))
+        if (basicBlock.getInstructions().getTail() == null || (!(basicBlock.getInstructions().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructions().getTail().getValue() instanceof RetInst)))
         {
-            this.getNode().insertAtEnd(basicBlock.getInstructions());
+            this.getNode().insertAtTail(basicBlock.getInstructions());
         }
         else
         {
@@ -82,6 +82,6 @@ public abstract class Instruction extends User
 
     public void addInstToBlockBegin(BasicBlock basicBlock)
     {
-        this.getNode().insertAtBegin(basicBlock.getInstructions());
+        this.getNode().insertAtHead(basicBlock.getInstructions());
     }
 }

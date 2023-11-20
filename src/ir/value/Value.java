@@ -6,57 +6,58 @@ import ir.type.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Value {
-    private final IRModule module = IRModule.getInstance();
-    private String name;
-    private Type type;
-    private List<Use> usesList; // 使用了这个 Value 的 User 列表，这对应着 def-use 关系
-    public static int REG_NUMBER = 0; // LLVM 中的寄存器编号
+public class Value
+{
+    final IRModule module = IRModule.getInstance();
+    String name;
+    Type type;
+    ArrayList<Use> useList; // def-use
+    public static int REG_NUMBER = 0;
 
-    public Value(String name, Type type) {
+    public Value(String name, Type type)
+    {
         this.name = name;
         this.type = type;
-        this.usesList = new ArrayList<>();
+        this.useList = new ArrayList<>();
     }
 
-    public IRModule getModule() {
+    public IRModule getModule()
+    {
         return module;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public Type getType() {
+    public Type getType()
+    {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(Type type)
+    {
         this.type = type;
     }
 
-    public List<Use> getUsesList() {
-        return usesList;
-    }
-
-    public void setUsesList(List<Use> usesList) {
-        this.usesList = usesList;
-    }
-
-    public void addUse(Use use) {
-        this.usesList.add(use);
-    }
-
-    public void removeUseByUser(User user) {
-        usesList.removeIf(use -> use.getUser() == user);
+    /**
+     * Remove all use used by the user
+     * @param user
+     */
+    public void removeUseByUser(User user)
+    {
+        useList.removeIf(use -> use.getUser() == user);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return type.toString() + " " + name;
     }
 }

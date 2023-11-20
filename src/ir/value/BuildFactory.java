@@ -50,9 +50,9 @@ public class BuildFactory {
     }
 
     public static void checkBlockEnd(BasicBlock basicBlock) {
-        Type retType = ((FunctionType) basicBlock.getNode().getParent().getValue().getType()).getReturnType();
+        Type retType = ((FunctionType) basicBlock.getNode().getParentList().getContainer().getType()).getReturnType();
         if (!basicBlock.getInstructions().isEmpty()) {
-            Value lastInst = basicBlock.getInstructions().getEnd().getValue();
+            Value lastInst = basicBlock.getInstructions().getTail().getValue();
             if (lastInst instanceof RetInst || lastInst instanceof BrInst) {
                 return;
             }

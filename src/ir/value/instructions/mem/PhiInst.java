@@ -24,7 +24,7 @@ public class PhiInst extends MemInst {
             if (i != 0) {
                 s.append(", ");
             }
-            s.append("[ ").append(getOperands().get(i).getName()).append(", %").append(getNode().getParent().getValue().getPredecessors().get(i).getName()).append(" ]");
+            s.append("[ ").append(getOperands().get(i).getName()).append(", %").append(getNode().getParentList().getContainer().getPredecessors().get(i).getName()).append(" ]");
         }
         return s.toString();
     }

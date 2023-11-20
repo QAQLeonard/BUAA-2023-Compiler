@@ -8,35 +8,38 @@ import ir.value.ConstInt;
 import ir.value.Value;
 import ir.value.instructions.Operator;
 
-public class BrInst extends TerminatorInst {
-    public BrInst(BasicBlock basicBlock, BasicBlock trueBlock) {
+public class BrInst extends TerminatorInst
+{
+    public BrInst(BasicBlock basicBlock, BasicBlock trueBlock)
+    {
         super(VoidType.voidType, Operator.Br, basicBlock);
         this.addOperand(trueBlock);
         // 添加前驱后继
-        if (basicBlock != null) {
-            if (basicBlock.getInstructions().getEnd() == null ||
-                    (!(basicBlock.getInstructions().getEnd().getValue() instanceof BrInst) &&
-                            !(basicBlock.getInstructions().getEnd().getValue() instanceof RetInst))) {
+        if (basicBlock != null)
+        {
+            if (basicBlock.getInstructions().getTail() == null || (!(basicBlock.getInstructions().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructions().getTail().getValue() instanceof RetInst)))
+            {
                 basicBlock.addSuccessor(trueBlock);
                 trueBlock.addSuccessor(basicBlock);
             }
         }
     }
 
-    public BrInst(BasicBlock basicBlock, Value cond, BasicBlock trueBlock, BasicBlock falseBlock) {
+    public BrInst(BasicBlock basicBlock, Value cond, BasicBlock trueBlock, BasicBlock falseBlock)
+    {
         super(VoidType.voidType, Operator.Br, basicBlock);
         // conversion handler
         Value condTmp = cond;
-        if (!(cond.getType() instanceof IntegerType && ((IntegerType) cond.getType()).isI1())) {
-            condTmp = BuildFactory.getInstance().buildBinary(basicBlock, Operator.Ne, cond, new ConstInt(0));
+        if (!(cond.getType() instanceof IntegerType && ((IntegerType) cond.getType()).isI1()))
+        {
+            condTmp = BuildFactory.buildBinary(basicBlock, Operator.Ne, cond, new ConstInt(0));
         }
         this.addOperand(condTmp);
         this.addOperand(trueBlock);
         this.addOperand(falseBlock);
         // 添加前驱后继
-        if (basicBlock.getInstructions().getEnd() == null ||
-                (!(basicBlock.getInstructions().getEnd().getValue() instanceof BrInst) &&
-                        !(basicBlock.getInstructions().getEnd().getValue() instanceof RetInst))) {
+        if (basicBlock.getInstructions().getTail() == null || (!(basicBlock.getInstructions().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructions().getTail().getValue() instanceof RetInst)))
+        {
             basicBlock.addSuccessor(trueBlock);
             basicBlock.addSuccessor(falseBlock);
             trueBlock.addSuccessor(basicBlock);
@@ -45,10 +48,14 @@ public class BrInst extends TerminatorInst {
     }
 
     @Override
-    public String toString() {
-        if (this.getOperands().size() == 1) {
+    public String toString()
+    {
+        if (this.getOperands().size() == 1)
+        {
             return "br label %" + this.getOperands().get(0).getName();
-        } else {
+        }
+        else
+        {
             return "br " + this.getOperands().get(0).getType() + " " + this.getOperands().get(0).getName() + ", label %" + this.getOperands().get(1).getName() + ", label %" + this.getOperands().get(2).getName();
         }
     }

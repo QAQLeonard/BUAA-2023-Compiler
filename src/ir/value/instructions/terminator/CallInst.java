@@ -27,7 +27,7 @@ public class CallInst extends TerminatorInst {
             this.addOperand(tmp);
         }
 
-        Function curFunction = basicBlock.getNode().getParent().getValue();
+        Function curFunction = basicBlock.getNode().getParentList().getContainer();
         function.addPredecessor(curFunction);
         curFunction.addSuccessor(function);
     }
