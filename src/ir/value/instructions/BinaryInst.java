@@ -6,21 +6,26 @@ import ir.value.BasicBlock;
 import ir.value.BuildFactory;
 import ir.value.Value;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 public class BinaryInst extends Instruction {
 
     public BinaryInst(BasicBlock basicBlock, Operator op, Value left, Value right) {
         super(VoidType.voidType, op, basicBlock);
-        // todo: may optimize div and mod here
         boolean isLeftI1 = left.getType() instanceof IntegerType && ((IntegerType) left.getType()).isI1();
         boolean isRightI1 = right.getType() instanceof IntegerType && ((IntegerType) right.getType()).isI1();
         boolean isLeftI32 = left.getType() instanceof IntegerType && ((IntegerType) left.getType()).isI32();
         boolean isRightI32 = right.getType() instanceof IntegerType && ((IntegerType) right.getType()).isI32();
         if (isLeftI1 && isRightI32) {
-            addOperands(BuildFactory.getInstance().buildZext(left, basicBlock), right);
+            this.addOperand(BuildFactory.buildZext(left, basicBlock));
+            this.addOperand(right);
         } else if (isLeftI32 && isRightI1) {
-            addOperands(left, BuildFactory.getInstance().buildZext(right, basicBlock));
+            this.addOperand(left);
+            this.addOperand(BuildFactory.buildZext(right, basicBlock));
         } else {
-            addOperands(left, right);
+            this.addOperand(left);
+            this.addOperand(right);
         }
         this.setType(this.getOperands().get(0).getType());
         if (isCond()) {
@@ -29,131 +34,50 @@ public class BinaryInst extends Instruction {
         this.setName("%" + REG_NUMBER++);
     }
 
-    private void addOperands(Value left, Value right) {
-        this.addOperand(left);
-        this.addOperand(right);
-    }
-
-    public boolean isAdd() {
-        return this.getOperator() == Operator.Add;
-    }
-
-    public boolean isSub() {
-        return this.getOperator() == Operator.Sub;
-    }
-
-    public boolean isMul() {
-        return this.getOperator() == Operator.Mul;
-    }
-
-    public boolean isDiv() {
-        return this.getOperator() == Operator.Div;
-    }
-
-    public boolean isMod() {
-        return this.getOperator() == Operator.Mod;
-    }
-
-    public boolean isShl() {
-        return this.getOperator() == Operator.Shl;
-    }
-
-    public boolean isShr() {
-        return this.getOperator() == Operator.Shr;
-    }
-
-    public boolean isAnd() {
-        return this.getOperator() == Operator.And;
-    }
-
-    public boolean isOr() {
-        return this.getOperator() == Operator.Or;
-    }
-
-    public boolean isLt() {
-        return this.getOperator() == Operator.Lt;
-    }
-
-    public boolean isLe() {
-        return this.getOperator() == Operator.Le;
-    }
-
-    public boolean isGe() {
-        return this.getOperator() == Operator.Ge;
-    }
-
-    public boolean isGt() {
-        return this.getOperator() == Operator.Gt;
-    }
-
-    public boolean isEq() {
-        return this.getOperator() == Operator.Eq;
-    }
-
-    public boolean isNe() {
-        return this.getOperator() == Operator.Ne;
-    }
 
     public boolean isCond() {
-        return this.isLt() || this.isLe() || this.isGe() || this.isGt() || this.isEq() || this.isNe();
+        // return this.isLt() || this.isLe() || this.isGe() || this.isGt() || this.isEq() || this.isNe();
+        Operator temp =  this.getOperator();
+        return temp == Operator.Lt || temp == Operator.Le || temp == Operator.Ge || temp == Operator.Gt || temp == Operator.Eq || temp == Operator.Ne;
     }
 
-    public boolean isNot() {
-        return this.getOperator() == Operator.Not;
+    private static final Map<Operator, String> OPERATOR_IR_MAP = new EnumMap<>(Operator.class);
+
+    static {
+        OPERATOR_IR_MAP.put(Operator.Add, "add i32 ");
+        OPERATOR_IR_MAP.put(Operator.Sub, "sub i32 ");
+        OPERATOR_IR_MAP.put(Operator.Mul, "mul i32 ");
+        OPERATOR_IR_MAP.put(Operator.Div, "sdiv i32 ");
+        OPERATOR_IR_MAP.put(Operator.Mod, "srem i32 ");
+        OPERATOR_IR_MAP.put(Operator.Shl, "shl i32 ");
+        OPERATOR_IR_MAP.put(Operator.Shr, "ashr i32 ");
+        OPERATOR_IR_MAP.put(Operator.And, "and ");
+        OPERATOR_IR_MAP.put(Operator.Or, "or ");
+        // 逻辑比较操作符使用 icmp 指令
+        OPERATOR_IR_MAP.put(Operator.Lt, "icmp slt ");
+        OPERATOR_IR_MAP.put(Operator.Le, "icmp sle ");
+        OPERATOR_IR_MAP.put(Operator.Ge, "icmp sge ");
+        OPERATOR_IR_MAP.put(Operator.Gt, "icmp sgt ");
+        OPERATOR_IR_MAP.put(Operator.Eq, "icmp eq ");
+        OPERATOR_IR_MAP.put(Operator.Ne, "icmp ne ");
     }
+
 
     @Override
     public String toString() {
-        String s = getName() + " = ";
-        switch (this.getOperator()) {
-            case Add:
-                s += "add i32 ";
-                break;
-            case Sub:
-                s += "sub i32 ";
-                break;
-            case Mul:
-                s += "mul i32 ";
-                break;
-            case Div:
-                s += "sdiv i32 ";
-                break;
-            case Mod:
-                s += "srem i32 ";
-                break;
-            case Shl:
-                s += "shl i32 ";
-                break;
-            case Shr:
-                s += "ashr i32 ";
-                break;
-            case And:
-                s += "and " + this.getOperands().get(0).getType().toString() + " ";
-                break;
-            case Or:
-                s += "or " + this.getOperands().get(0).getType().toString() + " ";
-                break;
-            case Lt:
-                s += "icmp slt " + this.getOperands().get(0).getType().toString() + " ";
-                break;
-            case Le:
-                s += "icmp sle " + this.getOperands().get(0).getType().toString() + " ";
-                break;
-            case Ge:
-                s += "icmp sge " + this.getOperands().get(0).getType().toString() + " ";
-                break;
-            case Gt:
-                s += "icmp sgt " + this.getOperands().get(0).getType().toString() + " ";
-                break;
-            case Eq:
-                s += "icmp eq " + this.getOperands().get(0).getType().toString() + " ";
-                break;
-            case Ne:
-                s += "icmp ne " + this.getOperands().get(0).getType().toString() + " ";
-                break;
-            default:
-                break;
+        String operatorIR = OPERATOR_IR_MAP.getOrDefault(this.getOperator(), "");
+        String typeStr = this.getOperands().get(0).getType().toString();
+
+        // 对于 And 和 Or 操作，类型是操作数的类型
+        if (this.getOperator() == Operator.And || this.getOperator() == Operator.Or) {
+            operatorIR += typeStr + " ";
         }
-        return s + this.getOperands().get(0).getName() + ", " + this.getOperands().get(1).getName();
+
+        // 逻辑比较操作也需要操作数的类型
+        if (this.isCond()) {
+            operatorIR += typeStr + " ";
+        }
+
+        return getName() + " = " + operatorIR + this.getOperands().get(0).getName() + ", " + this.getOperands().get(1).getName();
     }
 }

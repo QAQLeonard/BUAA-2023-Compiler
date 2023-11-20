@@ -28,13 +28,15 @@ import static ir.LLVMGenerator.*;
 /**
  * 函数定义 FuncDef → FuncType Ident '(' [FuncFParams] ')' Block
  */
-public class FuncDefNode extends Node {
+public class FuncDefNode extends Node
+{
     FuncTypeNode funcTypeNode;
     Token IDENFRToken;
     Token LPARENTToken;
     Token RPARENTToken;
     FuncFParamsNode funcFParamsNode;
     BlockNode blockNode;
+
     public FuncDefNode()
     {
         super(NodeType.FuncDef);
@@ -54,7 +56,7 @@ public class FuncDefNode extends Node {
         this.IDENFRToken = Parser.getToken(TokenType.IDENFR);
         this.LPARENTToken = Parser.getToken(TokenType.LPARENT);
         // not ()
-        if(Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.INTTK)
+        if (Objects.requireNonNull(Parser.peekToken(0)).getType() == TokenType.INTTK)
         {
             this.funcFParamsNode = new FuncFParamsNode();
             this.funcFParamsNode.parseNode();
@@ -70,26 +72,26 @@ public class FuncDefNode extends Node {
         this.funcTypeNode.outputNode(destFile);
         FileOperate.outputFileUsingUsingBuffer(destFile, this.IDENFRToken.toString() + "\n", true);
         FileOperate.outputFileUsingUsingBuffer(destFile, this.LPARENTToken.toString() + "\n", true);
-        if(this.funcFParamsNode != null)
+        if (this.funcFParamsNode != null)
         {
             this.funcFParamsNode.outputNode(destFile);
         }
         FileOperate.outputFileUsingUsingBuffer(destFile, this.RPARENTToken.toString() + "\n", true);
         this.blockNode.outputNode(destFile);
-        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType())+"\n", true);
+        FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
     }
 
     @Override
     public void parseSymbol(SymbolTable st)
     {
         SymbolTable funcTable = new SymbolTable(st);
-        if(this.funcFParamsNode != null)
+        if (this.funcFParamsNode != null)
         {
             funcFParamsNode.parseSymbol(funcTable);
         }
         ArrayList<Symbol> paramList = new ArrayList<>(funcTable.getSymbolList());
         FUNCSymbol funcSymbol = new FUNCSymbol(this.IDENFRToken.getValue(), this.funcTypeNode.getExpType(), paramList);
-        if(!st.isDefinitionUnique(this.IDENFRToken.getValue()))
+        if (!st.isDefinitionUnique(this.IDENFRToken.getValue()))
         {
             ErrorHandler.addError(new CompilerError(ErrorType.b, "Duplicate declaration of function " + this.IDENFRToken.getValue(), this.IDENFRToken.getLineNumber()));
             return;
@@ -101,7 +103,7 @@ public class FuncDefNode extends Node {
             blockItemNode.parseSymbol(funcTable);
         }
         funcSymbolStack.pop();
-        if(funcSymbol.ReturnStmtNodeList.isEmpty()&&funcSymbol.getReturnType()!=ExpType.VOID)
+        if (funcSymbol.ReturnStmtNodeList.isEmpty() && funcSymbol.getReturnType() != ExpType.VOID)
         {
             // System.out.println(this.blockNode.RBRACEToken.getValue()+"111"+this.blockNode.RBRACEToken.getLineNumber());
             ErrorHandler.addError(new CompilerError(ErrorType.g, "Function " + this.IDENFRToken.getValue() + " has no return statement", this.blockNode.RBRACEToken.getLineNumber()));
@@ -114,7 +116,7 @@ public class FuncDefNode extends Node {
         // FuncDef -> FuncType Ident '(' [FuncFParams] ')' Block
         isGlobal = false;
         String funcName = IDENFRToken.getValue();
-        Type type = funcTypeNode.INTTKToken == null ? IntegerType.i32 : VoidType.voidType;
+        Type type = funcTypeNode.INTTKToken == null ? VoidType.voidType : IntegerType.i32;
         tmpTypeList = new ArrayList<>();
         if (funcFParamsNode != null)
         {

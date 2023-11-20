@@ -129,7 +129,7 @@ public class BuildFactory {
     /**
      * ConvInst
      */
-    public Value buildZext(Value value, BasicBlock basicBlock) {
+    public static Value buildZext(Value value, BasicBlock basicBlock) {
         if (value instanceof ConstInt) {
             return new ConstInt(((ConstInt) value).getValue());
         }

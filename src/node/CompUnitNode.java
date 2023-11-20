@@ -105,7 +105,6 @@ public class CompUnitNode extends Node
     {
         for(DeclNode declNode : this.declNodeList)
         {
-            System.out.println("ConstDeclNode");
             declNode.parseIR();
         }
         for(FuncDefNode funcDefNode : this.funcDefNodeList)

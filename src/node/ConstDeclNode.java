@@ -82,7 +82,6 @@ public class ConstDeclNode extends Node {
     @Override
     public void parseIR()
     {
-
         tmpType = IntegerType.i32;
         for(ConstDefNode constDefNode : this.constDefNodeList)
         {

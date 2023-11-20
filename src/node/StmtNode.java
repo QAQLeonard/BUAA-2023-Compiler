@@ -583,39 +583,54 @@ public class StmtNode extends Node
                 //    forBlock;
                 // }
                 // forFinalBlock;
-                if (forStmtNode1 != null)
-                {
-                    forStmtNode1.parseIR();
-                }
+
                 BasicBlock basicBlock = blockStack.peek();
                 BasicBlock tmpContinueBlock = continueBlock;
                 BasicBlock tmpForFinalBlock = curForFinalBlock;
 
-                BasicBlock judgeBlock = BuildFactory.buildBasicBlock(functionStack.peek());
-                BuildFactory.buildBr(basicBlock, judgeBlock);
+                BasicBlock initBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                BuildFactory.buildBr(basicBlock, initBlock);
+                blockStack.push(initBlock);
+                if(forStmtNode1 != null)
+                {
+                    forStmtNode1.parseIR();
+                }
+
+                BasicBlock condBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                BuildFactory.buildBr(initBlock, condBlock);
+
+
+
 
                 BasicBlock forBlock = BuildFactory.buildBasicBlock(functionStack.peek());
                 blockStack.push(forBlock);
-                continueBlock = judgeBlock;
+                continueBlock = initBlock;
 
                 BasicBlock forFinalBlock = BuildFactory.buildBasicBlock(functionStack.peek());
                 curForFinalBlock = forFinalBlock;
 
                 stmtNodeList.get(0).parseIR();
+
+                BasicBlock iterBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                BuildFactory.buildBr(blockStack.peek(), iterBlock);
+                blockStack.push(iterBlock);
                 if (forStmtNode2 != null)
                 {
                     forStmtNode2.parseIR();
                 }
 
-                BuildFactory.buildBr(blockStack.peek(), judgeBlock);
+                BuildFactory.buildBr(blockStack.peek(), condBlock);
 
                 continueBlock = tmpContinueBlock;
                 curForFinalBlock = tmpForFinalBlock;
 
                 curTrueBlock = forBlock;
                 curFalseBlock = forFinalBlock;
-                blockStack.push(judgeBlock);
-                condNode.parseIR();
+                blockStack.push(condBlock);
+                if(condNode != null)
+                {
+                    condNode.parseIR();
+                }
 
                 blockStack.push(forFinalBlock);
                 break;
