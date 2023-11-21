@@ -2,11 +2,9 @@ package ir;
 
 import ir.value.BuildFactory;
 import ir.type.*;
-import ir.utils.LLVMUtils;
 import ir.value.*;
 import ir.value.instructions.Operator;
 import node.*;
-import token.TokenType;
 import utils.FileOperate;
 
 import java.io.File;
@@ -131,7 +129,7 @@ public class LLVMGenerator
         }
         stringList.add(str);
         Type type = BuildFactory.getArrayType(IntegerType.i8, str.length() + 1);
-        Value value = BuildFactory.buildGlobalVar(getStringName(str), type, true, BuildFactory.getConstString(str));
+        Value value = BuildFactory.getGlobalVar(getStringName(str), type, true, BuildFactory.getConstString(str));
         addGlobalSymbol(getStringName(str), value);
         return stringList.size() - 1;
     }

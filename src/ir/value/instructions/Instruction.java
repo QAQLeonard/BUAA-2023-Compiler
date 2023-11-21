@@ -10,10 +10,10 @@ import ir.utils.IRListNode;
 
 public abstract class Instruction extends User
 {
-    private Operator op;
-    private IRListNode<Instruction, BasicBlock> node;
-    private int handler;
-    private static int HANDLER = 0;
+    Operator op;
+    IRListNode<Instruction, BasicBlock> node;
+    int handler;
+    static int HANDLER = 0;
 
     public Instruction(Type type, Operator op, BasicBlock basicBlock)
     {
@@ -66,14 +66,14 @@ public abstract class Instruction extends User
 
     public BasicBlock getParent()
     {
-        return this.getNode().getParentList().getContainer();
+        return this.node.getParentList().getContainer();
     }
 
     public void addInstToBlock(BasicBlock basicBlock)
     {
         if (basicBlock.getInstructions().getTail() == null || (!(basicBlock.getInstructions().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructions().getTail().getValue() instanceof RetInst)))
         {
-            this.getNode().insertAtTail(basicBlock.getInstructions());
+            basicBlock.getInstructions().insertAtTail(this.node);
         }
         else
         {
@@ -83,6 +83,6 @@ public abstract class Instruction extends User
 
     public void addInstToBlockBegin(BasicBlock basicBlock)
     {
-        this.getNode().insertAtHead(basicBlock.getInstructions());
+        basicBlock.getInstructions().insertAtHead(this.node);
     }
 }

@@ -11,12 +11,12 @@ import java.util.List;
 
 public class Function extends Value
 {
-    private final IRLinkedList<BasicBlock, Function> list;
-    private final IRListNode<Function, IRModule> node;
-    private final List<Argument> arguments;
-    private final List<Function> predecessors;
-    private final List<Function> successors;
-    private final boolean isLibraryFunction;
+    final IRLinkedList<BasicBlock, Function> list;
+    final IRListNode<Function, IRModule> node;
+    final List<Argument> arguments;
+    final List<Function> predecessors;
+    final List<Function> successors;
+    final boolean isLibraryFunction;
 
     public Function(String name, Type type, boolean isLibraryFunction)
     {
@@ -32,7 +32,7 @@ public class Function extends Value
         {
             arguments.add(new Argument(t, ((FunctionType) type).getParametersType().indexOf(t), isLibraryFunction));
         }
-        this.node.insertAtTail(IRModule.getInstance().getFunctions());
+        IRModule.getInstance().getFunctions().insertAtTail(this.node);
     }
 
     public IRLinkedList<BasicBlock, Function> getList()

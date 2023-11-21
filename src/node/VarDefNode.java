@@ -134,7 +134,7 @@ public class VarDefNode extends Node
             }
             if (isGlobal)
             {
-                tmpValue = BuildFactory.buildGlobalVar(name, tmpType, false, BuildFactory.getConstInt(saveValue == null ? 0 : saveValue));
+                tmpValue = BuildFactory.getGlobalVar(name, tmpType, false, BuildFactory.getConstInt(saveValue == null ? 0 : saveValue));
                 addSymbol(name, tmpValue);
             }
             else

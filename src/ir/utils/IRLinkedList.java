@@ -37,6 +37,35 @@ public class IRLinkedList<N, L> implements Iterable<IRListNode<N, L>>
         return (this.head == null) && (this.tail == null) && (size == 0);
     }
 
+    public void insertAtHead(IRListNode<N, L> node)
+    {
+        node.parentList = this;
+        if (this.head == null)
+        {
+            this.head = node;
+            this.tail = node;
+            this.size++;
+        }
+        else
+        {
+            node.insertBefore(this.head);
+        }
+    }
+
+    public void insertAtTail(IRListNode<N, L> node)
+    {
+        node.parentList = this;
+        if (this.tail == null)
+        {
+            this.head = node;
+            this.tail = node;
+            this.size++;
+        }
+        else
+        {
+            node.insertAfter(this.tail);
+        }
+    }
 
     @Override
     public Iterator<IRListNode<N, L>> iterator()

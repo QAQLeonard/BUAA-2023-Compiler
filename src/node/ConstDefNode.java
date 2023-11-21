@@ -3,8 +3,6 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
-import ir.LLVMGenerator;
-import ir.LLVMGenerator.*;
 import ir.type.Type;
 import ir.value.BuildFactory;
 import symbol.*;
@@ -115,7 +113,7 @@ public class ConstDefNode extends Node
             addConst(name, saveValue);
             if (isGlobal)
             {
-                tmpValue = BuildFactory.buildGlobalVar(name, tmpType, true, tmpValue);
+                tmpValue = BuildFactory.getGlobalVar(name, tmpType, true, tmpValue);
                 addSymbol(name, tmpValue);
 
             }

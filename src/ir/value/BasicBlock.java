@@ -26,7 +26,7 @@ public class BasicBlock extends Value {
         this.node = new IRListNode<>(this);
         this.predecessors = new ArrayList<>();
         this.successors = new ArrayList<>();
-        this.node.insertAtTail(function.getList());
+        function.getList().insertAtTail(this.node);
     }
 
     public IRLinkedList<Instruction, BasicBlock> getInstructions() {

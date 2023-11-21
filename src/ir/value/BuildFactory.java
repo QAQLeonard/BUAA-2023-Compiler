@@ -83,7 +83,7 @@ public class BuildFactory {
     /**
      * Var
      */
-    public static GlobalVar buildGlobalVar(String name, Type type, boolean isConst, Value value) {
+    public static GlobalVar getGlobalVar(String name, Type type, boolean isConst, Value value) {
         return new GlobalVar(name, type, isConst, value);
     }
 

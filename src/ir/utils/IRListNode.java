@@ -63,36 +63,6 @@ public class IRListNode<N, L>
         }
     }
 
-    public void insertAtHead(IRLinkedList<N, L> irLinkedList)
-    {
-        this.parentList = irLinkedList;
-        if (irLinkedList.isEmpty())
-        {
-            irLinkedList.head = this;
-            irLinkedList.tail = this;
-            irLinkedList.size++;
-        }
-        else
-        {
-            insertBefore(irLinkedList.head);
-        }
-    }
-
-    public void insertAtTail(IRLinkedList<N, L> irLinkedList)
-    {
-        this.parentList = irLinkedList;
-        if (irLinkedList.isEmpty())
-        {
-            irLinkedList.head = this;
-            irLinkedList.tail = this;
-            irLinkedList.size++;
-        }
-        else
-        {
-            insertAfter(irLinkedList.tail);
-        }
-    }
-
 //    public IRListNode<N, L> removeFromList()
 //    {
 //        parent.removeNode();
