@@ -3,9 +3,10 @@ package ir.value.instructions.terminator;
 import ir.type.VoidType;
 import ir.value.BasicBlock;
 import ir.value.Value;
+import ir.value.instructions.Instruction;
 import ir.value.instructions.Operator;
 
-public class RetInst extends TerminatorInst
+public class RetInst extends Instruction
 {
     public RetInst(BasicBlock basicBlock, Value ret)
     {

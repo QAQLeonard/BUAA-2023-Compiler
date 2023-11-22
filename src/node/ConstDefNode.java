@@ -147,7 +147,7 @@ public class ConstDefNode extends Node
             }
             if (isGlobal)
             {
-                tmpValue = BuildFactory.buildGlobalArray(name, type, true);
+                tmpValue = BuildFactory.getGlobalArray(name, type, true);
             }
             else
             {

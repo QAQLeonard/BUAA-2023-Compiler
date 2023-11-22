@@ -168,7 +168,7 @@ public class VarDefNode extends Node
             }
             if (isGlobal)
             {
-                tmpValue = BuildFactory.buildGlobalArray(name, type, false);
+                tmpValue = BuildFactory.getGlobalArray(name, type, false);
             }
             else
             {

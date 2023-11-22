@@ -12,7 +12,7 @@ import java.util.List;
 public class Function extends Value
 {
     final IRLinkedList<BasicBlock, Function> list;
-    final IRListNode<Function, IRModule> node;
+    final IRListNode<Function, IRModule> node;//自身对应的node
     final List<Argument> arguments;
     final List<Function> predecessors;
     final List<Function> successors;
@@ -50,19 +50,9 @@ public class Function extends Value
         return new ArrayList<>(arguments);
     }
 
-    public List<Function> getPredecessors()
-    {
-        return predecessors;
-    }
-
     public void addPredecessor(Function predecessor)
     {
         this.predecessors.add(predecessor);
-    }
-
-    public List<Function> getSuccessors()
-    {
-        return successors;
     }
 
     public void addSuccessor(Function successor)

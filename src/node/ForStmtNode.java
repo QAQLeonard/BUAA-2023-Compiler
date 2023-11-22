@@ -77,7 +77,7 @@ public class ForStmtNode extends Node
             // is not an array
             Value input = getValue(lValNode.IDENFRToken.getValue());
             expNode.parseIR();
-            tmpValue = BuildFactory.buildStore(blockStack.peek(), input, tmpValue);
+            tmpValue = BuildFactory.getStoreInst(blockStack.peek(), input, tmpValue);
         } else {
             // is an array
             List<Value> indexList = new ArrayList<>();
@@ -90,14 +90,14 @@ public class ForStmtNode extends Node
             Type type = tmpValue.getType(), targetType = ((PointerType) type).getTargetType();
             if (targetType instanceof PointerType) {
                 // arr[][3]
-                tmpValue = BuildFactory.buildLoad(blockStack.peek(), tmpValue);
+                tmpValue = BuildFactory.getLoadInst(blockStack.peek(), tmpValue);
             } else {
                 // arr[3][2]
                 indexList.add(0, ConstInt.ZERO);
             }
             addr = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
             expNode.parseIR();
-            tmpValue = BuildFactory.buildStore(blockStack.peek(), addr, tmpValue);
+            tmpValue = BuildFactory.getStoreInst(blockStack.peek(), addr, tmpValue);
         }
     }
 

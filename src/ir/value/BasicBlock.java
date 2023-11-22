@@ -14,79 +14,73 @@ import ir.utils.IRListNode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasicBlock extends Value {
-    private IRLinkedList<Instruction, BasicBlock> instructions; // 这个 BasicBlock 中的指令列表
-    private IRListNode<BasicBlock, Function> node; // 这个 BasicBlock 所属的 Function
-    private List<BasicBlock> predecessors; // 这个 BasicBlock 的前驱 BasicBlock
-    private List<BasicBlock> successors; // 这个 BasicBlock 的后继 BasicBlock
+public class BasicBlock extends Value
+{
+    IRLinkedList<Instruction, BasicBlock> instructionList;
+    IRListNode<BasicBlock, Function> node;
+    List<BasicBlock> predecessors;
+    List<BasicBlock> successors;
 
-    public BasicBlock(Function function) {
+    public BasicBlock(Function function)
+    {
         super(String.valueOf(REG_NUMBER++), new LabelType());
-        this.instructions = new IRLinkedList<>(this);
+        this.instructionList = new IRLinkedList<>(this);
         this.node = new IRListNode<>(this);
         this.predecessors = new ArrayList<>();
         this.successors = new ArrayList<>();
         function.getList().insertAtTail(this.node);
     }
 
-    public IRLinkedList<Instruction, BasicBlock> getInstructions() {
-        return instructions;
+    public IRLinkedList<Instruction, BasicBlock> getInstructionList()
+    {
+        return instructionList;
     }
 
-    public void setInstructions(IRLinkedList<Instruction, BasicBlock> instructions) {
-        this.instructions = instructions;
-    }
-
-    public IRListNode<BasicBlock, Function> getNode() {
+    public IRListNode<BasicBlock, Function> getNode()
+    {
         return node;
     }
 
-    public void setNode(IRListNode<BasicBlock, Function> node) {
-        this.node = node;
-    }
-
-    public List<BasicBlock> getPredecessors() {
+    public List<BasicBlock> getPredecessors()
+    {
         return predecessors;
     }
 
-    public void setPredecessors(List<BasicBlock> predecessors) {
-        this.predecessors = predecessors;
-    }
-
-    public void addPredecessor(BasicBlock predecessor) {
-        this.predecessors.add(predecessor);
-    }
-
-    public List<BasicBlock> getSuccessors() {
-        return successors;
-    }
-
-    public void setSuccessors(List<BasicBlock> successors) {
-        this.successors = successors;
-    }
-
-    public void addSuccessor(BasicBlock successor) {
+    public void addSuccessor(BasicBlock successor)
+    {
         this.successors.add(successor);
     }
 
-    public Function getParent() {
-        return this.node.getParentList().getContainer();
+    public void addInst(Instruction instruction)
+    {
+        if (instructionList.getTail() == null || (!(instructionList.getTail().getValue() instanceof BrInst) && !(instructionList.getTail().getValue() instanceof RetInst)))
+        {
+            instructionList.insertAtTail(instruction.getNode());
+        }
+        else
+        {
+            instruction.removeUseFromOperands();
+        }
     }
 
-    public void refreshReg() {
-        for (IRListNode<Instruction, BasicBlock> inode : this.instructions) {
-            Instruction inst = inode.getValue();
-            if (!(inst instanceof StoreInst || inst instanceof BrInst || inst instanceof RetInst ||
-                    (inst instanceof CallInst && ((FunctionType) inst.getOperands().get(0).getType()).getReturnType() instanceof VoidType))) {
+    public void refreshReg()
+    {
+        for (IRListNode<Instruction, BasicBlock> irNode : this.instructionList)
+        {
+            Instruction inst = irNode.getValue();
+            if (inst.requiresRegisterRenaming())
+            {
                 inst.setName("%" + REG_NUMBER++);
             }
         }
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringBuilder s = new StringBuilder();
-        for (IRListNode<Instruction, BasicBlock> instruction : this.instructions) {
+        for (IRListNode<Instruction, BasicBlock> instruction : this.instructionList)
+        {
             s.append("    ").append(instruction.getValue().toString()).append("\n");
         }
         return s.toString();

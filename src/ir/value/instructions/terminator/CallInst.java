@@ -8,11 +8,13 @@ import ir.value.BasicBlock;
 import ir.value.BuildFactory;
 import ir.value.Function;
 import ir.value.Value;
+import ir.value.instructions.Instruction;
 import ir.value.instructions.Operator;
 
 import java.util.List;
 
-public class CallInst extends TerminatorInst {
+public class CallInst extends Instruction
+{
     public CallInst(BasicBlock basicBlock, Function function, List<Value> args) {
         super(((FunctionType) function.getType()).getReturnType(), Operator.Call, basicBlock);
         if (!(((FunctionType) function.getType()).getReturnType() instanceof VoidType)) {

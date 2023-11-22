@@ -53,7 +53,7 @@ public class IRModule
             {
                 for (IRListNode<BasicBlock, Function> basicBlock : function.getValue().getList())
                 {
-                    if (basicBlock.getValue().getInstructions().isEmpty())
+                    if (basicBlock.getValue().getInstructionList().isEmpty())
                     {
                         BuildFactory.checkBlockEnd(basicBlock.getValue());
                     }

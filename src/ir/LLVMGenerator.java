@@ -172,10 +172,10 @@ public class LLVMGenerator
     public static void run()
     {
         addSymbolAndConstTable();
-        addSymbol("getint", BuildFactory.buildLibraryFunction("getint", IntegerType.i32, new ArrayList<>()));
-        addSymbol("putint", BuildFactory.buildLibraryFunction("putint", VoidType.voidType, new ArrayList<>(Collections.singleton(IntegerType.i32))));
-        addSymbol("putch", BuildFactory.buildLibraryFunction("putch", VoidType.voidType, new ArrayList<>(Collections.singleton(IntegerType.i32))));
-        addSymbol("putstr", BuildFactory.buildLibraryFunction("putstr", VoidType.voidType, new ArrayList<>(Collections.singleton(new PointerType(IntegerType.i8)))));
+        addSymbol("getint", BuildFactory.getLibraryFunction("getint", IntegerType.i32, new ArrayList<>()));
+        addSymbol("putint", BuildFactory.getLibraryFunction("putint", VoidType.voidType, new ArrayList<>(Collections.singleton(IntegerType.i32))));
+        addSymbol("putch", BuildFactory.getLibraryFunction("putch", VoidType.voidType, new ArrayList<>(Collections.singleton(IntegerType.i32))));
+        addSymbol("putstr", BuildFactory.getLibraryFunction("putstr", VoidType.voidType, new ArrayList<>(Collections.singleton(new PointerType(IntegerType.i8)))));
         CompUnitNode.getInstance().parseIR();
     }
 

@@ -37,7 +37,7 @@ public class BinaryInst extends Instruction {
 
     public boolean isCond() {
         // return this.isLt() || this.isLe() || this.isGe() || this.isGt() || this.isEq() || this.isNe();
-        Operator temp =  this.getOperator();
+        Operator temp =  this.op;
         return temp == Operator.Lt || temp == Operator.Le || temp == Operator.Ge || temp == Operator.Gt || temp == Operator.Eq || temp == Operator.Ne;
     }
 
@@ -65,11 +65,11 @@ public class BinaryInst extends Instruction {
 
     @Override
     public String toString() {
-        String operatorIR = OPERATOR_IR_MAP.getOrDefault(this.getOperator(), "");
+        String operatorIR = OPERATOR_IR_MAP.getOrDefault(this.op, "");
         String typeStr = this.getOperands().get(0).getType().toString();
 
         // 对于 And 和 Or 操作，类型是操作数的类型
-        if (this.getOperator() == Operator.And || this.getOperator() == Operator.Or) {
+        if (this.op == Operator.And || this.op == Operator.Or) {
             operatorIR += typeStr + " ";
         }
 

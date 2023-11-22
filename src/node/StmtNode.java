@@ -480,7 +480,7 @@ public class StmtNode extends Node
                     // is not an array
                     Value input = getValue(lValNode.IDENFRToken.getValue());
                     expNodeList.get(0).parseIR();
-                    tmpValue = BuildFactory.buildStore(blockStack.peek(), input, tmpValue);
+                    tmpValue = BuildFactory.getStoreInst(blockStack.peek(), input, tmpValue);
                 }
                 else
                 {
@@ -497,7 +497,7 @@ public class StmtNode extends Node
                     if (targetType instanceof PointerType)
                     {
                         // arr[][3]
-                        tmpValue = BuildFactory.buildLoad(blockStack.peek(), tmpValue);
+                        tmpValue = BuildFactory.getLoadInst(blockStack.peek(), tmpValue);
                     }
                     else
                     {
@@ -506,7 +506,7 @@ public class StmtNode extends Node
                     }
                     addr = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
                     expNodeList.get(0).parseIR();
-                    tmpValue = BuildFactory.buildStore(blockStack.peek(), addr, tmpValue);
+                    tmpValue = BuildFactory.getStoreInst(blockStack.peek(), addr, tmpValue);
                 }
                 break;
             case EXPRESSION:
@@ -655,7 +655,7 @@ public class StmtNode extends Node
                 {
                     Value input = getValue(lValNode.IDENFRToken.getValue());
                     tmpValue = BuildFactory.buildCall(blockStack.peek(), (Function) getValue("getint"), new ArrayList<>());
-                    BuildFactory.buildStore(blockStack.peek(), input, tmpValue);
+                    BuildFactory.getStoreInst(blockStack.peek(), input, tmpValue);
                 }
                 else
                 {
@@ -671,7 +671,7 @@ public class StmtNode extends Node
                     if (targetType instanceof PointerType)
                     {
                         // arr[][3]
-                        tmpValue = BuildFactory.buildLoad(blockStack.peek(), tmpValue);
+                        tmpValue = BuildFactory.getLoadInst(blockStack.peek(), tmpValue);
                     }
                     else
                     {
@@ -680,7 +680,7 @@ public class StmtNode extends Node
                     }
                     addr = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
                     Value input = BuildFactory.buildCall(blockStack.peek(), (Function) getValue("getint"), new ArrayList<>());
-                    tmpValue = BuildFactory.buildStore(blockStack.peek(), addr, input);
+                    tmpValue = BuildFactory.getStoreInst(blockStack.peek(), addr, input);
                 }
                 break;
             case PRINTF:

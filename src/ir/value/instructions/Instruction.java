@@ -1,10 +1,14 @@
 package ir.value.instructions;
 
 import ir.IRModule;
+import ir.type.FunctionType;
 import ir.type.Type;
+import ir.type.VoidType;
 import ir.value.BasicBlock;
 import ir.value.User;
+import ir.value.instructions.mem.StoreInst;
 import ir.value.instructions.terminator.BrInst;
+import ir.value.instructions.terminator.CallInst;
 import ir.value.instructions.terminator.RetInst;
 import ir.utils.IRListNode;
 
@@ -24,56 +28,11 @@ public abstract class Instruction extends User
         IRModule.getInstance().addInstruction(handler, this);
     }
 
-    public Operator getOperator()
-    {
-        return op;
-    }
-
-    public void setOperator(Operator op)
-    {
-        this.op = op;
-    }
-
-    public IRListNode<Instruction, BasicBlock> getNode()
-    {
-        return node;
-    }
-
-    public void setNode(IRListNode<Instruction, BasicBlock> node)
-    {
-        this.node = node;
-    }
-
-    public int getHandler()
-    {
-        return handler;
-    }
-
-    public void setHandler(int handler)
-    {
-        this.handler = handler;
-    }
-
-    public static int getHANDLER()
-    {
-        return HANDLER;
-    }
-
-    public static void setHANDLER(int HANDLER)
-    {
-        Instruction.HANDLER = HANDLER;
-    }
-
-    public BasicBlock getParent()
-    {
-        return this.node.getParentList().getContainer();
-    }
-
     public void addInstToBlock(BasicBlock basicBlock)
     {
-        if (basicBlock.getInstructions().getTail() == null || (!(basicBlock.getInstructions().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructions().getTail().getValue() instanceof RetInst)))
+        if (basicBlock.getInstructionList().getTail() == null || (!(basicBlock.getInstructionList().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructionList().getTail().getValue() instanceof RetInst)))
         {
-            basicBlock.getInstructions().insertAtTail(this.node);
+            basicBlock.getInstructionList().insertAtTail(this.node);
         }
         else
         {
@@ -81,8 +40,23 @@ public abstract class Instruction extends User
         }
     }
 
-    public void addInstToBlockBegin(BasicBlock basicBlock)
+    public boolean requiresRegisterRenaming()
     {
-        basicBlock.getInstructions().insertAtHead(this.node);
+        if (this instanceof StoreInst || this instanceof BrInst || this instanceof RetInst)
+        {
+            return false;
+        }
+        if (this instanceof CallInst)
+        {
+            FunctionType functionType = (FunctionType) this.getOperands().get(0).getType();
+            return !(functionType.getReturnType() instanceof VoidType);
+        }
+        return true;
     }
+
+    public IRListNode<Instruction, BasicBlock> getNode()
+    {
+        return node;
+    }
+
 }

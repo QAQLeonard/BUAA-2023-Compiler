@@ -3,7 +3,6 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
-import ir.LLVMGenerator;
 import ir.type.ArrayType;
 import ir.type.PointerType;
 import ir.type.Type;
@@ -162,7 +161,7 @@ public class LValNode extends Node
                 Type type = addr.getType();
                 if (!(((PointerType) type).getTargetType() instanceof ArrayType))
                 {
-                    tmpValue = BuildFactory.buildLoad(blockStack.peek(), tmpValue);
+                    tmpValue = BuildFactory.getLoadInst(blockStack.peek(), tmpValue);
                 }
                 else
                 {
@@ -187,7 +186,7 @@ public class LValNode extends Node
                 if (targetType instanceof PointerType)
                 {
                     // arr[][3]
-                    tmpValue = BuildFactory.buildLoad(blockStack.peek(), tmpValue);
+                    tmpValue = BuildFactory.getLoadInst(blockStack.peek(), tmpValue);
                 }
                 else
                 {
@@ -204,7 +203,7 @@ public class LValNode extends Node
                 }
                 else
                 {
-                    tmpValue = BuildFactory.buildLoad(blockStack.peek(), addr);
+                    tmpValue = BuildFactory.getLoadInst(blockStack.peek(), addr);
                 }
             }
         }

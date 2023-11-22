@@ -131,7 +131,7 @@ public class InitValNode extends Node
                 }
                 else
                 {
-                    BuildFactory.buildStore(blockStack.peek(), BuildFactory.buildGEP(blockStack.peek(), curArray, tmpOffset), tmpValue);
+                    BuildFactory.getStoreInst(blockStack.peek(), BuildFactory.buildGEP(blockStack.peek(), curArray, tmpOffset), tmpValue);
                 }
                 tmpOffset++;
             }

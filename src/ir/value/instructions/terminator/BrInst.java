@@ -6,9 +6,10 @@ import ir.value.BasicBlock;
 import ir.value.BuildFactory;
 import ir.value.ConstInt;
 import ir.value.Value;
+import ir.value.instructions.Instruction;
 import ir.value.instructions.Operator;
 
-public class BrInst extends TerminatorInst
+public class BrInst extends Instruction
 {
     public BrInst(BasicBlock basicBlock, BasicBlock trueBlock)
     {
@@ -17,7 +18,7 @@ public class BrInst extends TerminatorInst
         // 添加前驱后继
         if (basicBlock != null)
         {
-            if (basicBlock.getInstructions().getTail() == null || (!(basicBlock.getInstructions().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructions().getTail().getValue() instanceof RetInst)))
+            if (basicBlock.getInstructionList().getTail() == null || (!(basicBlock.getInstructionList().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructionList().getTail().getValue() instanceof RetInst)))
             {
                 basicBlock.addSuccessor(trueBlock);
                 trueBlock.addSuccessor(basicBlock);
@@ -38,7 +39,7 @@ public class BrInst extends TerminatorInst
         this.addOperand(trueBlock);
         this.addOperand(falseBlock);
         // 添加前驱后继
-        if (basicBlock.getInstructions().getTail() == null || (!(basicBlock.getInstructions().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructions().getTail().getValue() instanceof RetInst)))
+        if (basicBlock.getInstructionList().getTail() == null || (!(basicBlock.getInstructionList().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructionList().getTail().getValue() instanceof RetInst)))
         {
             basicBlock.addSuccessor(trueBlock);
             basicBlock.addSuccessor(falseBlock);
