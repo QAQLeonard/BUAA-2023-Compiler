@@ -168,7 +168,7 @@ public class LValNode extends Node
                     List<Value> indexList = new ArrayList<>();
                     indexList.add(ConstInt.ZERO);
                     indexList.add(ConstInt.ZERO);
-                    tmpValue = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
+                    tmpValue = BuildFactory.getGEPInst(blockStack.peek(), tmpValue, indexList);
                 }
             }
             else
@@ -193,13 +193,13 @@ public class LValNode extends Node
                     // arr[1][2]
                     indexList.add(0, ConstInt.ZERO);
                 }
-                addr = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
+                addr = BuildFactory.getGEPInst(blockStack.peek(), tmpValue, indexList);
                 if (((PointerType) addr.getType()).getTargetType() instanceof ArrayType)
                 {
                     List<Value> indexList2 = new ArrayList<>();
                     indexList2.add(ConstInt.ZERO);
                     indexList2.add(ConstInt.ZERO);
-                    tmpValue = BuildFactory.buildGEP(blockStack.peek(), addr, indexList2);
+                    tmpValue = BuildFactory.getGEPInst(blockStack.peek(), addr, indexList2);
                 }
                 else
                 {

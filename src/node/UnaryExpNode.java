@@ -233,7 +233,7 @@ public class UnaryExpNode extends Node implements Expression
                 funcRParamsNode.parseIR();
             }
 
-            LLVMGenerator.tmpValue = BuildFactory.buildCall(LLVMGenerator.blockStack.peek(), (Function) LLVMGenerator.getValue(IDENFRToken.getValue()), LLVMGenerator.tmpList);
+            LLVMGenerator.tmpValue = BuildFactory.getCallInst(LLVMGenerator.blockStack.peek(), (Function) LLVMGenerator.getValue(IDENFRToken.getValue()), LLVMGenerator.tmpList);
         }
         else
         {

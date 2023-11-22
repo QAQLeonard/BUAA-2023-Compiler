@@ -35,7 +35,6 @@ public class GEPInst extends Instruction
             this.addOperand(value);
         }
         this.elementType = getElementType(pointer, indices);
-        this.addInstToBlock(basicBlock);
     }
 
     public GEPInst(BasicBlock basicBlock, Value pointer, int offset)

@@ -19,7 +19,7 @@ public class LoadInst extends Instruction
             setType(new PointerType(((ArrayType) getType()).getElementType()));
         }
         this.addOperand(pointer);
-        this.addInstToBlock(basicBlock);
+
     }
 
     public Value getPointer()

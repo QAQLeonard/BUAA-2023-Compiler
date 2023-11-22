@@ -130,7 +130,7 @@ public class ConstInitValNode extends Node
                 }
                 else
                 {
-                    BuildFactory.getStoreInst(blockStack.peek(), BuildFactory.buildGEP(blockStack.peek(), curArray, tmpOffset), tmpValue);
+                    BuildFactory.getStoreInst(blockStack.peek(), BuildFactory.getGEPInst(blockStack.peek(), curArray, tmpOffset), tmpValue);
                 }
                 StringBuilder name = new StringBuilder(tmpName);
                 List<Value> args = ((ArrayType) ((PointerType) curArray.getType()).getTargetType()).offset2Index(tmpOffset);

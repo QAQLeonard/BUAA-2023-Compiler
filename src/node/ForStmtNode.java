@@ -95,7 +95,7 @@ public class ForStmtNode extends Node
                 // arr[3][2]
                 indexList.add(0, ConstInt.ZERO);
             }
-            addr = BuildFactory.buildGEP(blockStack.peek(), tmpValue, indexList);
+            addr = BuildFactory.getGEPInst(blockStack.peek(), tmpValue, indexList);
             expNode.parseIR();
             tmpValue = BuildFactory.getStoreInst(blockStack.peek(), addr, tmpValue);
         }

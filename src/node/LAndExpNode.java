@@ -117,7 +117,7 @@ public class LAndExpNode extends Node implements Expression
         curTrueBlock = tmpTrueBlock;
         tmpValue = null;
         eqExpNode.parseIR();
-        BuildFactory.buildBr(blockStack.peek(), tmpValue, curTrueBlock, curFalseBlock);
+        BuildFactory.getBrInst(blockStack.peek(), tmpValue, curTrueBlock, curFalseBlock);
         curTrueBlock = trueBlock;
         curFalseBlock = falseBlock;
         if (lAndExpNode != null)

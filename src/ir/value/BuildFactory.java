@@ -87,7 +87,7 @@ public class BuildFactory
         {
             tmp = buildBinary(basicBlock, Operator.Ne, tmp, ConstInt.ZERO);
         }
-        tmp.addInstToBlock(basicBlock);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
@@ -107,7 +107,7 @@ public class BuildFactory
     public static AllocaInst buildVar(BasicBlock basicBlock, Value value, boolean isConst, Type allocaType)
     {
         AllocaInst tmp = new AllocaInst(basicBlock, isConst, allocaType);
-        tmp.addInstToBlock(basicBlock);
+        basicBlock.addInst(tmp);
         if (value != null)
         {
             getStoreInst(basicBlock, tmp, value);
@@ -137,7 +137,7 @@ public class BuildFactory
     public static AllocaInst buildArray(BasicBlock basicBlock, boolean isConst, Type arrayType)
     {
         AllocaInst tmp = new AllocaInst(basicBlock, isConst, arrayType);
-        tmp.addInstToBlock(basicBlock);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
@@ -161,14 +161,14 @@ public class BuildFactory
             return new ConstInt(((ConstInt) value).getValue());
         }
         ConvInst tmp = new ConvInst(basicBlock, Operator.Zext, value);
-        tmp.addInstToBlock(basicBlock);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
     public BinaryInst buildConvToI1(Value val, BasicBlock basicBlock)
     {
         BinaryInst tmp = new BinaryInst(basicBlock, Operator.Ne, val, getConstInt(0));
-        tmp.addInstToBlock(basicBlock);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
@@ -178,49 +178,52 @@ public class BuildFactory
     public static LoadInst getLoadInst(BasicBlock basicBlock, Value pointer)
     {
         LoadInst tmp = new LoadInst(basicBlock, pointer);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
     public static StoreInst getStoreInst(BasicBlock basicBlock, Value ptr, Value value)
     {
         StoreInst tmp = new StoreInst(basicBlock, ptr, value);
-        tmp.addInstToBlock(basicBlock);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
-    public static GEPInst buildGEP(BasicBlock basicBlock, Value pointer, List<Value> indices)
+    public static GEPInst getGEPInst(BasicBlock basicBlock, Value pointer, List<Value> indices)
     {
         GEPInst tmp = new GEPInst(basicBlock, pointer, indices);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
-    public static GEPInst buildGEP(BasicBlock basicBlock, Value pointer, int offset)
+    public static GEPInst getGEPInst(BasicBlock basicBlock, Value pointer, int offset)
     {
         GEPInst tmp = new GEPInst(basicBlock, pointer, offset);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
     /**
      * TerminatorInst
      */
-    public static BrInst buildBr(BasicBlock basicBlock, BasicBlock trueBlock)
+    public static BrInst getBrInst(BasicBlock basicBlock, BasicBlock trueBlock)
     {
         BrInst tmp = new BrInst(basicBlock, trueBlock);
-        tmp.addInstToBlock(basicBlock);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
-    public static BrInst buildBr(BasicBlock basicBlock, Value cond, BasicBlock trueBlock, BasicBlock falseBlock)
+    public static BrInst getBrInst(BasicBlock basicBlock, Value cond, BasicBlock trueBlock, BasicBlock falseBlock)
     {
         BrInst tmp = new BrInst(basicBlock, cond, trueBlock, falseBlock);
-        tmp.addInstToBlock(basicBlock);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
-    public static CallInst buildCall(BasicBlock basicBlock, Function function, List<Value> args)
+    public static CallInst getCallInst(BasicBlock basicBlock, Function function, List<Value> args)
     {
         CallInst tmp = new CallInst(basicBlock, function, args);
-        tmp.addInstToBlock(basicBlock);
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
@@ -228,8 +231,7 @@ public class BuildFactory
     public static RetInst buildRet(BasicBlock basicBlock, Value ret)
     {
         RetInst tmp = new RetInst(basicBlock, ret);
-        tmp.addInstToBlock(basicBlock);
-
+        basicBlock.addInst(tmp);
         return tmp;
     }
 
