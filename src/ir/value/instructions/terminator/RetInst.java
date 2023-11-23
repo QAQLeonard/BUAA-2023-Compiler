@@ -10,7 +10,7 @@ public class RetInst extends Instruction
 {
     public RetInst(BasicBlock basicBlock, Value ret)
     {
-        super(ret != null ? ret.getType() : VoidType.voidType, Operator.Ret, basicBlock);
+        super(ret != null ? ret.getType() : VoidType.voidType, Operator.Ret);
         if (ret != null)
         {
             this.addOperand(ret);

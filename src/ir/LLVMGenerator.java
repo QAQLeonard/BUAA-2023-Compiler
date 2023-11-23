@@ -184,7 +184,6 @@ public class LLVMGenerator
         File destFile = new File("llvm_ir.txt");
         CreateFileUsingJava7Files(destFile);
         FileOperate.outputFileUsingUsingBuffer(destFile, IRModule.getInstance().toString(), true);
-
     }
 
 

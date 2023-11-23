@@ -12,7 +12,7 @@ import java.util.Map;
 public class BinaryInst extends Instruction {
 
     public BinaryInst(BasicBlock basicBlock, Operator op, Value left, Value right) {
-        super(VoidType.voidType, op, basicBlock);
+        super(VoidType.voidType, op);
         boolean isLeftI1 = left.getType() instanceof IntegerType && ((IntegerType) left.getType()).isI1();
         boolean isRightI1 = right.getType() instanceof IntegerType && ((IntegerType) right.getType()).isI1();
         boolean isLeftI32 = left.getType() instanceof IntegerType && ((IntegerType) left.getType()).isI32();

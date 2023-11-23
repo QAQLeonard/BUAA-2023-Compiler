@@ -18,16 +18,10 @@ import java.util.List;
 public class BuildFactory
 {
 
-    private static final BuildFactory buildFactory = new BuildFactory();
-
     public BuildFactory()
     {
     }
 
-    public static BuildFactory getInstance()
-    {
-        return buildFactory;
-    }
 
     /**
      * Functions
@@ -80,12 +74,12 @@ public class BuildFactory
     /**
      * BinaryInst
      **/
-    public static BinaryInst buildBinary(BasicBlock basicBlock, Operator op, Value left, Value right)
+    public static BinaryInst getBinaryInst(BasicBlock basicBlock, Operator op, Value left, Value right)
     {
         BinaryInst tmp = new BinaryInst(basicBlock, op, left, right);
         if (op == Operator.And || op == Operator.Or)
         {
-            tmp = buildBinary(basicBlock, Operator.Ne, tmp, ConstInt.ZERO);
+            tmp = getBinaryInst(basicBlock, Operator.Ne, tmp, ConstInt.ZERO);
         }
         basicBlock.addInst(tmp);
         return tmp;
@@ -93,7 +87,7 @@ public class BuildFactory
 
     public static BinaryInst buildNot(BasicBlock basicBlock, Value value)
     {
-        return buildBinary(basicBlock, Operator.Eq, value, ConstInt.ZERO);
+        return getBinaryInst(basicBlock, Operator.Eq, value, ConstInt.ZERO);
     }
 
     /**
@@ -165,7 +159,7 @@ public class BuildFactory
         return tmp;
     }
 
-    public BinaryInst buildConvToI1(Value val, BasicBlock basicBlock)
+    public static BinaryInst buildConvToI1(Value val, BasicBlock basicBlock)
     {
         BinaryInst tmp = new BinaryInst(basicBlock, Operator.Ne, val, getConstInt(0));
         basicBlock.addInst(tmp);
@@ -184,7 +178,7 @@ public class BuildFactory
 
     public static StoreInst getStoreInst(BasicBlock basicBlock, Value ptr, Value value)
     {
-        StoreInst tmp = new StoreInst(basicBlock, ptr, value);
+        StoreInst tmp = new StoreInst(ptr, value);
         basicBlock.addInst(tmp);
         return tmp;
     }

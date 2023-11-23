@@ -10,7 +10,7 @@ public class ConvInst extends Instruction
 {
     public ConvInst(BasicBlock basicBlock, Operator op, Value value)
     {
-        super(VoidType.voidType, op, basicBlock);
+        super(VoidType.voidType, op);
         this.setName("%" + REG_NUMBER++);
         if (op == Operator.Zext)
         {

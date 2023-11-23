@@ -125,7 +125,7 @@ public class EqExpNode extends Node implements Expression
         relExpNode.parseIR();
         if (value != null)
         {
-            tmpValue = BuildFactory.buildBinary(blockStack.peek(), op, value, tmpValue);
+            tmpValue = BuildFactory.getBinaryInst(blockStack.peek(), op, value, tmpValue);
         }
         if (eqExpNode != null)
         {

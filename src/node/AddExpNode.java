@@ -13,7 +13,6 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 import static ir.utils.LLVMUtils.calculate;
 
@@ -162,7 +161,7 @@ public class AddExpNode extends Node implements Expression
             this.mulExpNode.parseIR();
             if (value != null)
             {
-                LLVMGenerator.tmpValue = BuildFactory.buildBinary(LLVMGenerator.blockStack.peek(), op, value, LLVMGenerator.tmpValue);
+                LLVMGenerator.tmpValue = BuildFactory.getBinaryInst(LLVMGenerator.blockStack.peek(), op, value, LLVMGenerator.tmpValue);
             }
             if (addExpNode != null)
             {

@@ -184,7 +184,7 @@ public class MulExpNode extends Node implements Expression
             unaryExpNode.parseIR();
             if (value != null)
             {
-                LLVMGenerator.tmpValue = BuildFactory.buildBinary(LLVMGenerator.blockStack.peek(), op, value, LLVMGenerator.tmpValue);
+                LLVMGenerator.tmpValue = BuildFactory.getBinaryInst(LLVMGenerator.blockStack.peek(), op, value, LLVMGenerator.tmpValue);
             }
             if (mulExpNode != null)
             {

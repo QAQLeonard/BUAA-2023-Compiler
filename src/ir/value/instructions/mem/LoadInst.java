@@ -12,7 +12,7 @@ public class LoadInst extends Instruction
 
     public LoadInst(BasicBlock basicBlock, Value pointer)
     {
-        super(((PointerType) pointer.getType()).getTargetType(), Operator.Load, basicBlock);
+        super(((PointerType) pointer.getType()).getTargetType(), Operator.Load);
         this.setName("%" + REG_NUMBER++);
         if (getType() instanceof ArrayType)
         {

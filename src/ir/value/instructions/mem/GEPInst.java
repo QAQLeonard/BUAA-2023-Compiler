@@ -19,7 +19,7 @@ public class GEPInst extends Instruction
 
     public GEPInst(BasicBlock basicBlock, Value pointer, List<Value> indices)
     {
-        super(new PointerType(getElementType(pointer, indices)), Operator.GEP, basicBlock);
+        super(new PointerType(getElementType(pointer, indices)), Operator.GEP);
         this.setName("%" + REG_NUMBER++);
         if (pointer instanceof GEPInst)
         {

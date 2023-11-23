@@ -128,7 +128,7 @@ public class RelExpNode extends Node implements Expression
         addExpNode.parseIR();
         if (value != null)
         {
-            tmpValue = BuildFactory.buildBinary(blockStack.peek(), op, value, tmpValue);
+            tmpValue = BuildFactory.getBinaryInst(blockStack.peek(), op, value, tmpValue);
         }
         if (relExpNode != null)
         {

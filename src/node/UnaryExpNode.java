@@ -252,7 +252,7 @@ public class UnaryExpNode extends Node implements Expression
                 }
                 else
                 {
-                    LLVMGenerator.tmpValue = BuildFactory.buildBinary(LLVMGenerator.blockStack.peek(), Operator.Sub, ConstInt.ZERO, LLVMGenerator.tmpValue);
+                    LLVMGenerator.tmpValue = BuildFactory.getBinaryInst(LLVMGenerator.blockStack.peek(), Operator.Sub, ConstInt.ZERO, LLVMGenerator.tmpValue);
                 }
             }
             else

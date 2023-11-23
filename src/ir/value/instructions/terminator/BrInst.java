@@ -13,9 +13,8 @@ public class BrInst extends Instruction
 {
     public BrInst(BasicBlock basicBlock, BasicBlock trueBlock)
     {
-        super(VoidType.voidType, Operator.Br, basicBlock);
+        super(VoidType.voidType, Operator.Br);
         this.addOperand(trueBlock);
-        // 添加前驱后继
         if (basicBlock != null)
         {
             if (basicBlock.getInstructionList().getTail() == null || (!(basicBlock.getInstructionList().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructionList().getTail().getValue() instanceof RetInst)))
@@ -28,12 +27,12 @@ public class BrInst extends Instruction
 
     public BrInst(BasicBlock basicBlock, Value cond, BasicBlock trueBlock, BasicBlock falseBlock)
     {
-        super(VoidType.voidType, Operator.Br, basicBlock);
+        super(VoidType.voidType, Operator.Br);
         // conversion handler
         Value condTmp = cond;
         if (!(cond.getType() instanceof IntegerType && ((IntegerType) cond.getType()).isI1()))
         {
-            condTmp = BuildFactory.buildBinary(basicBlock, Operator.Ne, cond, new ConstInt(0));
+            condTmp = BuildFactory.getBinaryInst(basicBlock, Operator.Ne, cond, new ConstInt(0));
         }
         this.addOperand(condTmp);
         this.addOperand(trueBlock);

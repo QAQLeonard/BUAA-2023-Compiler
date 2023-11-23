@@ -7,9 +7,9 @@ import ir.value.instructions.Operator;
 
 public class StoreInst extends Instruction
 {
-    public StoreInst(BasicBlock basicBlock, Value pointer, Value value)
+    public StoreInst(Value pointer, Value value)
     {
-        super(value.getType(), Operator.Store, basicBlock);
+        super(value.getType(), Operator.Store);
         this.addOperand(value);
         this.addOperand(pointer);
     }

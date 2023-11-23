@@ -19,25 +19,13 @@ public abstract class Instruction extends User
     int handler;
     static int HANDLER = 0;
 
-    public Instruction(Type type, Operator op, BasicBlock basicBlock)
+    public Instruction(Type type, Operator op)
     {
         super("", type);
         this.op = op;
         this.node = new IRListNode<>(this);
         this.handler = HANDLER++;
         IRModule.getInstance().addInstruction(handler, this);
-    }
-
-    public void addInstToBlock(BasicBlock basicBlock)
-    {
-        if (basicBlock.getInstructionList().getTail() == null || (!(basicBlock.getInstructionList().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructionList().getTail().getValue() instanceof RetInst)))
-        {
-            basicBlock.getInstructionList().insertAtTail(this.node);
-        }
-        else
-        {
-            this.removeUseFromOperands();
-        }
     }
 
     public boolean requiresRegisterRenaming()

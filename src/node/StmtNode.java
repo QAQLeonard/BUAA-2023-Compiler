@@ -588,49 +588,46 @@ public class StmtNode extends Node
                 BasicBlock tmpContinueBlock = continueBlock;
                 BasicBlock tmpForFinalBlock = curForFinalBlock;
 
-                BasicBlock initBlock = BuildFactory.buildBasicBlock(functionStack.peek());
-                BuildFactory.getBrInst(basicBlock, initBlock);
-                blockStack.push(initBlock);
-                if(forStmtNode1 != null)
+                if (forStmtNode1 != null)
                 {
                     forStmtNode1.parseIR();
                 }
 
                 BasicBlock condBlock = BuildFactory.buildBasicBlock(functionStack.peek());
-                BuildFactory.getBrInst(initBlock, condBlock);
-
-
+                BuildFactory.getBrInst(basicBlock, condBlock);
 
 
                 BasicBlock forBlock = BuildFactory.buildBasicBlock(functionStack.peek());
                 blockStack.push(forBlock);
-                continueBlock = initBlock;
-
                 BasicBlock forFinalBlock = BuildFactory.buildBasicBlock(functionStack.peek());
-                curForFinalBlock = forFinalBlock;
-
-                stmtNodeList.get(0).parseIR();
-
-                BasicBlock iterBlock = BuildFactory.buildBasicBlock(functionStack.peek());
-                BuildFactory.getBrInst(blockStack.peek(), iterBlock);
-                blockStack.push(iterBlock);
                 if (forStmtNode2 != null)
                 {
+                    BasicBlock iterBlock = BuildFactory.buildBasicBlock(functionStack.peek());
+                    continueBlock = iterBlock;
+                    curForFinalBlock = forFinalBlock;
+                    stmtNodeList.get(0).parseIR();
+                    BuildFactory.getBrInst(blockStack.peek(), iterBlock);
+                    blockStack.push(iterBlock);
                     forStmtNode2.parseIR();
+                }
+                else
+                {
+                    continueBlock = condBlock;
+                    curForFinalBlock = forFinalBlock;
+                    stmtNodeList.get(0).parseIR();
+                    BuildFactory.getBrInst(blockStack.peek(), condBlock);
                 }
 
                 BuildFactory.getBrInst(blockStack.peek(), condBlock);
-
                 continueBlock = tmpContinueBlock;
                 curForFinalBlock = tmpForFinalBlock;
 
                 curTrueBlock = forBlock;
                 curFalseBlock = forFinalBlock;
                 blockStack.push(condBlock);
-                if(condNode != null)
-                {
-                    condNode.parseIR();
-                }
+
+                if (condNode != null) condNode.parseIR();
+                else BuildFactory.getBrInst(blockStack.peek(), forBlock);
 
                 blockStack.push(forFinalBlock);
                 break;
@@ -641,6 +638,7 @@ public class StmtNode extends Node
                 BuildFactory.getBrInst(blockStack.peek(), continueBlock);
                 break;
             case RETURN:
+                System.out.println("return");
                 if (!this.expNodeList.isEmpty())
                 {
                     this.expNodeList.get(0).parseIR();
