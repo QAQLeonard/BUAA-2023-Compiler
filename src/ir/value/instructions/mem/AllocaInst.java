@@ -6,6 +6,10 @@ import ir.type.Type;
 import ir.value.BasicBlock;
 import ir.value.instructions.Instruction;
 import ir.value.instructions.Operator;
+import utils.FileOperate;
+
+import java.io.File;
+import java.io.IOException;
 
 public class AllocaInst extends Instruction
 {
@@ -39,8 +43,8 @@ public class AllocaInst extends Instruction
     }
 
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
-        return this.getName() + " = alloca " + this.getAllocaType();
+        FileOperate.outputFileUsingUsingBuffer(destFile, this.getName() + " = alloca " + this.getAllocaType(), true);
     }
 }

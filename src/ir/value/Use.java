@@ -7,13 +7,11 @@ public class Use
 {
     private Value user;
     private Value value;
-    private int posOfOperand; // 在 OperandList 中的位置
 
-    public Use(Value user, Value value, int posOfOperand)
+    public Use(Value user, Value value)
     {
         this.user = user;
         this.value = value;
-        this.posOfOperand = posOfOperand;
     }
 
     public Value getUser()

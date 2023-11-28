@@ -642,10 +642,10 @@ public class StmtNode extends Node
                 if (!this.expNodeList.isEmpty())
                 {
                     this.expNodeList.get(0).parseIR();
-                    BuildFactory.buildRet(LLVMGenerator.blockStack.peek(), LLVMGenerator.tmpValue);
+                    BuildFactory.getRetInst(LLVMGenerator.blockStack.peek(), LLVMGenerator.tmpValue);
                     return;
                 }
-                BuildFactory.buildRet(LLVMGenerator.blockStack.peek(), null);
+                BuildFactory.getRetInst(LLVMGenerator.blockStack.peek(), null);
 
                 break;
             case GETINT:

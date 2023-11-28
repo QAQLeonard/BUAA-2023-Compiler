@@ -2,6 +2,10 @@ package ir.value;
 
 import ir.type.IntegerType;
 import ir.type.PointerType;
+import utils.FileOperate;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ConstString extends Const
 {
@@ -15,10 +19,9 @@ public class ConstString extends Const
         this.length = value.length() + 1;
         this.value = value.replace("\n", "\\0a") + "\\00";
     }
-
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
-        return "[" + length + " x " + ((PointerType) getType()).getTargetType() + "] c\"" + value + "\"";
+        FileOperate.outputFileUsingUsingBuffer(destFile, "[" + length + " x " + ((PointerType) getType()).getTargetType() + "] c\"" + value + "\"", true);
     }
 }

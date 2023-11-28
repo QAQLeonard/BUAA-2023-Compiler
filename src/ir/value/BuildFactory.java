@@ -63,11 +63,11 @@ public class BuildFactory
         }
         if (retType instanceof IntegerType)
         {
-            buildRet(basicBlock, ConstInt.ZERO);
+            getRetInst(basicBlock, ConstInt.ZERO);
         }
         else
         {
-            buildRet(basicBlock, null);
+            getRetInst(basicBlock, null);
         }
     }
 
@@ -202,8 +202,16 @@ public class BuildFactory
      */
     public static BrInst getBrInst(BasicBlock basicBlock, BasicBlock trueBlock)
     {
-        BrInst tmp = new BrInst(basicBlock, trueBlock);
-        basicBlock.addInst(tmp);
+        BrInst tmp = new BrInst(trueBlock);
+        if (basicBlock != null)
+        {
+            if (basicBlock.getInstructionList().getTail() == null || (!(basicBlock.getInstructionList().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructionList().getTail().getValue() instanceof RetInst)))
+            {
+                basicBlock.addSuccessor(trueBlock);
+                trueBlock.addSuccessor(basicBlock);
+            }
+            basicBlock.addInst(tmp);
+        }
         return tmp;
     }
 
@@ -222,9 +230,9 @@ public class BuildFactory
     }
 
 
-    public static RetInst buildRet(BasicBlock basicBlock, Value ret)
+    public static RetInst getRetInst(BasicBlock basicBlock, Value ret)
     {
-        RetInst tmp = new RetInst(basicBlock, ret);
+        RetInst tmp = new RetInst(ret);
         basicBlock.addInst(tmp);
         return tmp;
     }

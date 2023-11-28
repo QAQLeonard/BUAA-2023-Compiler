@@ -6,6 +6,10 @@ import ir.value.BasicBlock;
 import ir.value.Value;
 import ir.value.instructions.Instruction;
 import ir.value.instructions.Operator;
+import utils.FileOperate;
+
+import java.io.File;
+import java.io.IOException;
 
 public class LoadInst extends Instruction
 {
@@ -28,8 +32,8 @@ public class LoadInst extends Instruction
     }
 
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
-        return getName() + " = load " + getType() + ", " + getPointer().getType() + " " + getPointer().getName();
+        FileOperate.outputFileUsingUsingBuffer(destFile, getName() + " = load " + getType() + ", " + getPointer().getType() + " " + getPointer().getName(), true);
     }
 }

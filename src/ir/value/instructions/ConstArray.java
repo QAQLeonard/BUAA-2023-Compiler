@@ -5,7 +5,10 @@ import ir.type.Type;
 import ir.value.Const;
 import ir.value.ConstInt;
 import ir.value.Value;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,12 +84,13 @@ public class ConstArray extends Const
         return true;
     }
 
+
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
         if (allZero())
         {
-            return this.getType().toString() + " " + "zeroinitializer";
+            FileOperate.outputFileUsingUsingBuffer(destFile, this.getType().toString() + " " + "zeroinitializer", true);
         }
         else
         {
@@ -101,7 +105,7 @@ public class ConstArray extends Const
                 sb.append(array.get(i).toString());
             }
             sb.append("]");
-            return sb.toString();
+            FileOperate.outputFileUsingUsingBuffer(destFile, sb.toString(), true);
         }
     }
 }

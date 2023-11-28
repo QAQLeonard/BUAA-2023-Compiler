@@ -8,21 +8,17 @@ import ir.value.ConstInt;
 import ir.value.Value;
 import ir.value.instructions.Instruction;
 import ir.value.instructions.Operator;
+import utils.FileOperate;
+
+import java.io.File;
+import java.io.IOException;
 
 public class BrInst extends Instruction
 {
-    public BrInst(BasicBlock basicBlock, BasicBlock trueBlock)
+    public BrInst(BasicBlock trueBlock)
     {
         super(VoidType.voidType, Operator.Br);
         this.addOperand(trueBlock);
-        if (basicBlock != null)
-        {
-            if (basicBlock.getInstructionList().getTail() == null || (!(basicBlock.getInstructionList().getTail().getValue() instanceof BrInst) && !(basicBlock.getInstructionList().getTail().getValue() instanceof RetInst)))
-            {
-                basicBlock.addSuccessor(trueBlock);
-                trueBlock.addSuccessor(basicBlock);
-            }
-        }
     }
 
     public BrInst(BasicBlock basicBlock, Value cond, BasicBlock trueBlock, BasicBlock falseBlock)
@@ -48,15 +44,16 @@ public class BrInst extends Instruction
     }
 
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
         if (this.getOperands().size() == 1)
         {
-            return "br label %" + this.getOperands().get(0).getName();
+            FileOperate.outputFileUsingUsingBuffer(destFile, "br label %" + this.getOperands().get(0).getName() + "\n", true);
         }
         else
         {
-            return "br " + this.getOperands().get(0).getType() + " " + this.getOperands().get(0).getName() + ", label %" + this.getOperands().get(1).getName() + ", label %" + this.getOperands().get(2).getName();
+            FileOperate.outputFileUsingUsingBuffer(destFile, "br " + this.getOperands().get(0).getType() + " " + this.getOperands().get(0).getName() +
+                    ", label %" + this.getOperands().get(1).getName() + ", label %" + this.getOperands().get(2).getName() + "\n", true);
         }
     }
 }

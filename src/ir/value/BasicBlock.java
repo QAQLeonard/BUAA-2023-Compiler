@@ -10,7 +10,10 @@ import ir.value.instructions.terminator.CallInst;
 import ir.value.instructions.terminator.RetInst;
 import ir.utils.IRLinkedList;
 import ir.utils.IRListNode;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,13 +79,13 @@ public class BasicBlock extends Value
     }
 
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
-        StringBuilder s = new StringBuilder();
         for (IRListNode<Instruction, BasicBlock> instruction : this.instructionList)
         {
-            s.append("    ").append(instruction.getValue().toString()).append("\n");
+            FileOperate.outputFileUsingUsingBuffer(destFile, "    ", true);
+            instruction.getValue().outputIR(destFile);
+            FileOperate.outputFileUsingUsingBuffer(destFile, "\n", true);
         }
-        return s.toString();
     }
 }

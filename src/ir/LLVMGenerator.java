@@ -15,7 +15,6 @@ import static utils.FileOperate.CreateFileUsingJava7Files;
 
 public class LLVMGenerator
 {
-    private static LLVMGenerator instance;
     public static BasicBlock curTrueBlock = null;
     public static BasicBlock curFalseBlock = null;
     public static BasicBlock continueBlock = null;
@@ -24,9 +23,6 @@ public class LLVMGenerator
     public static Stack<Function> functionStack = new Stack<>();
     public static Stack<BasicBlock> blockStack = new Stack<>();
 
-    /**
-     * 计算时需要保留的
-     */
     public static Integer saveValue = null;
     public static Operator saveOp = null;
     public static int tmpIndex = 0;
@@ -42,19 +38,12 @@ public class LLVMGenerator
     public static boolean isArray = false;
     public static boolean isRegister = false;
 
-    /**
-     * 数组相关
-     */
     public static Value curArray = null;
     public static String tmpName = null;
     public static int tmpDepth = 0;
     public static int tmpOffset = 0;
     public static List<Integer> tmpDims = null;
 
-
-    /**
-     * 新符号表系统
-     */
     private static List<Map<String, Value>> symbolTable = new ArrayList<>();
 
     public static Map<String, Value> getCurSymbolTable()
@@ -84,9 +73,6 @@ public class LLVMGenerator
         return null;
     }
 
-    /**
-     * 常量表
-     */
     private static List<Map<String, Integer>> constTable = new ArrayList<>();
 
 
@@ -112,10 +98,6 @@ public class LLVMGenerator
         return 0;
     }
 
-
-    /**
-     * 字符串相关
-     */
     private List<String> stringList = new ArrayList<>();
 
     private int getStringIndex(String str)
@@ -144,10 +126,6 @@ public class LLVMGenerator
         return getStringName(getStringIndex(str));
     }
 
-
-    /**
-     * 添加和删除当前块符号表和常量表
-     */
     public static void addSymbolAndConstTable()
     {
         symbolTable.add(new HashMap<>());
@@ -160,14 +138,6 @@ public class LLVMGenerator
         constTable.remove(constTable.size() - 1);
     }
 
-    public static LLVMGenerator getInstance()
-    {
-        if (instance == null)
-        {
-            instance = new LLVMGenerator();
-        }
-        return instance;
-    }
 
     public static void run()
     {
@@ -183,7 +153,7 @@ public class LLVMGenerator
     {
         File destFile = new File("llvm_ir.txt");
         CreateFileUsingJava7Files(destFile);
-        FileOperate.outputFileUsingUsingBuffer(destFile, IRModule.getInstance().toString(), true);
+        IRModule.getInstance().outputIR(destFile);
     }
 
 

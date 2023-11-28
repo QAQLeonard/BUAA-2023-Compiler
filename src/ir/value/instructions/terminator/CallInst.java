@@ -10,7 +10,10 @@ import ir.value.Function;
 import ir.value.Value;
 import ir.value.instructions.Instruction;
 import ir.value.instructions.Operator;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class CallInst extends Instruction
@@ -71,7 +74,7 @@ public class CallInst extends Instruction
     }
 
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
         StringBuilder s = new StringBuilder();
         Type returnType = ((FunctionType) this.getCalledFunction().getType()).getReturnType();
@@ -83,16 +86,16 @@ public class CallInst extends Instruction
         {
             s.append(this.getName()).append(" = call ");
         }
-        s.append(returnType.toString()).append(" @").append(this.getCalledFunction().getName()).append("(");
+        s.append(returnType).append(" @").append(this.getCalledFunction().getName()).append("(");
         for (int i = 1; i < this.getOperands().size(); i++)
         {
-            s.append(this.getOperands().get(i).getType().toString()).append(" ").append(this.getOperands().get(i).getName());
+            s.append(this.getOperands().get(i).getType()).append(" ").append(this.getOperands().get(i).getName());
             if (i != this.getOperands().size() - 1)
             {
                 s.append(", ");
             }
         }
         s.append(")");
-        return s.toString();
+        FileOperate.outputFileUsingUsingBuffer(destFile, s.toString(), true);
     }
 }

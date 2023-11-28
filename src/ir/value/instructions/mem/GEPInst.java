@@ -9,7 +9,10 @@ import ir.value.GlobalVar;
 import ir.value.Value;
 import ir.value.instructions.Instruction;
 import ir.value.instructions.Operator;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class GEPInst extends Instruction
@@ -67,13 +70,12 @@ public class GEPInst extends Instruction
         }
         return type;
     }
-
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
         StringBuilder s = new StringBuilder();
         s.append(getName()).append(" = getelementptr ");
-        // 如果是字符串，需要加 inbounds
+
         if (getPointer().getType() instanceof PointerType && ((PointerType) getPointer().getType()).getTargetType() instanceof ArrayType && ((ArrayType) ((PointerType) getPointer().getType()).getTargetType()).getElementType() instanceof IntegerType && ((IntegerType) ((ArrayType) ((PointerType) getPointer().getType()).getTargetType()).getElementType()).isI8())
         {
             s.append("inbounds ");
@@ -90,6 +92,6 @@ public class GEPInst extends Instruction
                 s.append(", ").append(getOperands().get(i).getType()).append(" ").append(getOperands().get(i).getName());
             }
         }
-        return s.toString();
+        FileOperate.outputFileUsingUsingBuffer(destFile, s.toString(), true);
     }
 }

@@ -5,45 +5,58 @@ import ir.type.VoidType;
 import ir.value.BasicBlock;
 import ir.value.BuildFactory;
 import ir.value.Value;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class BinaryInst extends Instruction {
+public class BinaryInst extends Instruction
+{
 
-    public BinaryInst(BasicBlock basicBlock, Operator op, Value left, Value right) {
+    public BinaryInst(BasicBlock basicBlock, Operator op, Value left, Value right)
+    {
         super(VoidType.voidType, op);
         boolean isLeftI1 = left.getType() instanceof IntegerType && ((IntegerType) left.getType()).isI1();
         boolean isRightI1 = right.getType() instanceof IntegerType && ((IntegerType) right.getType()).isI1();
         boolean isLeftI32 = left.getType() instanceof IntegerType && ((IntegerType) left.getType()).isI32();
         boolean isRightI32 = right.getType() instanceof IntegerType && ((IntegerType) right.getType()).isI32();
-        if (isLeftI1 && isRightI32) {
+        if (isLeftI1 && isRightI32)
+        {
             this.addOperand(BuildFactory.buildZext(left, basicBlock));
             this.addOperand(right);
-        } else if (isLeftI32 && isRightI1) {
+        }
+        else if (isLeftI32 && isRightI1)
+        {
             this.addOperand(left);
             this.addOperand(BuildFactory.buildZext(right, basicBlock));
-        } else {
+        }
+        else
+        {
             this.addOperand(left);
             this.addOperand(right);
         }
         this.setType(this.getOperands().get(0).getType());
-        if (isCond()) {
+        if (isCond())
+        {
             this.setType(IntegerType.i1);
         }
         this.setName("%" + REG_NUMBER++);
     }
 
 
-    public boolean isCond() {
+    public boolean isCond()
+    {
         // return this.isLt() || this.isLe() || this.isGe() || this.isGt() || this.isEq() || this.isNe();
-        Operator temp =  this.op;
+        Operator temp = this.op;
         return temp == Operator.Lt || temp == Operator.Le || temp == Operator.Ge || temp == Operator.Gt || temp == Operator.Eq || temp == Operator.Ne;
     }
 
     private static final Map<Operator, String> OPERATOR_IR_MAP = new EnumMap<>(Operator.class);
 
-    static {
+    static
+    {
         OPERATOR_IR_MAP.put(Operator.Add, "add i32 ");
         OPERATOR_IR_MAP.put(Operator.Sub, "sub i32 ");
         OPERATOR_IR_MAP.put(Operator.Mul, "mul i32 ");
@@ -62,22 +75,23 @@ public class BinaryInst extends Instruction {
         OPERATOR_IR_MAP.put(Operator.Ne, "icmp ne ");
     }
 
-
     @Override
-    public String toString() {
+    public void outputIR(File destFile) throws IOException
+    {
         String operatorIR = OPERATOR_IR_MAP.getOrDefault(this.op, "");
         String typeStr = this.getOperands().get(0).getType().toString();
 
-        // 对于 And 和 Or 操作，类型是操作数的类型
-        if (this.op == Operator.And || this.op == Operator.Or) {
+
+        if (this.op == Operator.And || this.op == Operator.Or)
+        {
             operatorIR += typeStr + " ";
         }
 
-        // 逻辑比较操作也需要操作数的类型
-        if (this.isCond()) {
+        if (this.isCond())
+        {
             operatorIR += typeStr + " ";
         }
 
-        return getName() + " = " + operatorIR + this.getOperands().get(0).getName() + ", " + this.getOperands().get(1).getName();
+        FileOperate.outputFileUsingUsingBuffer(destFile, getName() + " = " + operatorIR + this.getOperands().get(0).getName() + ", " + this.getOperands().get(1).getName() + "\n", true);
     }
 }

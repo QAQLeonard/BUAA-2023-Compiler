@@ -4,7 +4,10 @@ import ir.value.*;
 import ir.value.instructions.Instruction;
 import ir.utils.IRLinkedList;
 import ir.utils.IRListNode;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,4 +102,43 @@ public class IRModule
         }
         return s.toString();
     }
+
+
+    public void outputIR(File destFile) throws IOException
+    {
+        StringBuilder s = new StringBuilder();
+        for (GlobalVar globalVar : globalVars)
+        {
+            globalVar.outputIR(destFile);
+        }
+        if (!globalVars.isEmpty())
+        {
+            FileOperate.outputFileUsingUsingBuffer(destFile, "\n", true);
+        }
+        refreshRegNumber();
+        for (IRListNode<Function, IRModule> function : functions)
+        {
+            if (function.getValue().isLibraryFunction())
+            {
+                FileOperate.outputFileUsingUsingBuffer(destFile, "declare ", true);
+                function.getValue().outputIR(destFile);
+                FileOperate.outputFileUsingUsingBuffer(destFile, "\n", true);
+            }
+            else
+            {
+                FileOperate.outputFileUsingUsingBuffer(destFile, "\ndefine dso_local ", true);
+                function.getValue().outputIR(destFile);
+                FileOperate.outputFileUsingUsingBuffer(destFile, "{\n", true);
+                for (IRListNode<BasicBlock, Function> basicBlock : function.getValue().getList())
+                {
+                    if (basicBlock != function.getValue().getList().getHead())
+                        FileOperate.outputFileUsingUsingBuffer(destFile, "\n", true);
+                    FileOperate.outputFileUsingUsingBuffer(destFile, ";<label>:" + basicBlock.getValue().getName() + ":\n", true);
+                    basicBlock.getValue().outputIR(destFile);
+                }
+                FileOperate.outputFileUsingUsingBuffer(destFile, "}\n", true);
+            }
+        }
+    }
 }
+

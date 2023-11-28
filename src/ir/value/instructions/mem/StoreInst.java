@@ -4,6 +4,10 @@ import ir.value.BasicBlock;
 import ir.value.Value;
 import ir.value.instructions.Instruction;
 import ir.value.instructions.Operator;
+import utils.FileOperate;
+
+import java.io.File;
+import java.io.IOException;
 
 public class StoreInst extends Instruction
 {
@@ -15,8 +19,10 @@ public class StoreInst extends Instruction
     }
 
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
-        return "store " + getOperands().get(0).getType() + " " + getOperands().get(0).getName() + ", " + getOperands().get(1).getType() + " " + getOperands().get(1).getName();
+        StringBuilder s = new StringBuilder();
+        s.append("store ").append(getOperands().get(0).getType()).append(" ").append(getOperands().get(0).getName()).append(", ").append(getOperands().get(1).getType()).append(" ").append(getOperands().get(1).getName());
+        FileOperate.outputFileUsingUsingBuffer(destFile, s.toString(), true);
     }
 }

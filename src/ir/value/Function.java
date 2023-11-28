@@ -5,7 +5,10 @@ import ir.type.FunctionType;
 import ir.type.Type;
 import ir.utils.IRLinkedList;
 import ir.utils.IRListNode;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,20 +77,19 @@ public class Function extends Value
     }
 
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
         StringBuilder s = new StringBuilder();
         s.append(((FunctionType) this.getType()).getReturnType()).append(" @").append(this.getName()).append("(");
         for (int i = 0; i < arguments.size(); i++)
         {
             s.append(arguments.get(i).getType());
-            // s.append(" ").append(arguments.get(i).getName());
             if (i != arguments.size() - 1)
             {
                 s.append(", ");
             }
         }
         s.append(")");
-        return s.toString();
+        FileOperate.outputFileUsingUsingBuffer(destFile, s.toString(), true);
     }
 }

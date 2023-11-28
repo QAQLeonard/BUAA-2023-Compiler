@@ -2,7 +2,10 @@ package ir.value;
 
 import ir.IRModule;
 import ir.type.Type;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,5 +56,10 @@ public class Value
     public String toString()
     {
         return type.toString() + " " + name;
+    }
+
+    public void outputIR(File destFile) throws IOException
+    {
+        FileOperate.outputFileUsingUsingBuffer(destFile, type.toString() + " " + name, true);
     }
 }

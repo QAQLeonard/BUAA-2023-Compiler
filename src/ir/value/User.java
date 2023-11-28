@@ -1,7 +1,10 @@
 package ir.value;
 
 import ir.type.Type;
+import utils.FileOperate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,7 @@ public class User extends Value
         this.operands.add(operand);
         if (operand != null)
         {
-            operand.useList.add(new Use(operand, this, operands.size() - 1));
+            operand.useList.add(new Use(operand, this));
         }
     }
 
@@ -42,6 +45,11 @@ public class User extends Value
                 operand.removeUseByUser(this);
             }
         }
+    }
+
+    public void outputIR(File destFile) throws IOException
+    {
+        FileOperate.outputFileUsingUsingBuffer(destFile, type.toString() + " " + name, true);
     }
 
 }

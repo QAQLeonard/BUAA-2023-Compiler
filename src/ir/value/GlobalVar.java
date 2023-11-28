@@ -3,6 +3,10 @@ package ir.value;
 import ir.IRModule;
 import ir.type.PointerType;
 import ir.type.Type;
+import utils.FileOperate;
+
+import java.io.File;
+import java.io.IOException;
 
 public class GlobalVar extends User
 {
@@ -30,7 +34,7 @@ public class GlobalVar extends User
     }
 
     @Override
-    public String toString()
+    public void outputIR(File destFile) throws IOException
     {
         StringBuilder sb = new StringBuilder();
         sb.append(this.getName()).append(" = ");
@@ -46,6 +50,6 @@ public class GlobalVar extends User
         {
             sb.append(value);
         }
-        return sb.toString();
+        FileOperate.outputFileUsingUsingBuffer(destFile, sb.toString()+"\n", true);
     }
 }
