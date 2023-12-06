@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static frontend.parser.ParserUtils.*;
-import static ir.IRGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 变量定义 VarDef → Ident { '[' ConstExp ']' }<br>

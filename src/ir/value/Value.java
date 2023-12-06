@@ -1,6 +1,6 @@
 package ir.value;
 
-import ir.IRGenerator;
+import ir.LLVMGenerator;
 import ir.type.Type;
 import utils.FileOperate;
 
@@ -21,7 +21,7 @@ public class Value
         this.name = name;
         this.type = type;
         this.useList = new ArrayList<>();
-        id = "identifier" + (++IRGenerator.id_cnt);
+        id = "identifier" + (++LLVMGenerator.id_cnt);
     }
 
     public String getName()

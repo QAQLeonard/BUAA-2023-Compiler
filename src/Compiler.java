@@ -2,7 +2,7 @@ import backend.MipsGenerator;
 import backend.errorhandler.ErrorHandler;
 import frontend.lexer.Lexer;
 import frontend.parser.Parser;
-import ir.IRGenerator;
+import ir.LLVMGenerator;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public class Compiler
             parser.run();
             // parser.output();
             // errorHandler.output();
-            IRGenerator.run();
+            LLVMGenerator.run();
             MipsGenerator.outputMips();
         }
         catch (IOException e)

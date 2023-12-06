@@ -22,7 +22,7 @@ import java.util.Objects;
 
 import static frontend.parser.ParserUtils.outputArrayDimension;
 import static frontend.parser.ParserUtils.parseArrayDimension;
-import static ir.IRGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 常数定义 ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal

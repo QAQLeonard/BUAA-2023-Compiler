@@ -1,6 +1,6 @@
 package node;
 
-import ir.IRGenerator;
+import ir.LLVMGenerator;
 import token.Token;
 import frontend.parser.ParserUtils;
 import symbol.SymbolTable;
@@ -63,8 +63,8 @@ public class ExpNode extends Node implements Expression
     @Override
     public void parseIR()
     {
-        IRGenerator.tmpValue = null;
-        IRGenerator.saveValue = null;
+        LLVMGenerator.tmpValue = null;
+        LLVMGenerator.saveValue = null;
         this.addExpNode.parseIR();
     }
 

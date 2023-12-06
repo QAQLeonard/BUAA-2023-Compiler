@@ -1,6 +1,6 @@
 package node;
 
-import ir.IRGenerator;
+import ir.LLVMGenerator;
 import ir.value.Value;
 import ir.value.instructions.Operator;
 import ir.value.BuildFactory;
@@ -136,36 +136,36 @@ public class AddExpNode extends Node implements Expression
     @Override
     public void parseIR()
     {
-        if (IRGenerator.isConst)
+        if (LLVMGenerator.isConst)
         {
-            Integer value = IRGenerator.saveValue;
-            Operator op = IRGenerator.saveOp;
-            IRGenerator.saveValue = null;
+            Integer value = LLVMGenerator.saveValue;
+            Operator op = LLVMGenerator.saveOp;
+            LLVMGenerator.saveValue = null;
             this.mulExpNode.parseIR();
             if (value != null)
             {
-                IRGenerator.saveValue = calculate(op, value, IRGenerator.saveValue);
+                LLVMGenerator.saveValue = calculate(op, value, LLVMGenerator.saveValue);
             }
             if (this.addExpNode != null)
             {
-                IRGenerator.saveOp = getOPToken().getType() == TokenType.PLUS ? Operator.Add : Operator.Sub;
+                LLVMGenerator.saveOp = getOPToken().getType() == TokenType.PLUS ? Operator.Add : Operator.Sub;
                 addExpNode.parseIR();
             }
         }
         else
         {
-            Value value = IRGenerator.tmpValue;
-            Operator op = IRGenerator.tmpOp;
+            Value value = LLVMGenerator.tmpValue;
+            Operator op = LLVMGenerator.tmpOp;
 
-            IRGenerator.tmpValue = null;
+            LLVMGenerator.tmpValue = null;
             this.mulExpNode.parseIR();
             if (value != null)
             {
-                IRGenerator.tmpValue = BuildFactory.getBinaryInst(IRGenerator.blockStack.peek(), op, value, IRGenerator.tmpValue);
+                LLVMGenerator.tmpValue = BuildFactory.getBinaryInst(LLVMGenerator.blockStack.peek(), op, value, LLVMGenerator.tmpValue);
             }
             if (addExpNode != null)
             {
-                IRGenerator.tmpOp = getOPToken().getType() == TokenType.PLUS ? Operator.Add : Operator.Sub;
+                LLVMGenerator.tmpOp = getOPToken().getType() == TokenType.PLUS ? Operator.Add : Operator.Sub;
                 this.addExpNode.parseIR();
             }
         }

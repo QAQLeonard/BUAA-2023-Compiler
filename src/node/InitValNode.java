@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static ir.IRGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * InitVal → Exp <br>

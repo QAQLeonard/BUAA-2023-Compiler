@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static ir.IRGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 函数形参表 FuncFParams → FuncFParam { ',' FuncFParam }

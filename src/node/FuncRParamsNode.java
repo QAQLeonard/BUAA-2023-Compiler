@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static ir.IRGenerator.*;
+import static ir.LLVMGenerator.*;
 /**
  * 函数实参表 FuncRParams → Exp { ',' Exp }
  */

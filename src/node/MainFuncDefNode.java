@@ -3,7 +3,7 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
-import ir.IRGenerator;
+import ir.LLVMGenerator;
 import ir.type.IntegerType;
 import ir.value.Function;
 import ir.value.BuildFactory;
@@ -81,17 +81,17 @@ public class MainFuncDefNode extends Node
     @Override
     public void parseIR()
     {
-        IRGenerator.isGlobal = false;
+        LLVMGenerator.isGlobal = false;
         Function function = BuildFactory.getFunction("main", IntegerType.i32, new ArrayList<>());
-        IRGenerator.functionStack.push(function);
-        IRGenerator.addSymbol("main", function);
-        IRGenerator.addSymbolAndConstTable();
-        IRGenerator.addSymbol("main", function);
-        IRGenerator.blockStack.push(BuildFactory.buildBasicBlock(IRGenerator.functionStack.peek()));
-        IRGenerator.funcArgsList = BuildFactory.getFunctionArguments(IRGenerator.functionStack.peek());
+        LLVMGenerator.functionStack.push(function);
+        LLVMGenerator.addSymbol("main", function);
+        LLVMGenerator.addSymbolAndConstTable();
+        LLVMGenerator.addSymbol("main", function);
+        LLVMGenerator.blockStack.push(BuildFactory.buildBasicBlock(LLVMGenerator.functionStack.peek()));
+        LLVMGenerator.funcArgsList = BuildFactory.getFunctionArguments(LLVMGenerator.functionStack.peek());
         this.blockNode.parseIR();
-        IRGenerator.isGlobal = true;
-        IRGenerator.removeSymbolAndConstTable();
-        BuildFactory.checkBlockEnd(IRGenerator.blockStack.peek());
+        LLVMGenerator.isGlobal = true;
+        LLVMGenerator.removeSymbolAndConstTable();
+        BuildFactory.checkBlockEnd(LLVMGenerator.blockStack.peek());
     }
 }

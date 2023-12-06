@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static ir.IRGenerator.*;
+import static ir.LLVMGenerator.*;
 /**
  * 函数形参 FuncFParam → BType Ident ['[' ']' { '[' ConstExp ']' }]
  */

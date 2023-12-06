@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import static ir.IRGenerator.*;
+import static ir.LLVMGenerator.*;
 /**
  * 常量初值 ConstInitVal → ConstExp<br>
  * | '{' [ ConstInitVal { ',' ConstInitVal } ] '}'

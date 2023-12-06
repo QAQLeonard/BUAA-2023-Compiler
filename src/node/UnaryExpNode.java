@@ -3,7 +3,7 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
-import ir.IRGenerator;
+import ir.LLVMGenerator;
 import ir.value.ConstInt;
 import ir.value.Function;
 import ir.value.instructions.Operator;
@@ -227,13 +227,13 @@ public class UnaryExpNode extends Node implements Expression
         else if (this.IDENFRToken != null)
         {
             // Ident '(' [FuncRParams] ')'
-            IRGenerator.tmpList = new ArrayList<>();
+            LLVMGenerator.tmpList = new ArrayList<>();
             if (funcRParamsNode != null)
             {
                 funcRParamsNode.parseIR();
             }
 
-            IRGenerator.tmpValue = BuildFactory.getCallInst(IRGenerator.blockStack.peek(), (Function) IRGenerator.getValue(IDENFRToken.getValue()), IRGenerator.tmpList);
+            LLVMGenerator.tmpValue = BuildFactory.getCallInst(LLVMGenerator.blockStack.peek(), (Function) LLVMGenerator.getValue(IDENFRToken.getValue()), LLVMGenerator.tmpList);
         }
         else
         {
@@ -246,19 +246,19 @@ public class UnaryExpNode extends Node implements Expression
             else if (unaryOpNode.getOPToken().getType() == TokenType.MINU)
             {
                 unaryExpNode.parseIR();
-                if (IRGenerator.isConst)
+                if (LLVMGenerator.isConst)
                 {
-                    IRGenerator.saveValue = -IRGenerator.saveValue;
+                    LLVMGenerator.saveValue = -LLVMGenerator.saveValue;
                 }
                 else
                 {
-                    IRGenerator.tmpValue = BuildFactory.getBinaryInst(IRGenerator.blockStack.peek(), Operator.Sub, ConstInt.ZERO, IRGenerator.tmpValue);
+                    LLVMGenerator.tmpValue = BuildFactory.getBinaryInst(LLVMGenerator.blockStack.peek(), Operator.Sub, ConstInt.ZERO, LLVMGenerator.tmpValue);
                 }
             }
             else
             {
                 unaryExpNode.parseIR();
-                IRGenerator.tmpValue = BuildFactory.buildNot(IRGenerator.blockStack.peek(), IRGenerator.tmpValue);
+                LLVMGenerator.tmpValue = BuildFactory.buildNot(LLVMGenerator.blockStack.peek(), LLVMGenerator.tmpValue);
             }
         }
     }

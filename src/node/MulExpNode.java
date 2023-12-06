@@ -1,6 +1,6 @@
 package node;
 
-import ir.IRGenerator;
+import ir.LLVMGenerator;
 import ir.value.BuildFactory;
 import ir.value.Value;
 import ir.value.instructions.Operator;
@@ -147,28 +147,28 @@ public class MulExpNode extends Node implements Expression
     public void parseIR()
     {
         // UnaryExp | UnaryExp ('*' | '/' | '%') MulExp
-        if (IRGenerator.isConst)
+        if (LLVMGenerator.isConst)
         {
-            Integer value = IRGenerator.saveValue;
-            Operator op = IRGenerator.saveOp;
-            IRGenerator.saveValue = null;
+            Integer value = LLVMGenerator.saveValue;
+            Operator op = LLVMGenerator.saveOp;
+            LLVMGenerator.saveValue = null;
             unaryExpNode.parseIR();
             if (value != null)
             {
-                IRGenerator.saveValue = calculate(op, value, IRGenerator.saveValue);
+                LLVMGenerator.saveValue = calculate(op, value, LLVMGenerator.saveValue);
             }
             if (mulExpNode != null)
             {
                 switch (getOPToken().getType())
                 {
                     case MULT:
-                        IRGenerator.saveOp = Operator.Mul;
+                        LLVMGenerator.saveOp = Operator.Mul;
                         break;
                     case DIV:
-                        IRGenerator.saveOp = Operator.Div;
+                        LLVMGenerator.saveOp = Operator.Div;
                         break;
                     case MOD:
-                        IRGenerator.saveOp = Operator.Mod;
+                        LLVMGenerator.saveOp = Operator.Mod;
                         break;
                     default:
                         throw new RuntimeException("unknown operator");
@@ -178,27 +178,27 @@ public class MulExpNode extends Node implements Expression
         }
         else
         {
-            Value value = IRGenerator.tmpValue;
-            Operator op = IRGenerator.tmpOp;
-            IRGenerator.tmpValue = null;
+            Value value = LLVMGenerator.tmpValue;
+            Operator op = LLVMGenerator.tmpOp;
+            LLVMGenerator.tmpValue = null;
             unaryExpNode.parseIR();
             if (value != null)
             {
-                IRGenerator.tmpValue = BuildFactory.getBinaryInst(IRGenerator.blockStack.peek(), op, value, IRGenerator.tmpValue);
+                LLVMGenerator.tmpValue = BuildFactory.getBinaryInst(LLVMGenerator.blockStack.peek(), op, value, LLVMGenerator.tmpValue);
             }
             if (mulExpNode != null)
             {
                 if (getOPToken().getType() == TokenType.MULT)
                 {
-                    IRGenerator.tmpOp = Operator.Mul;
+                    LLVMGenerator.tmpOp = Operator.Mul;
                 }
                 else if (getOPToken().getType() == TokenType.DIV)
                 {
-                    IRGenerator.tmpOp = Operator.Div;
+                    LLVMGenerator.tmpOp = Operator.Div;
                 }
                 else
                 {
-                    IRGenerator.tmpOp = Operator.Mod;
+                    LLVMGenerator.tmpOp = Operator.Mod;
                 }
                 mulExpNode.parseIR();
             }

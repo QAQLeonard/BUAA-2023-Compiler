@@ -12,7 +12,7 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 
-import static ir.IRGenerator.*;
+import static ir.LLVMGenerator.*;
 /**
  * 逻辑或表达式 LOrExp → LAndExp | LAndExp '||' LOrExp
  */

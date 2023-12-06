@@ -12,7 +12,7 @@ import java.util.*;
 
 import static utils.FileOperate.CreateFileUsingJava7Files;
 
-public class IRGenerator
+public class LLVMGenerator
 {
     public static BasicBlock curTrueBlock = null;
     public static BasicBlock curFalseBlock = null;

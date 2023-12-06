@@ -3,7 +3,7 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
-import ir.IRGenerator;
+import ir.LLVMGenerator;
 import ir.type.PointerType;
 import ir.type.Type;
 import ir.value.*;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static ir.IRGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 语句 Stmt → LVal '=' Exp ';'
@@ -635,10 +635,10 @@ public class StmtNode extends Node
                 if (!this.expNodeList.isEmpty())
                 {
                     this.expNodeList.get(0).parseIR();
-                    BuildFactory.getRetInst(IRGenerator.blockStack.peek(), IRGenerator.tmpValue);
+                    BuildFactory.getRetInst(LLVMGenerator.blockStack.peek(), LLVMGenerator.tmpValue);
                     return;
                 }
-                BuildFactory.getRetInst(IRGenerator.blockStack.peek(), null);
+                BuildFactory.getRetInst(LLVMGenerator.blockStack.peek(), null);
             }
 
             case GETINT ->
