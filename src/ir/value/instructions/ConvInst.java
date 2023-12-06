@@ -28,7 +28,7 @@ public class ConvInst extends Instruction
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         if(op == Operator.Zext)
         {

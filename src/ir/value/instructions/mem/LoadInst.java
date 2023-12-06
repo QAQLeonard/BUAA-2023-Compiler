@@ -32,7 +32,7 @@ public class LoadInst extends Instruction
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         FileOperate.outputFileUsingUsingBuffer(destFile, getName() + " = load " + getType() + ", " + getPointer().getType() + " " + getPointer().getName(), true);
     }

@@ -47,7 +47,7 @@ public class User extends Value
         }
     }
 
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         FileOperate.outputFileUsingUsingBuffer(destFile, type.toString() + " " + name, true);
     }

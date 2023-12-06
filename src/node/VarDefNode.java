@@ -5,6 +5,8 @@ import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
 import ir.type.Type;
 import ir.value.BuildFactory;
+import ir.value.GlobalVar;
+import ir.value.instructions.ConstArray;
 import symbol.ARRAYSymbol;
 import symbol.INTSymbol;
 import symbol.SymbolTable;
@@ -21,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static frontend.parser.ParserUtils.*;
-import static ir.LLVMGenerator.*;
+import static ir.IRGenerator.*;
 
 /**
  * 变量定义 VarDef → Ident { '[' ConstExp ']' }<br>
@@ -169,6 +171,10 @@ public class VarDefNode extends Node
             if (isGlobal)
             {
                 tmpValue = BuildFactory.getGlobalArray(name, type, false);
+                if(initValNode != null)
+                {
+                    ((ConstArray) ((GlobalVar) tmpValue).getValue()).init = true;
+                }
             }
             else
             {

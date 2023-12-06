@@ -87,4 +87,8 @@ public class ArrayType implements Type
         return "[" + length + " x " + elementType.toString() + "]";
     }
 
+    public boolean isString()
+    {
+        return elementType instanceof IntegerType && ((IntegerType) elementType).isI8();
+    }
 }

@@ -22,7 +22,7 @@ public class RetInst extends Instruction
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         if (getOperands().size() == 1)
         {

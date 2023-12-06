@@ -13,7 +13,7 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 
-import static ir.LLVMGenerator.*;
+import static ir.IRGenerator.*;
 
 /**
  * 关系表达式 RelExp → AddExp | AddExp ('<' | '>' | '<=' | '>=') RelExp

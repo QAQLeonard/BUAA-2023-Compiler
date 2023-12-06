@@ -5,6 +5,8 @@ import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
 import ir.type.Type;
 import ir.value.BuildFactory;
+import ir.value.GlobalVar;
+import ir.value.instructions.ConstArray;
 import symbol.*;
 import token.Token;
 import token.TokenType;
@@ -20,7 +22,7 @@ import java.util.Objects;
 
 import static frontend.parser.ParserUtils.outputArrayDimension;
 import static frontend.parser.ParserUtils.parseArrayDimension;
-import static ir.LLVMGenerator.*;
+import static ir.IRGenerator.*;
 
 /**
  * 常数定义 ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal
@@ -148,6 +150,7 @@ public class ConstDefNode extends Node
             if (isGlobal)
             {
                 tmpValue = BuildFactory.getGlobalArray(name, type, true);
+                ((ConstArray) ((GlobalVar) tmpValue).getValue()).init = true;
             }
             else
             {

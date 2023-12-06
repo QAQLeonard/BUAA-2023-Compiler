@@ -1,23 +1,16 @@
 package node;
 
-import ir.LLVMGenerator;
-import ir.type.IntegerType;
-import ir.type.PointerType;
-import ir.type.VoidType;
 import symbol.SymbolTable;
 import token.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
 import utils.FileOperate;
-import ir.value.BuildFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
-import static ir.LLVMGenerator.*;
 /**
  * 编译单元 CompUnit → {Decl} {FuncDef} MainFuncDef
  */

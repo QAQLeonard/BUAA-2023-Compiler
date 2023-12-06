@@ -74,7 +74,7 @@ public class CallInst extends Instruction
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         StringBuilder s = new StringBuilder();
         Type returnType = ((FunctionType) this.getCalledFunction().getType()).getReturnType();

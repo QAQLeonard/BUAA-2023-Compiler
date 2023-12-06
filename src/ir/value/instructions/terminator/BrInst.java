@@ -43,8 +43,32 @@ public class BrInst extends Instruction
         }
     }
 
+    public BasicBlock getTrueLabel()
+    {
+        if (this.getOperands().size() == 3)  // is CondBr
+        {
+            return (BasicBlock) this.getOperands().get(1);
+        }
+        else
+        {
+            return (BasicBlock) this.getOperands().get(0);
+        }
+    }
+
+    public BasicBlock getFalseLabel()
+    {
+        if (this.getOperands().size() == 3)
+        {
+            return (BasicBlock) this.getOperands().get(2);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         if (this.getOperands().size() == 1)
         {
@@ -52,8 +76,7 @@ public class BrInst extends Instruction
         }
         else
         {
-            FileOperate.outputFileUsingUsingBuffer(destFile, "br " + this.getOperands().get(0).getType() + " " + this.getOperands().get(0).getName() +
-                    ", label %" + this.getOperands().get(1).getName() + ", label %" + this.getOperands().get(2).getName() + "\n", true);
+            FileOperate.outputFileUsingUsingBuffer(destFile, "br " + this.getOperands().get(0).getType() + " " + this.getOperands().get(0).getName() + ", label %" + this.getOperands().get(1).getName() + ", label %" + this.getOperands().get(2).getName() + "\n", true);
         }
     }
 }

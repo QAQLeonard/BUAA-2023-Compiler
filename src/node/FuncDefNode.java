@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static frontend.parser.ParserUtils.funcSymbolStack;
-import static ir.LLVMGenerator.*;
+import static ir.IRGenerator.*;
 
 /**
  * 函数定义 FuncDef → FuncType Ident '(' [FuncFParams] ')' Block

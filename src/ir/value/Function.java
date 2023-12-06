@@ -77,7 +77,7 @@ public class Function extends Value
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         StringBuilder s = new StringBuilder();
         s.append(((FunctionType) this.getType()).getReturnType()).append(" @").append(this.getName()).append("(");

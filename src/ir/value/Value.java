@@ -1,18 +1,18 @@
 package ir.value;
 
-import ir.IRModule;
+import ir.IRGenerator;
 import ir.type.Type;
 import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Value
 {
     String name;
     Type type;
+    String id;
     ArrayList<Use> useList; // def-use
     public static int REG_NUMBER = 0;
 
@@ -21,6 +21,7 @@ public class Value
         this.name = name;
         this.type = type;
         this.useList = new ArrayList<>();
+        id = "identifier" + (++IRGenerator.id_cnt);
     }
 
     public String getName()
@@ -43,6 +44,11 @@ public class Value
         this.type = type;
     }
 
+    public String getId()
+    {
+        return id;
+    }
+
     /**
      * Remove all use used by the user
      * @param user
@@ -58,8 +64,15 @@ public class Value
         return type.toString() + " " + name;
     }
 
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         FileOperate.outputFileUsingUsingBuffer(destFile, type.toString() + " " + name, true);
+    }
+
+    public String getIdentifier()
+    {
+        if (this instanceof ConstInt) return name;
+        if (name.startsWith("@")) return name.replaceAll("@", "");
+        return name + "_" + id;
     }
 }

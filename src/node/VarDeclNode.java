@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import static ir.LLVMGenerator.*;
+import static ir.IRGenerator.*;
 
 /**
  * 变量声明 VarDecl → BType VarDef { ',' VarDef } ';'

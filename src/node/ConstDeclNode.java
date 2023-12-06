@@ -1,6 +1,6 @@
 package node;
 
-import ir.LLVMGenerator;
+import ir.IRGenerator;
 import ir.type.IntegerType;
 import symbol.SymbolTable;
 import token.Token;
@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import static ir.LLVMGenerator.*;
+import static ir.IRGenerator.*;
 /**
  * 常数声明 ConstDecl → 'const' BType ConstDef { ',' ConstDef } ';'
  */
@@ -72,7 +72,7 @@ public class ConstDeclNode extends Node {
     @Override
     public void parseSymbol(SymbolTable st)
     {
-        LLVMGenerator.tmpType = IntegerType.i32;
+        IRGenerator.tmpType = IntegerType.i32;
         for(ConstDefNode constDefNode : this.constDefNodeList)
         {
             constDefNode.parseSymbol(st);

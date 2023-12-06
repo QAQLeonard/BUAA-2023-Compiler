@@ -20,7 +20,7 @@ public class ConstString extends Const
         this.value = value.replace("\n", "\\0a") + "\\00";
     }
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         FileOperate.outputFileUsingUsingBuffer(destFile, "[" + length + " x " + ((PointerType) getType()).getTargetType() + "] c\"" + value + "\"", true);
     }

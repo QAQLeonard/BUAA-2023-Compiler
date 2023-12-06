@@ -76,7 +76,7 @@ public class BinaryInst extends Instruction
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         String operatorIR = OPERATOR_IR_MAP.getOrDefault(this.op, "");
         String typeStr = this.getOperands().get(0).getType().toString();

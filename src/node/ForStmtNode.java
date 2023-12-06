@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ir.LLVMGenerator.*;
+import static ir.IRGenerator.*;
 
 /**
  * 语句 ForStmt → LVal '=' Exp

@@ -19,7 +19,7 @@ public class StoreInst extends Instruction
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         StringBuilder s = new StringBuilder();
         s.append("store ").append(getOperands().get(0).getType()).append(" ").append(getOperands().get(0).getName()).append(", ").append(getOperands().get(1).getType()).append(" ").append(getOperands().get(1).getName());

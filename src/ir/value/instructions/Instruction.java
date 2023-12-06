@@ -28,6 +28,11 @@ public abstract class Instruction extends User
         IRModule.getInstance().addInstruction(handler, this);
     }
 
+    public Operator getOperator()
+    {
+        return op;
+    }
+
     public boolean requiresRegisterRenaming()
     {
         if (this instanceof StoreInst || this instanceof BrInst || this instanceof RetInst)

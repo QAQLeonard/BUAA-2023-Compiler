@@ -34,7 +34,7 @@ public class GlobalVar extends User
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         StringBuilder sb = new StringBuilder();
         sb.append(this.getName()).append(" = ");

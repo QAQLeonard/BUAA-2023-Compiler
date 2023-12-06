@@ -43,7 +43,7 @@ public class AllocaInst extends Instruction
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         FileOperate.outputFileUsingUsingBuffer(destFile, this.getName() + " = alloca " + this.getAllocaType(), true);
     }

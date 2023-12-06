@@ -1,105 +1,177 @@
-declare i32 @getint(...) 
+declare i32 @getint()
 declare void @putint(i32)
-declare void @putstr(i8* )
+declare void @putch(i32)
+declare void @putstr(i8*)
 
-@.str0 = constant [10 x i8] c"21371295
-\00"
+define dso_local i32 @main(){
+0:
+    call void @putch(i32 50)
+    call void @putch(i32 49)
+    call void @putch(i32 51)
+    call void @putch(i32 55)
+    call void @putch(i32 49)
+    call void @putch(i32 50)
+    call void @putch(i32 57)
+    call void @putch(i32 53)
+    call void @putch(i32 10)
+    %1 = alloca i32
+    store i32 0, i32* %1
+    %2 = add i32 0, 1
+
+    %3 = load i32, i32* %1
+    %4 = icmp sgt i32 %3, 0
+
+    br i1 %4, label %5, label %6
 
 
+5:
+    store i32 1, i32* %1
+    br label %7
 
-define dso_local i32 @main() {
-b0:
-	call void @putstr(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str0, i64 0, i64 0))
-	%1 = alloca i32
-	store i32 0, i32* %1
-	%2 = load i32, i32* %1
-	%3 = icmp sgt i32 %2, 0
-	br i1 %3, label %b1, label %b2
-b1:
-	store i32 1, i32* %1
-	br label %b3
-b2:
-	store i32 0, i32* %1
-	br label %b3
-b3:
-	%4 = alloca i32
-	store i32 1, i32* %4
-	%5 = alloca i32
-	store i32 2, i32* %5
-	%6 = load i32, i32* %4
-	%7 = icmp sge i32 %6, 0
-	br i1 %7, label %b4, label %b5
-b4:
-	store i32 1, i32* %4
-	br label %b5
-b5:
-	%8 = load i32, i32* %4
-	%9 = icmp sge i32 %8, 0
-	br i1 %9, label %b6, label %b7
-b6:
-	br label %b7
-b7:
-	%10 = load i32, i32* %4
-	%11 = icmp eq i32 0, %10
-	%12 = zext i1 %11 to i32
-	%13 = icmp ne i32 %12, 0
-	br i1 %13, label %b8, label %b9
-b8:
-	br label %b10
-b9:
-	br label %b10
-b10:
-	%14 = load i32, i32* %5
-	%15 = icmp sle i32 %14, 0
-	br i1 %15, label %b11, label %b12
-b11:
-	store i32 2, i32* %5
-	br label %b12
-b12:
-	%16 = load i32, i32* %4
-	%17 = icmp ne i32 %16, 0
-	%18 = zext i1 %17 to i32
-	%19 = load i32, i32* %5
-	%20 = icmp eq i32 %18, %19
-	br i1 %20, label %b13, label %b14
-b13:
-	store i32 1, i32* %1
-	br label %b14
-b14:
-	%21 = load i32, i32* %4
-	%22 = icmp ne i32 %21, 0
-	%23 = zext i1 %22 to i32
-	%24 = load i32, i32* %5
-	%25 = icmp ne i32 %23, %24
-	br i1 %25, label %b15, label %b16
-b15:
-	store i32 0, i32* %1
-	br label %b16
-b16:
-	%26 = load i32, i32* %4
-	%27 = icmp sgt i32 %26, 0
-	br i1 %27, label %b17, label %b18
-b17:
-	store i32 1, i32* %1
-	br label %b18
-b18:
-	%28 = load i32, i32* %4
-	%29 = icmp sgt i32 %28, 0
-	br i1 %29, label %b19, label %b20
-b19:
-	store i32 2, i32* %1
-	br label %b20
-b20:
-	%30 = load i32, i32* %4
-	%31 = add i32 %30, 1
-	%32 = mul i32 3, 4
-	%33 = sdiv i32 %32, 3
-	%34 = srem i32 %33, 2
-	%35 = sub i32 %31, %34
-	store i32 %35, i32* %4
-	%36 = add i32 1, 1
-	store i32 %36, i32* %4
-	%37 = sub i32 0, 1
-	store i32 %37, i32* %4
-	ret i32 0
+
+6:
+    store i32 0, i32* %1
+    br label %7
+
+
+7:
+    %8 = alloca i32
+    store i32 1, i32* %8
+    %9 = alloca i32
+    store i32 2, i32* %9
+    %10 = load i32, i32* %8
+    %11 = icmp sge i32 %10, 0
+
+    br i1 %11, label %12, label %13
+
+
+12:
+    store i32 1, i32* %8
+    br label %13
+
+
+13:
+    %14 = load i32, i32* %8
+    %15 = icmp sge i32 %14, 0
+
+    br i1 %15, label %16, label %17
+
+
+16:
+    br label %17
+
+
+17:
+    %18 = load i32, i32* %8
+    %19 = icmp eq i32 %18, 0
+
+    br i1 %19, label %20, label %21
+
+
+20:
+    br label %22
+
+
+21:
+    br label %22
+
+
+22:
+    %23 = load i32, i32* %9
+    %24 = icmp sle i32 %23, 0
+
+    br i1 %24, label %25, label %26
+
+
+25:
+    store i32 2, i32* %9
+    br label %26
+
+
+26:
+    %27 = load i32, i32* %8
+    %28 = load i32, i32* %9
+    %29 = icmp eq i32 %27, %28
+
+    br i1 %29, label %30, label %31
+
+
+30:
+    store i32 1, i32* %1
+    br label %31
+
+
+31:
+    %32 = load i32, i32* %8
+    %33 = load i32, i32* %9
+    %34 = icmp ne i32 %32, %33
+
+    br i1 %34, label %35, label %36
+
+
+35:
+    store i32 0, i32* %1
+    br label %36
+
+
+36:
+    %37 = load i32, i32* %8
+    %38 = load i32, i32* %9
+    %39 = icmp ne i32 %37, %38
+
+    br i1 %39, label %45, label %41
+
+
+40:
+    store i32 1, i32* %1
+    br label %41
+
+
+41:
+    %42 = load i32, i32* %8
+    %43 = load i32, i32* %9
+    %44 = icmp ne i32 %42, %43
+
+    br i1 %44, label %48, label %58
+
+
+45:
+    %46 = load i32, i32* %8
+    %47 = icmp sgt i32 %46, 0
+
+    br i1 %47, label %40, label %41
+
+
+48:
+    store i32 2, i32* %1
+    br label %49
+
+
+49:
+    %50 = load i32, i32* %8
+    %51 = add i32 %50, 1
+
+    %52 = mul i32 3, 4
+
+    %53 = sdiv i32 %52, 3
+
+    %54 = srem i32 %53, 2
+
+    %55 = sub i32 %51, %54
+
+    store i32 %55, i32* %8
+    %56 = add i32 1, 1
+
+    store i32 %56, i32* %8
+    %57 = sub i32 0, 1
+
+    store i32 %57, i32* %8
+    ret i32 0
+
+58:
+    %59 = load i32, i32* %8
+    %60 = icmp sgt i32 %59, 0
+
+    br i1 %60, label %48, label %49
+
 }

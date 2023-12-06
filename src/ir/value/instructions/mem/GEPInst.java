@@ -71,7 +71,7 @@ public class GEPInst extends Instruction
         return type;
     }
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         StringBuilder s = new StringBuilder();
         s.append(getName()).append(" = getelementptr ");

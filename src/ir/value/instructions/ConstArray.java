@@ -16,7 +16,8 @@ public class ConstArray extends Const
 {
     Type elementType;
     List<Value> array;
-    int capacity;
+    public int capacity;
+    public boolean init = false;
 
     public ConstArray(Type type, Type elementType, int capacity)
     {
@@ -32,22 +33,22 @@ public class ConstArray extends Const
         }
     }
 
-//    public List<Value> get1DArray()
-//    {
-//        List<Value> result = new ArrayList<>();
-//        for (Value value : array)
-//        {
-//            if (value instanceof ConstArray)
-//            {
-//                result.addAll(((ConstArray) value).get1DArray());
-//            }
-//            else
-//            {
-//                result.add(value);
-//            }
-//        }
-//        return result;
-//    }
+    public ArrayList<Value> get1DArray()
+    {
+        ArrayList<Value> result = new ArrayList<>();
+        for (Value value : array)
+        {
+            if (value instanceof ConstArray)
+            {
+                result.addAll(((ConstArray) value).get1DArray());
+            }
+            else
+            {
+                result.add(value);
+            }
+        }
+        return result;
+    }
 
     public void storeValue(int offset, Value value)
     {
@@ -62,7 +63,7 @@ public class ConstArray extends Const
         }
     }
 
-    private boolean allZero()
+    public boolean allZero()
     {
         for (Value value : array)
         {
@@ -86,7 +87,7 @@ public class ConstArray extends Const
 
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         if (allZero())
         {

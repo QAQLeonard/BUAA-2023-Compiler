@@ -1,12 +1,8 @@
 package ir.value;
 
-import ir.type.FunctionType;
 import ir.type.LabelType;
-import ir.type.VoidType;
 import ir.value.instructions.Instruction;
-import ir.value.instructions.mem.StoreInst;
 import ir.value.instructions.terminator.BrInst;
-import ir.value.instructions.terminator.CallInst;
 import ir.value.instructions.terminator.RetInst;
 import ir.utils.IRLinkedList;
 import ir.utils.IRListNode;
@@ -79,12 +75,12 @@ public class BasicBlock extends Value
     }
 
     @Override
-    public void outputIR(File destFile) throws IOException
+    public void output(File destFile) throws IOException
     {
         for (IRListNode<Instruction, BasicBlock> instruction : this.instructionList)
         {
             FileOperate.outputFileUsingUsingBuffer(destFile, "    ", true);
-            instruction.getValue().outputIR(destFile);
+            instruction.getValue().output(destFile);
             FileOperate.outputFileUsingUsingBuffer(destFile, "\n", true);
         }
     }

@@ -1,6 +1,6 @@
 package node;
 
-import ir.LLVMGenerator;
+import ir.IRGenerator;
 import ir.value.BuildFactory;
 import token.Token;
 import token.TokenType;
@@ -46,13 +46,13 @@ public class NumberNode extends Node {
     @Override
     public void parseIR()
     {
-        if (LLVMGenerator.isConst)
+        if (IRGenerator.isConst)
         {
-            LLVMGenerator.saveValue = Integer.parseInt(INTCONToken.getValue());
+            IRGenerator.saveValue = Integer.parseInt(INTCONToken.getValue());
         }
         else
         {
-            LLVMGenerator.tmpValue = BuildFactory.getConstInt(Integer.parseInt(INTCONToken.getValue()));
+            IRGenerator.tmpValue = BuildFactory.getConstInt(Integer.parseInt(INTCONToken.getValue()));
         }
     }
 

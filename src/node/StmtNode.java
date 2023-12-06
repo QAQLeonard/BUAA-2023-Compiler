@@ -3,7 +3,7 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
-import ir.LLVMGenerator;
+import ir.IRGenerator;
 import ir.type.PointerType;
 import ir.type.Type;
 import ir.value.*;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static ir.LLVMGenerator.*;
+import static ir.IRGenerator.*;
 
 /**
  * 语句 Stmt → LVal '=' Exp ';'
@@ -474,7 +474,8 @@ public class StmtNode extends Node
     {
         switch (this.stmtType)
         {
-            case ASSIGNMENT:
+            case ASSIGNMENT ->
+            {
                 if (lValNode.expNodeList.isEmpty())
                 {
                     // is not an array
@@ -508,23 +509,24 @@ public class StmtNode extends Node
                     expNodeList.get(0).parseIR();
                     tmpValue = BuildFactory.getStoreInst(blockStack.peek(), addr, tmpValue);
                 }
-                break;
-            case EXPRESSION:
+            }
+
+            case EXPRESSION ->
+            {
                 if (!expNodeList.isEmpty()) expNodeList.get(0).parseIR();
-                break;
-            case BLOCK:
+            }
+
+            case BLOCK ->
+            {
                 addSymbolAndConstTable();
                 blockNode.parseIR();
                 removeSymbolAndConstTable();
-                break;
-            case IF:
+            }
+
+            case IF ->
+            {
                 if (ELSETKToken == null)
                 {
-                    // basicBlock;
-                    // if (...) {
-                    //    trueBlock;
-                    // }
-                    // finalBlock;
                     BasicBlock basicBlock = blockStack.peek();
 
                     BasicBlock trueBlock = BuildFactory.buildBasicBlock(functionStack.peek());
@@ -543,17 +545,6 @@ public class StmtNode extends Node
                 }
                 else
                 {
-                    // basicBlock;
-                    // if (...) {
-                    //    trueBlock;
-                    //    ...
-                    //    trueEndBlock;
-                    // } else {
-                    //    falseBlock;
-                    //    ...
-                    //    falseEndBlock;
-                    // }
-                    // finalBlock;
                     BasicBlock basicBlock = blockStack.peek();
 
                     BasicBlock trueBlock = BuildFactory.buildBasicBlock(functionStack.peek());
@@ -576,14 +567,10 @@ public class StmtNode extends Node
                     BuildFactory.getBrInst(falseEndBlock, finalBlock);
                     blockStack.push(finalBlock);
                 }
-                break;
-            case FOR:
-                // basicBlock;
-                // for (initBlock; condBlock; iterBlock) {
-                //    forBlock;
-                // }
-                // forFinalBlock;
+            }
 
+            case FOR ->
+            {
                 BasicBlock basicBlock = blockStack.peek();
                 BasicBlock tmpContinueBlock = continueBlock;
                 BasicBlock tmpForFinalBlock = curForFinalBlock;
@@ -630,25 +617,32 @@ public class StmtNode extends Node
                 else BuildFactory.getBrInst(blockStack.peek(), forBlock);
 
                 blockStack.push(forFinalBlock);
-                break;
-            case BREAK:
+            }
+
+            case BREAK ->
+            {
                 BuildFactory.getBrInst(blockStack.peek(), curForFinalBlock);
-                break;
-            case CONTINUE:
+            }
+
+            case CONTINUE ->
+            {
                 BuildFactory.getBrInst(blockStack.peek(), continueBlock);
-                break;
-            case RETURN:
+            }
+
+            case RETURN ->
+            {
                 System.out.println("return");
                 if (!this.expNodeList.isEmpty())
                 {
                     this.expNodeList.get(0).parseIR();
-                    BuildFactory.getRetInst(LLVMGenerator.blockStack.peek(), LLVMGenerator.tmpValue);
+                    BuildFactory.getRetInst(IRGenerator.blockStack.peek(), IRGenerator.tmpValue);
                     return;
                 }
-                BuildFactory.getRetInst(LLVMGenerator.blockStack.peek(), null);
+                BuildFactory.getRetInst(IRGenerator.blockStack.peek(), null);
+            }
 
-                break;
-            case GETINT:
+            case GETINT ->
+            {
                 if (lValNode.expNodeList.isEmpty())
                 {
                     Value input = getValue(lValNode.IDENFRToken.getValue());
@@ -680,8 +674,11 @@ public class StmtNode extends Node
                     Value input = BuildFactory.getCallInst(blockStack.peek(), (Function) getValue("getint"), new ArrayList<>());
                     tmpValue = BuildFactory.getStoreInst(blockStack.peek(), addr, input);
                 }
-                break;
-            case PRINTF:
+            }
+
+
+            case PRINTF ->
+            {
                 String formatStrings = STRCONToken.getValue().replace("\\n", "\n").replace("\"", "");
                 List<Value> args = new ArrayList<>();
                 for (ExpNode expNode : expNodeList)
@@ -708,8 +705,7 @@ public class StmtNode extends Node
                         }});
                     }
                 }
-                break;
-
+            }
         }
     }
 }

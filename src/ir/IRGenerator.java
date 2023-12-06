@@ -5,7 +5,6 @@ import ir.type.*;
 import ir.value.*;
 import ir.value.instructions.Operator;
 import node.*;
-import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.util.*;
 
 import static utils.FileOperate.CreateFileUsingJava7Files;
 
-public class LLVMGenerator
+public class IRGenerator
 {
     public static BasicBlock curTrueBlock = null;
     public static BasicBlock curFalseBlock = null;
@@ -43,6 +42,7 @@ public class LLVMGenerator
     public static int tmpDepth = 0;
     public static int tmpOffset = 0;
     public static List<Integer> tmpDims = null;
+    public static int id_cnt = 0;
 
     private static List<Map<String, Value>> symbolTable = new ArrayList<>();
 
@@ -149,12 +149,14 @@ public class LLVMGenerator
         CompUnitNode.getInstance().parseIR();
     }
 
-    public static void output() throws IOException
+    public static void outputLLVM() throws IOException
     {
-        File destFile = new File("llvm_ir.txt");
+        File destFile = new File("llvm_ir.ll");
         CreateFileUsingJava7Files(destFile);
-        IRModule.getInstance().outputIR(destFile);
+        IRModule.getInstance().outputLLVM(destFile);
     }
+
+
 
 
 
