@@ -10,6 +10,9 @@ import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
+
+import static ir.LLVMGenerator.*;
+
 /**
  * 数值 Number → IntConst
  */
@@ -46,13 +49,13 @@ public class NumberNode extends Node {
     @Override
     public void parseIR()
     {
-        if (LLVMGenerator.isConst)
+        if (isConst)
         {
-            LLVMGenerator.saveValue = Integer.parseInt(INTCONToken.getValue());
+            saveVal = Integer.parseInt(INTCONToken.getValue());
         }
         else
         {
-            LLVMGenerator.tmpValue = BuildFactory.getConstInt(Integer.parseInt(INTCONToken.getValue()));
+            tmpValue = BuildFactory.getConstInt(Integer.parseInt(INTCONToken.getValue()));
         }
     }
 

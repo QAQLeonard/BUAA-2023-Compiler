@@ -24,6 +24,7 @@ import java.util.Objects;
 
 import static frontend.parser.ParserUtils.funcSymbolStack;
 import static ir.LLVMGenerator.*;
+import static ir.utils.LLVMUtils.checkBlockEnd;
 
 /**
  * 函数定义 FuncDef → FuncType Ident '(' [FuncFParams] ')' Block
@@ -138,7 +139,7 @@ public class FuncDefNode extends Node
         blockNode.parseIR();
         isGlobal = true;
         removeSymbolAndConstTable();
-        BuildFactory.checkBlockEnd(blockStack.peek());
+        checkBlockEnd(blockStack.peek());
     }
 
 }

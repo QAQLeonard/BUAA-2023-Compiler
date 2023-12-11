@@ -9,6 +9,7 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 
+import static ir.LLVMGenerator.*;
 /**
  * 表达式 Exp → AddExp
  */
@@ -16,7 +17,6 @@ public class ExpNode extends Node implements Expression
 {
 
     AddExpNode addExpNode;
-    String LLVMIRResult;
 
     public ExpNode()
     {
@@ -63,8 +63,8 @@ public class ExpNode extends Node implements Expression
     @Override
     public void parseIR()
     {
-        LLVMGenerator.tmpValue = null;
-        LLVMGenerator.saveValue = null;
+        tmpValue = null;
+        saveVal = null;
         this.addExpNode.parseIR();
     }
 

@@ -3,6 +3,7 @@ package node;
 import error.CompilerError;
 import backend.errorhandler.ErrorHandler;
 import error.ErrorType;
+import ir.type.IntegerType;
 import ir.type.Type;
 import ir.value.BuildFactory;
 import ir.value.GlobalVar;
@@ -71,8 +72,6 @@ public class ConstDefNode extends Node
         FileOperate.outputFileUsingUsingBuffer(destFile, ParserUtils.nodeMap.get(this.getType()) + "\n", true);
     }
 
-
-
     @Override
     public void parseSymbol(SymbolTable st)
     {
@@ -107,17 +106,15 @@ public class ConstDefNode extends Node
     {
         // ConstDef -> Ident { '[' ConstExp ']' } '=' ConstInitVal
         String name = IDENFRToken.getValue();
-        if (constExpNodeList.isEmpty())
+        if (constExpNodeList.isEmpty())  // is not an array
         {
-            // is not an array
             constInitValNode.parseIR();
-            tmpValue = BuildFactory.getConstInt(saveValue == null ? 0 : saveValue);
-            addConst(name, saveValue);
+            tmpValue = BuildFactory.getConstInt(saveVal == null ? 0 : saveVal);
+            addConst(name, saveVal);
             if (isGlobal)
             {
                 tmpValue = BuildFactory.getGlobalVar(name, tmpType, true, tmpValue);
                 addSymbol(name, tmpValue);
-
             }
             else
             {
@@ -132,7 +129,8 @@ public class ConstDefNode extends Node
             for (ConstExpNode constExpNode : constExpNodeList)
             {
                 constExpNode.parseIR();
-                dims.add(saveValue);
+                dims.add(saveVal);
+                saveVal = null;
             }
             tmpDims = new ArrayList<>(dims);
             Type type = null;
@@ -140,7 +138,7 @@ public class ConstDefNode extends Node
             {
                 if (type == null)
                 {
-                    type = BuildFactory.getArrayType(tmpType, dims.get(i));
+                    type = BuildFactory.getArrayType(IntegerType.i32, dims.get(i));
                 }
                 else
                 {

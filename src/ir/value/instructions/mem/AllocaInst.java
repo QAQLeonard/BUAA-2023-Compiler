@@ -16,7 +16,7 @@ public class AllocaInst extends Instruction
     boolean isConst;
     Type allocaType;
 
-    public AllocaInst(BasicBlock basicBlock, boolean isConst, Type allocaType)
+    public AllocaInst(boolean isConst, Type allocaType)
     {
         super(new PointerType(allocaType), Operator.Alloca);
         this.setName("%" + REG_NUMBER++);

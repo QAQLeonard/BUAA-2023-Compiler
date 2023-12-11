@@ -248,7 +248,7 @@ public class UnaryExpNode extends Node implements Expression
                 unaryExpNode.parseIR();
                 if (LLVMGenerator.isConst)
                 {
-                    LLVMGenerator.saveValue = -LLVMGenerator.saveValue;
+                    LLVMGenerator.saveVal = -LLVMGenerator.saveVal;
                 }
                 else
                 {

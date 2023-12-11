@@ -115,28 +115,27 @@ public class VarDefNode extends Node
         // is not an array
         if (constExpNodeList.isEmpty())
         {
+            tmpValue = null;
             if (initValNode != null)
             {
-                tmpValue = null;
                 if (isGlobal)
                 {
                     isConst = true;
-                    saveValue = null;
+                    saveVal = null;
                 }
                 initValNode.parseIR();
                 isConst = false;// initVal must be a const
             }
             else
             {
-                tmpValue = null;
                 if (isGlobal)
                 {
-                    saveValue = null;
+                    saveVal = null;
                 }
             }
             if (isGlobal)
             {
-                tmpValue = BuildFactory.getGlobalVar(name, tmpType, false, BuildFactory.getConstInt(saveValue == null ? 0 : saveValue));
+                tmpValue = BuildFactory.getGlobalVar(name, tmpType, false, BuildFactory.getConstInt(saveVal == null ? 0 : saveVal));
                 addSymbol(name, tmpValue);
             }
             else
@@ -152,7 +151,8 @@ public class VarDefNode extends Node
             for (ConstExpNode constExpNode : constExpNodeList)
             {
                 constExpNode.parseIR();
-                dims.add(saveValue);
+                dims.add(saveVal);
+                saveVal = null;
             }
             isConst = false;
             tmpDims = new ArrayList<>(dims);
@@ -171,7 +171,7 @@ public class VarDefNode extends Node
             if (isGlobal)
             {
                 tmpValue = BuildFactory.getGlobalArray(name, type, false);
-                if(initValNode != null)
+                if (initValNode != null)
                 {
                     ((ConstArray) ((GlobalVar) tmpValue).getValue()).init = true;
                 }

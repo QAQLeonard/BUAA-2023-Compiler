@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static backend.MipsGenerator.*;
+import static ir.utils.LLVMUtils.checkBlockEnd;
 
 public class IRModule
 {
@@ -63,7 +64,7 @@ public class IRModule
                 {
                     if (basicBlock.getValue().getInstructionList().isEmpty())
                     {
-                        BuildFactory.checkBlockEnd(basicBlock.getValue());
+                        checkBlockEnd(basicBlock.getValue());
                     }
                     basicBlock.getValue().setName(String.valueOf(Value.REG_NUMBER++));
                     basicBlock.getValue().refreshReg();

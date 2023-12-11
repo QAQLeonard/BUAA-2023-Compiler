@@ -22,6 +22,7 @@ public class Compiler
             // parser.output();
             // errorHandler.output();
             LLVMGenerator.run();
+            LLVMGenerator.outputLLVM();
             MipsGenerator.outputMips();
         }
         catch (IOException e)

@@ -2,7 +2,6 @@ package ir.value;
 
 import ir.type.ArrayType;
 import ir.type.FunctionType;
-import ir.type.IntegerType;
 import ir.type.Type;
 import ir.value.instructions.BinaryInst;
 import ir.value.instructions.ConstArray;
@@ -50,26 +49,7 @@ public class BuildFactory
         return new BasicBlock(function);
     }
 
-    public static void checkBlockEnd(BasicBlock basicBlock)
-    {
-        Type retType = ((FunctionType) basicBlock.getNode().getParentList().getContainer().getType()).getReturnType();
-        if (!basicBlock.getInstructionList().isEmpty())
-        {
-            Value lastInst = basicBlock.getInstructionList().getTail().getValue();
-            if (lastInst instanceof RetInst || lastInst instanceof BrInst)
-            {
-                return;
-            }
-        }
-        if (retType instanceof IntegerType)
-        {
-            getRetInst(basicBlock, ConstInt.ZERO);
-        }
-        else
-        {
-            getRetInst(basicBlock, null);
-        }
-    }
+
 
     /**
      * BinaryInst
@@ -100,7 +80,7 @@ public class BuildFactory
 
     public static AllocaInst buildVar(BasicBlock basicBlock, Value value, boolean isConst, Type allocaType)
     {
-        AllocaInst tmp = new AllocaInst(basicBlock, isConst, allocaType);
+        AllocaInst tmp = new AllocaInst(isConst, allocaType);
         basicBlock.addInst(tmp);
         if (value != null)
         {
@@ -130,7 +110,7 @@ public class BuildFactory
 
     public static AllocaInst buildArray(BasicBlock basicBlock, boolean isConst, Type arrayType)
     {
-        AllocaInst tmp = new AllocaInst(basicBlock, isConst, arrayType);
+        AllocaInst tmp = new AllocaInst(isConst, arrayType);
         basicBlock.addInst(tmp);
         return tmp;
     }
@@ -171,7 +151,7 @@ public class BuildFactory
      */
     public static LoadInst getLoadInst(BasicBlock basicBlock, Value pointer)
     {
-        LoadInst tmp = new LoadInst(basicBlock, pointer);
+        LoadInst tmp = new LoadInst(pointer);
         basicBlock.addInst(tmp);
         return tmp;
     }
@@ -185,14 +165,14 @@ public class BuildFactory
 
     public static GEPInst getGEPInst(BasicBlock basicBlock, Value pointer, List<Value> indices)
     {
-        GEPInst tmp = new GEPInst(basicBlock, pointer, indices);
+        GEPInst tmp = new GEPInst(pointer, indices);
         basicBlock.addInst(tmp);
         return tmp;
     }
 
     public static GEPInst getGEPInst(BasicBlock basicBlock, Value pointer, int offset)
     {
-        GEPInst tmp = new GEPInst(basicBlock, pointer, offset);
+        GEPInst tmp = new GEPInst(pointer, offset);
         basicBlock.addInst(tmp);
         return tmp;
     }
@@ -200,7 +180,7 @@ public class BuildFactory
     /**
      * TerminatorInst
      */
-    public static BrInst getBrInst(BasicBlock basicBlock, BasicBlock trueBlock)
+    public static void buildBrInst(BasicBlock basicBlock, BasicBlock trueBlock)
     {
         BrInst tmp = new BrInst(trueBlock);
         if (basicBlock != null)
@@ -212,14 +192,12 @@ public class BuildFactory
             }
             basicBlock.addInst(tmp);
         }
-        return tmp;
     }
 
-    public static BrInst getBrInst(BasicBlock basicBlock, Value cond, BasicBlock trueBlock, BasicBlock falseBlock)
+    public static void buildBrInst(BasicBlock basicBlock, Value cond, BasicBlock trueBlock, BasicBlock falseBlock)
     {
         BrInst tmp = new BrInst(basicBlock, cond, trueBlock, falseBlock);
         basicBlock.addInst(tmp);
-        return tmp;
     }
 
     public static CallInst getCallInst(BasicBlock basicBlock, Function function, List<Value> args)
@@ -230,11 +208,10 @@ public class BuildFactory
     }
 
 
-    public static RetInst getRetInst(BasicBlock basicBlock, Value ret)
+    public static void buildRetInst(BasicBlock basicBlock, Value ret)
     {
         RetInst tmp = new RetInst(ret);
         basicBlock.addInst(tmp);
-        return tmp;
     }
 
 }

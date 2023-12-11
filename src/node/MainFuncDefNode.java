@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static ir.utils.LLVMUtils.checkBlockEnd;
+
 /**
  * MainFuncDef -> 'int' 'main' '(' ')' Block
  */
@@ -92,6 +94,6 @@ public class MainFuncDefNode extends Node
         this.blockNode.parseIR();
         LLVMGenerator.isGlobal = true;
         LLVMGenerator.removeSymbolAndConstTable();
-        BuildFactory.checkBlockEnd(LLVMGenerator.blockStack.peek());
+        checkBlockEnd(LLVMGenerator.blockStack.peek());
     }
 }

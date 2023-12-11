@@ -147,10 +147,10 @@ public class LValNode extends Node
                 for (ExpNode expNode : expNodeList)
                 {
                     expNode.parseIR();
-                    name.append(BuildFactory.getConstInt(saveValue == null ? 0 : saveValue).getValue()).append(";");
+                    name.append(BuildFactory.getConstInt(saveVal == null ? 0 : saveVal).getValue()).append(";");
                 }
             }
-            saveValue = getConst(name.toString());
+            saveVal = getConst(name.toString());
         }
         else
         {

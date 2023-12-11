@@ -479,9 +479,9 @@ public class StmtNode extends Node
                 if (lValNode.expNodeList.isEmpty())
                 {
                     // is not an array
-                    Value input = getValue(lValNode.IDENFRToken.getValue());
+                    Value LVal = getValue(lValNode.IDENFRToken.getValue());
                     expNodeList.get(0).parseIR();
-                    tmpValue = BuildFactory.getStoreInst(blockStack.peek(), input, tmpValue);
+                    tmpValue = BuildFactory.getStoreInst(blockStack.peek(), LVal, tmpValue);
                 }
                 else
                 {
@@ -533,7 +533,7 @@ public class StmtNode extends Node
                     blockStack.push(trueBlock);
                     stmtNodeList.get(0).parseIR();
                     BasicBlock finalBlock = BuildFactory.buildBasicBlock(functionStack.peek());
-                    BuildFactory.getBrInst(blockStack.peek(), finalBlock);
+                    BuildFactory.buildBrInst(blockStack.peek(), finalBlock);
 
                     curTrueBlock = trueBlock;
                     curFalseBlock = finalBlock;
@@ -563,8 +563,8 @@ public class StmtNode extends Node
                     condNode.parseIR();
 
                     BasicBlock finalBlock = BuildFactory.buildBasicBlock(functionStack.peek());
-                    BuildFactory.getBrInst(trueEndBlock, finalBlock);
-                    BuildFactory.getBrInst(falseEndBlock, finalBlock);
+                    BuildFactory.buildBrInst(trueEndBlock, finalBlock);
+                    BuildFactory.buildBrInst(falseEndBlock, finalBlock);
                     blockStack.push(finalBlock);
                 }
             }
@@ -581,7 +581,7 @@ public class StmtNode extends Node
                 }
 
                 BasicBlock condBlock = BuildFactory.buildBasicBlock(functionStack.peek());
-                BuildFactory.getBrInst(basicBlock, condBlock);
+                BuildFactory.buildBrInst(basicBlock, condBlock);
 
 
                 BasicBlock forBlock = BuildFactory.buildBasicBlock(functionStack.peek());
@@ -593,7 +593,7 @@ public class StmtNode extends Node
                     continueBlock = iterBlock;
                     curForFinalBlock = forFinalBlock;
                     stmtNodeList.get(0).parseIR();
-                    BuildFactory.getBrInst(blockStack.peek(), iterBlock);
+                    BuildFactory.buildBrInst(blockStack.peek(), iterBlock);
                     blockStack.push(iterBlock);
                     forStmtNode2.parseIR();
                 }
@@ -602,10 +602,10 @@ public class StmtNode extends Node
                     continueBlock = condBlock;
                     curForFinalBlock = forFinalBlock;
                     stmtNodeList.get(0).parseIR();
-                    BuildFactory.getBrInst(blockStack.peek(), condBlock);
+                    BuildFactory.buildBrInst(blockStack.peek(), condBlock);
                 }
 
-                BuildFactory.getBrInst(blockStack.peek(), condBlock);
+                BuildFactory.buildBrInst(blockStack.peek(), condBlock);
                 continueBlock = tmpContinueBlock;
                 curForFinalBlock = tmpForFinalBlock;
 
@@ -614,31 +614,30 @@ public class StmtNode extends Node
                 blockStack.push(condBlock);
 
                 if (condNode != null) condNode.parseIR();
-                else BuildFactory.getBrInst(blockStack.peek(), forBlock);
+                else BuildFactory.buildBrInst(blockStack.peek(), forBlock);
 
                 blockStack.push(forFinalBlock);
             }
 
             case BREAK ->
             {
-                BuildFactory.getBrInst(blockStack.peek(), curForFinalBlock);
+                BuildFactory.buildBrInst(blockStack.peek(), curForFinalBlock);
             }
 
             case CONTINUE ->
             {
-                BuildFactory.getBrInst(blockStack.peek(), continueBlock);
+                BuildFactory.buildBrInst(blockStack.peek(), continueBlock);
             }
 
             case RETURN ->
             {
-                System.out.println("return");
                 if (!this.expNodeList.isEmpty())
                 {
                     this.expNodeList.get(0).parseIR();
-                    BuildFactory.getRetInst(LLVMGenerator.blockStack.peek(), LLVMGenerator.tmpValue);
+                    BuildFactory.buildRetInst(LLVMGenerator.blockStack.peek(), LLVMGenerator.tmpValue);
                     return;
                 }
-                BuildFactory.getRetInst(LLVMGenerator.blockStack.peek(), null);
+                BuildFactory.buildRetInst(LLVMGenerator.blockStack.peek(), null);
             }
 
             case GETINT ->

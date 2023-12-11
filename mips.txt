@@ -1,14 +1,1846 @@
 .data
 .text
 
+# @c_var1_g = constant i32 1
+
+li $t2, 1
+sw $t2, 0($gp)
+
+# @c_var2_g = constant i32 2
+
+li $t2, 2
+sw $t2, 4($gp)
+
+# @c_var3_g = constant i32 3
+
+li $t2, 3
+sw $t2, 8($gp)
+
+# @D_g = constant i32 4
+
+li $t2, 4
+sw $t2, 12($gp)
+
+# @E_g = constant i32 5
+
+li $t2, 5
+sw $t2, 16($gp)
+
+# @F_g = constant i32 6
+
+li $t2, 6
+sw $t2, 20($gp)
+
+# @c_arr1_g = constant [5 x i32] 
+
+addu $t0, $gp, 28
+sw $t0, 24($gp)
+
+# li $t2, 1
+lw $t0, 24($gp)
+addu $t0, $t0, 0
+sw $t2, 0($t0)
+
+# li $t2, 2
+lw $t0, 24($gp)
+addu $t0, $t0, 4
+sw $t2, 0($t0)
+
+# li $t2, 3
+lw $t0, 24($gp)
+addu $t0, $t0, 8
+sw $t2, 0($t0)
+
+# li $t2, 4
+lw $t0, 24($gp)
+addu $t0, $t0, 12
+sw $t2, 0($t0)
+
+# li $t2, 5
+lw $t0, 24($gp)
+addu $t0, $t0, 16
+sw $t2, 0($t0)
+
+# @c_arr2_g = constant [2 x [2 x i32]] 
+
+addu $t0, $gp, 52
+sw $t0, 48($gp)
+
+# li $t2, 6
+lw $t0, 48($gp)
+addu $t0, $t0, 0
+sw $t2, 0($t0)
+
+# li $t2, 7
+lw $t0, 48($gp)
+addu $t0, $t0, 4
+sw $t2, 0($t0)
+
+# li $t2, 8
+lw $t0, 48($gp)
+addu $t0, $t0, 8
+sw $t2, 0($t0)
+
+# li $t2, 9
+lw $t0, 48($gp)
+addu $t0, $t0, 12
+sw $t2, 0($t0)
+
+# @var1_g = global i32 0
+
+li $t2, 0
+sw $t2, 68($gp)
+
+# @temp = global i32 0
+
+li $t2, 0
+sw $t2, 72($gp)
+
+# @arr1_g = global [5 x i32] 
+
+addu $t0, $gp, 80
+sw $t0, 76($gp)
+
+# li $t2, 1
+lw $t0, 76($gp)
+addu $t0, $t0, 0
+sw $t2, 0($t0)
+
+# li $t2, 2
+lw $t0, 76($gp)
+addu $t0, $t0, 4
+sw $t2, 0($t0)
+
+# li $t2, 3
+lw $t0, 76($gp)
+addu $t0, $t0, 8
+sw $t2, 0($t0)
+
+# li $t2, 4
+lw $t0, 76($gp)
+addu $t0, $t0, 12
+sw $t2, 0($t0)
+
+# li $t2, 5
+lw $t0, 76($gp)
+addu $t0, $t0, 16
+sw $t2, 0($t0)
+
+# @arr2_g = global [2 x [2 x i32]] 
+
+addu $t0, $gp, 104
+sw $t0, 100($gp)
+
+# li $t2, 6
+lw $t0, 100($gp)
+addu $t0, $t0, 0
+sw $t2, 0($t0)
+
+# li $t2, 7
+lw $t0, 100($gp)
+addu $t0, $t0, 4
+sw $t2, 0($t0)
+
+# li $t2, 8
+lw $t0, 100($gp)
+addu $t0, $t0, 8
+sw $t2, 0($t0)
+
+# li $t2, 9
+lw $t0, 100($gp)
+addu $t0, $t0, 12
+sw $t2, 0($t0)
+
 jal main
 li $v0, 10
 syscall
 
 
+func2:
+
+label_identifier78:
+
+# ret void
+addu $sp, $sp, -4
+
+func1:
+lw $t0, 8($sp)
+sw $t0, -8($sp)
+lw $t0, 4($sp)
+sw $t0, -12($sp)
+lw $t0, 0($sp)
+sw $t0, -16($sp)
+
+label_identifier84:
+
+# %4 = alloca i32
+
+# store i32 %0, i32* %4
+lw $t0, -8($sp)
+sw $t0, -20($sp)
+
+# %5 = alloca i32*
+
+# store i32* %1, i32** %5
+lw $t0, -12($sp)
+sw $t0, -28($sp)
+
+# %6 = alloca [2 x i32]*
+addu $t0, $sp, -44
+sw $t0, -36($sp)
+
+# store [2 x i32]* %2, [2 x i32]** %6
+lw $t0, -16($sp)
+sw $t0, -36($sp)
+
+# %7 = load i32, i32* %4
+lw $t0, -20($sp)
+sw $t0, -52($sp)
+
+# %8 = mul i32 %7, 2
+
+lw $t0, -52($sp)
+li $t1, 2
+mul $t2, $t0, $t1
+sw $t2, -56($sp)
+
+# %9 = load i32*, i32** %5
+lw $t0, -28($sp)
+sw $t0, -60($sp)
+
+# %10 = getelementptr i32, i32* %9, i32 0
+lw $t2, -60($sp)
+sw $t2, -64($sp)
+sw $t2, -64($sp)
+
+
+# %11 = load i32, i32* %10
+lw $t0, -64($sp)
+lw $t1, 0($t0)
+sw $t1, -68($sp)
+
+# %12 = srem i32 %11, 2
+
+lw $t0, -68($sp)
+li $t1, 2
+rem $t2, $t0, $t1
+sw $t2, -72($sp)
+
+# %13 = add i32 %8, %12
+
+lw $t0, -56($sp)
+lw $t1, -72($sp)
+addu $t2, $t0, $t1
+sw $t2, -76($sp)
+
+# %14 = load [2 x i32]*, [2 x i32]** %6
+lw $t0, -36($sp)
+sw $t0, -80($sp)
+
+# %15 = getelementptr [2 x i32], [2 x i32]* %14, i32 0, i32 0
+lw $t2, -80($sp)
+sw $t2, -84($sp)
+
+sw $t2, -84($sp)
+
+
+# %16 = load i32, i32* %15
+lw $t0, -84($sp)
+lw $t1, 0($t0)
+sw $t1, -88($sp)
+
+# %17 = srem i32 %16, 3
+
+lw $t0, -88($sp)
+li $t1, 3
+rem $t2, $t0, $t1
+sw $t2, -92($sp)
+
+# %18 = add i32 %13, %17
+
+lw $t0, -76($sp)
+lw $t1, -92($sp)
+addu $t2, $t0, $t1
+sw $t2, -96($sp)
+
+# %19 = alloca i32
+
+# store i32 %18, i32* %19
+lw $t0, -96($sp)
+sw $t0, -100($sp)
+
+# %20 = load i32, i32* %19
+lw $t0, -100($sp)
+sw $t0, -108($sp)
+
+# %21 = load i32, i32* %4
+lw $t0, -20($sp)
+sw $t0, -112($sp)
+
+# %22 = add i32 %21, 2
+
+lw $t0, -112($sp)
+li $t1, 2
+addu $t2, $t0, $t1
+sw $t2, -116($sp)
+
+# %23 = mul i32 %20, %22
+
+lw $t0, -108($sp)
+lw $t1, -116($sp)
+mul $t2, $t0, $t1
+sw $t2, -120($sp)
+
+# store i32 %23, i32* @var1_g
+lw $t0, -120($sp)
+sw $t0, 68($gp)
+
+# call void @func2()
+sw $ra, -132($sp)
+addu $sp, $sp, -132
+jal func2
+addu $sp, $sp, 132
+lw $ra, -132($sp)
+
+# %24 = load i32, i32* @var1_g
+lw $t0, 68($gp)
+sw $t0, -132($sp)
+
+# %25 = icmp slt i32 %24, 30
+
+lw $t0, -132($sp)
+li $t1, 30
+slt $t2, $t0, $t1
+sw $t2, -136($sp)
+
+# br i1 %25, label %26, label %28
+
+lw $t0, -136($sp)
+beqz $t0, label_identifier135
+j label_identifier118
+
+label_identifier118:
+
+# %27 = load i32, i32* @var1_g
+lw $t0, 68($gp)
+sw $t0, -144($sp)
+
+# call void @putint(i32 %27)
+lw $a0, -144($sp)
+li $v0, 1
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 60)
+li $a0, 60
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 48)
+li $a0, 48
+li $v0, 11
+syscall
+
+# call void @putch(i32 46)
+li $a0, 46
+li $v0, 11
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# br label %30
+
+j label_identifier158
+
+label_identifier135:
+
+# %29 = load i32, i32* @var1_g
+lw $t0, 68($gp)
+sw $t0, -184($sp)
+
+# call void @putint(i32 %29)
+lw $a0, -184($sp)
+li $v0, 1
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 62)
+li $a0, 62
+li $v0, 11
+syscall
+
+# call void @putch(i32 61)
+li $a0, 61
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 48)
+li $a0, 48
+li $v0, 11
+syscall
+
+# call void @putch(i32 46)
+li $a0, 46
+li $v0, 11
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# br label %30
+
+j label_identifier158
+
+label_identifier158:
+
+# ret i32 0
+li $v0, 0
+addu $sp, $sp, -228
+
+vfunc1:
+lw $t0, 8($sp)
+sw $t0, -232($sp)
+lw $t0, 4($sp)
+sw $t0, -236($sp)
+lw $t0, 0($sp)
+sw $t0, -240($sp)
+
+label_identifier167:
+
+# %4 = alloca i32
+
+# store i32 %0, i32* %4
+lw $t0, -232($sp)
+sw $t0, -244($sp)
+
+# %5 = alloca i32*
+
+# store i32* %1, i32** %5
+lw $t0, -236($sp)
+sw $t0, -252($sp)
+
+# %6 = alloca [2 x i32]*
+addu $t0, $sp, -268
+sw $t0, -260($sp)
+
+# store [2 x i32]* %2, [2 x i32]** %6
+lw $t0, -240($sp)
+sw $t0, -260($sp)
+
+# %7 = load i32, i32* %4
+lw $t0, -244($sp)
+sw $t0, -276($sp)
+
+# %8 = mul i32 %7, 2
+
+lw $t0, -276($sp)
+li $t1, 2
+mul $t2, $t0, $t1
+sw $t2, -280($sp)
+
+# %9 = load i32*, i32** %5
+lw $t0, -252($sp)
+sw $t0, -284($sp)
+
+# %10 = getelementptr i32, i32* %9, i32 0
+lw $t2, -284($sp)
+sw $t2, -288($sp)
+sw $t2, -288($sp)
+
+
+# %11 = load i32, i32* %10
+lw $t0, -288($sp)
+lw $t1, 0($t0)
+sw $t1, -292($sp)
+
+# %12 = srem i32 %11, 2
+
+lw $t0, -292($sp)
+li $t1, 2
+rem $t2, $t0, $t1
+sw $t2, -296($sp)
+
+# %13 = add i32 %8, %12
+
+lw $t0, -280($sp)
+lw $t1, -296($sp)
+addu $t2, $t0, $t1
+sw $t2, -300($sp)
+
+# %14 = load [2 x i32]*, [2 x i32]** %6
+lw $t0, -260($sp)
+sw $t0, -304($sp)
+
+# %15 = getelementptr [2 x i32], [2 x i32]* %14, i32 0, i32 0
+lw $t2, -304($sp)
+sw $t2, -308($sp)
+
+sw $t2, -308($sp)
+
+
+# %16 = load i32, i32* %15
+lw $t0, -308($sp)
+lw $t1, 0($t0)
+sw $t1, -312($sp)
+
+# %17 = srem i32 %16, 3
+
+lw $t0, -312($sp)
+li $t1, 3
+rem $t2, $t0, $t1
+sw $t2, -316($sp)
+
+# %18 = add i32 %13, %17
+
+lw $t0, -300($sp)
+lw $t1, -316($sp)
+addu $t2, $t0, $t1
+sw $t2, -320($sp)
+
+# %19 = alloca i32
+
+# store i32 %18, i32* %19
+lw $t0, -320($sp)
+sw $t0, -324($sp)
+
+# %20 = load i32, i32* %19
+lw $t0, -324($sp)
+sw $t0, -332($sp)
+
+# %21 = load i32, i32* %4
+lw $t0, -244($sp)
+sw $t0, -336($sp)
+
+# %22 = add i32 %21, 2
+
+lw $t0, -336($sp)
+li $t1, 2
+addu $t2, $t0, $t1
+sw $t2, -340($sp)
+
+# %23 = mul i32 %20, %22
+
+lw $t0, -332($sp)
+lw $t1, -340($sp)
+mul $t2, $t0, $t1
+sw $t2, -344($sp)
+
+# store i32 %23, i32* @var1_g
+lw $t0, -344($sp)
+sw $t0, 68($gp)
+
+# call void @func2()
+sw $ra, -356($sp)
+addu $sp, $sp, -356
+jal func2
+addu $sp, $sp, 356
+lw $ra, -356($sp)
+
+# %24 = load i32, i32* @var1_g
+lw $t0, 68($gp)
+sw $t0, -356($sp)
+
+# %25 = icmp slt i32 %24, 30
+
+lw $t0, -356($sp)
+li $t1, 30
+slt $t2, $t0, $t1
+sw $t2, -360($sp)
+
+# br i1 %25, label %26, label %28
+
+lw $t0, -360($sp)
+beqz $t0, label_identifier218
+j label_identifier201
+
+label_identifier201:
+
+# %27 = load i32, i32* @var1_g
+lw $t0, 68($gp)
+sw $t0, -368($sp)
+
+# call void @putint(i32 %27)
+lw $a0, -368($sp)
+li $v0, 1
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 60)
+li $a0, 60
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 48)
+li $a0, 48
+li $v0, 11
+syscall
+
+# call void @putch(i32 46)
+li $a0, 46
+li $v0, 11
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# br label %30
+
+j label_identifier241
+
+label_identifier218:
+
+# %29 = load i32, i32* @var1_g
+lw $t0, 68($gp)
+sw $t0, -408($sp)
+
+# call void @putint(i32 %29)
+lw $a0, -408($sp)
+li $v0, 1
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 62)
+li $a0, 62
+li $v0, 11
+syscall
+
+# call void @putch(i32 61)
+li $a0, 61
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 48)
+li $a0, 48
+li $v0, 11
+syscall
+
+# call void @putch(i32 46)
+li $a0, 46
+li $v0, 11
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# br label %30
+
+j label_identifier241
+
+label_identifier241:
+
+# ret void
+addu $sp, $sp, -452
+
+func3:
+lw $t0, 0($sp)
+sw $t0, -456($sp)
+
+label_identifier247:
+
+# %2 = alloca i32
+
+# store i32 %0, i32* %2
+lw $t0, -456($sp)
+sw $t0, -460($sp)
+
+# call void @putch(i32 68)
+li $a0, 68
+li $v0, 11
+syscall
+
+# call void @putch(i32 78)
+li $a0, 78
+li $v0, 11
+syscall
+
+# call void @putch(i32 77)
+li $a0, 77
+li $v0, 11
+syscall
+
+# call void @putch(i32 68)
+li $a0, 68
+li $v0, 11
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# ret void
+addu $sp, $sp, -488
+
+no_meaning_fun:
+
+label_identifier262:
+
+# %1 = alloca i32
+
+# store i32 114514, i32* %1
+li $t0, 114514
+sw $t0, -492($sp)
+
+# %2 = alloca i32
+
+# store i32 6, i32* %2
+li $t0, 6
+sw $t0, -500($sp)
+
+# %3 = alloca i32
+
+# store i32 6, i32* %3
+li $t0, 6
+sw $t0, -508($sp)
+
+# %4 = alloca i32
+
+# store i32 6, i32* %4
+li $t0, 6
+sw $t0, -516($sp)
+
+# %5 = load i32, i32* %1
+lw $t0, -492($sp)
+sw $t0, -524($sp)
+
+# store i32 %5, i32* %1
+lw $t0, -524($sp)
+sw $t0, -492($sp)
+
+# %6 = sub i32 0, 11
+
+li $t0, 0
+li $t1, 11
+subu $t2, $t0, $t1
+sw $t2, -532($sp)
+
+# store i32 %6, i32* %1
+lw $t0, -532($sp)
+sw $t0, -492($sp)
+
+# %7 = add i32 1, 1
+
+li $t0, 1
+li $t1, 1
+addu $t2, $t0, $t1
+sw $t2, -540($sp)
+
+# %8 = load i32, i32* %1
+lw $t0, -492($sp)
+sw $t0, -544($sp)
+
+# %9 = add i32 2, 5
+
+li $t0, 2
+li $t1, 5
+addu $t2, $t0, $t1
+sw $t2, -548($sp)
+
+# %10 = load i32, i32* %1
+lw $t0, -492($sp)
+sw $t0, -552($sp)
+
+# %11 = sub i32 %9, %10
+
+lw $t0, -548($sp)
+lw $t1, -552($sp)
+subu $t2, $t0, $t1
+sw $t2, -556($sp)
+
+# %12 = getelementptr [5 x i32], [5 x i32]* @arr1_g, i32 0, i32 1
+lw $t2, 76($gp)
+sw $t2, -560($sp)
+
+addu $t2, $t2, 4
+sw $t2, -560($sp)
+
+
+# %13 = load i32, i32* %12
+lw $t0, -560($sp)
+lw $t1, 0($t0)
+sw $t1, -564($sp)
+
+# %14 = load i32, i32* %1
+lw $t0, -492($sp)
+sw $t0, -568($sp)
+
+# %15 = load i32, i32* %2
+lw $t0, -500($sp)
+sw $t0, -572($sp)
+
+# %16 = sdiv i32 %14, %15
+
+lw $t0, -568($sp)
+lw $t1, -572($sp)
+div $t2, $t0, $t1
+sw $t2, -576($sp)
+
+# %17 = load i32, i32* %3
+lw $t0, -508($sp)
+sw $t0, -580($sp)
+
+# %18 = icmp slt i32 %16, %17
+
+lw $t0, -576($sp)
+lw $t1, -580($sp)
+slt $t2, $t0, $t1
+sw $t2, -584($sp)
+
+# br i1 %18, label %19, label %20
+
+lw $t0, -584($sp)
+beqz $t0, label_identifier294
+j label_identifier293
+
+label_identifier293:
+
+# br label %20
+
+j label_identifier294
+
+label_identifier294:
+
+# %21 = load i32, i32* %1
+lw $t0, -492($sp)
+sw $t0, -596($sp)
+
+# %22 = load i32, i32* %2
+lw $t0, -500($sp)
+sw $t0, -600($sp)
+
+# %23 = srem i32 %21, %22
+
+lw $t0, -596($sp)
+lw $t1, -600($sp)
+rem $t2, $t0, $t1
+sw $t2, -604($sp)
+
+# %24 = load i32, i32* %3
+lw $t0, -508($sp)
+sw $t0, -608($sp)
+
+# %25 = icmp sgt i32 %23, %24
+
+lw $t0, -604($sp)
+lw $t1, -608($sp)
+sgt $t2, $t0, $t1
+sw $t2, -612($sp)
+
+# br i1 %25, label %26, label %27
+
+lw $t0, -612($sp)
+beqz $t0, label_identifier303
+j label_identifier302
+
+label_identifier302:
+
+# br label %27
+
+j label_identifier303
+
+label_identifier303:
+
+# %28 = load i32, i32* %1
+lw $t0, -492($sp)
+sw $t0, -624($sp)
+
+# %29 = load i32, i32* %2
+lw $t0, -500($sp)
+sw $t0, -628($sp)
+
+# %30 = srem i32 %28, %29
+
+lw $t0, -624($sp)
+lw $t1, -628($sp)
+rem $t2, $t0, $t1
+sw $t2, -632($sp)
+
+# %31 = load i32, i32* %3
+lw $t0, -508($sp)
+sw $t0, -636($sp)
+
+# %32 = icmp sge i32 %30, %31
+
+lw $t0, -632($sp)
+lw $t1, -636($sp)
+sge $t2, $t0, $t1
+sw $t2, -640($sp)
+
+# br i1 %32, label %33, label %34
+
+lw $t0, -640($sp)
+beqz $t0, label_identifier312
+j label_identifier311
+
+label_identifier311:
+
+# br label %34
+
+j label_identifier312
+
+label_identifier312:
+
+# %35 = load i32, i32* %1
+lw $t0, -492($sp)
+sw $t0, -652($sp)
+
+# %36 = load i32, i32* %2
+lw $t0, -500($sp)
+sw $t0, -656($sp)
+
+# %37 = srem i32 %35, %36
+
+lw $t0, -652($sp)
+lw $t1, -656($sp)
+rem $t2, $t0, $t1
+sw $t2, -660($sp)
+
+# %38 = load i32, i32* %3
+lw $t0, -508($sp)
+sw $t0, -664($sp)
+
+# %39 = icmp sle i32 %37, %38
+
+lw $t0, -660($sp)
+lw $t1, -664($sp)
+sle $t2, $t0, $t1
+sw $t2, -668($sp)
+
+# br i1 %39, label %40, label %41
+
+lw $t0, -668($sp)
+beqz $t0, label_identifier321
+j label_identifier320
+
+label_identifier320:
+
+# br label %41
+
+j label_identifier321
+
+label_identifier321:
+
+# %42 = icmp eq i32 3, 2
+
+li $t0, 3
+li $t1, 2
+seq $t2, $t0, $t1
+sw $t2, -680($sp)
+
+# br i1 %42, label %43, label %44
+
+lw $t0, -680($sp)
+beqz $t0, label_identifier330
+j label_identifier329
+
+label_identifier329:
+
+# br label %44
+
+j label_identifier330
+
+label_identifier330:
+
+# %45 = icmp ne i32 3, 2
+
+li $t0, 3
+li $t1, 2
+sne $t2, $t0, $t1
+sw $t2, -692($sp)
+
+# br i1 %45, label %46, label %47
+
+lw $t0, -692($sp)
+beqz $t0, label_identifier337
+j label_identifier336
+
+label_identifier336:
+
+# br label %47
+
+j label_identifier337
+
+label_identifier337:
+
+# %48 = icmp ne i32 3, 0
+
+li $t0, 3
+li $t1, 0
+sne $t2, $t0, $t1
+sw $t2, -704($sp)
+
+# br i1 %48, label %52, label %50
+
+lw $t0, -704($sp)
+beqz $t0, label_identifier344
+j label_identifier346
+
+label_identifier343:
+
+# br label %50
+
+j label_identifier344
+
+label_identifier344:
+
+# %51 = icmp ne i32 3, 0
+
+li $t0, 3
+li $t1, 0
+sne $t2, $t0, $t1
+sw $t2, -716($sp)
+
+# br i1 %51, label %54, label %58
+
+lw $t0, -716($sp)
+beqz $t0, label_identifier358
+j label_identifier355
+
+label_identifier346:
+
+# %53 = icmp ne i32 2, 0
+
+li $t0, 2
+li $t1, 0
+sne $t2, $t0, $t1
+sw $t2, -724($sp)
+
+# br i1 %53, label %49, label %50
+
+lw $t0, -724($sp)
+beqz $t0, label_identifier344
+j label_identifier343
+
+label_identifier355:
+
+# br label %55
+
+j label_identifier356
+
+label_identifier356:
+
+# %56 = load i32, i32* @temp
+lw $t0, 72($gp)
+sw $t0, -736($sp)
+
+# %57 = icmp eq i32 %56, 0
+
+lw $t0, -736($sp)
+li $t1, 0
+seq $t2, $t0, $t1
+sw $t2, -740($sp)
+
+# br i1 %57, label %60, label %63
+
+lw $t0, -740($sp)
+beqz $t0, label_identifier370
+j label_identifier367
+
+label_identifier358:
+
+# %59 = icmp ne i32 2, 0
+
+li $t0, 2
+li $t1, 0
+sne $t2, $t0, $t1
+sw $t2, -748($sp)
+
+# br i1 %59, label %54, label %55
+
+lw $t0, -748($sp)
+beqz $t0, label_identifier356
+j label_identifier355
+
+label_identifier367:
+
+# br label %61
+
+j label_identifier368
+
+label_identifier368:
+
+# %62 = sub i32 0, 1
+
+li $t0, 0
+li $t1, 1
+subu $t2, $t0, $t1
+sw $t2, -760($sp)
+
+# ret void
+addu $sp, $sp, -764
+
+label_identifier370:
+
+# %64 = load i32, i32* @c_var1_g
+lw $t0, 0($gp)
+sw $t0, -768($sp)
+
+# %65 = icmp ne i32 %64, 0
+
+lw $t0, -768($sp)
+li $t1, 0
+sne $t2, $t0, $t1
+sw $t2, -772($sp)
+
+# br i1 %65, label %60, label %61
+
+lw $t0, -772($sp)
+beqz $t0, label_identifier368
+j label_identifier367
+
+for_loop:
+
+label_identifier383:
+
+# %1 = alloca i32
+
+# %2 = alloca i32
+
+# store i32 0, i32* %1
+li $t0, 0
+sw $t0, -780($sp)
+
+# br label %3
+
+j label_identifier388
+
+label_identifier388:
+
+# %4 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -796($sp)
+
+# %5 = icmp slt i32 %4, 3
+
+lw $t0, -796($sp)
+li $t1, 3
+slt $t2, $t0, $t1
+sw $t2, -800($sp)
+
+# br i1 %5, label %6, label %7
+
+lw $t0, -800($sp)
+beqz $t0, label_identifier391
+j label_identifier390
+
+label_identifier390:
+
+# store i32 0, i32* %2
+li $t0, 0
+sw $t0, -784($sp)
+
+# br label %11
+
+j label_identifier395
+
+label_identifier391:
+
+# br label %19
+
+j label_identifier420
+
+label_identifier392:
+
+# %9 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -820($sp)
+
+# %10 = add i32 %9, 1
+
+lw $t0, -820($sp)
+li $t1, 1
+addu $t2, $t0, $t1
+sw $t2, -824($sp)
+
+# store i32 %10, i32* %1
+lw $t0, -824($sp)
+sw $t0, -780($sp)
+
+# br label %3
+
+j label_identifier388
+
+label_identifier395:
+
+# %12 = load i32, i32* %2
+lw $t0, -784($sp)
+sw $t0, -836($sp)
+
+# %13 = icmp slt i32 %12, 3
+
+lw $t0, -836($sp)
+li $t1, 3
+slt $t2, $t0, $t1
+sw $t2, -840($sp)
+
+# br i1 %13, label %14, label %15
+
+lw $t0, -840($sp)
+beqz $t0, label_identifier398
+j label_identifier397
+
+label_identifier397:
+
+# br label %16
+
+j label_identifier399
+
+label_identifier398:
+
+# br label %8
+
+j label_identifier392
+
+label_identifier399:
+
+# %17 = load i32, i32* %2
+lw $t0, -784($sp)
+sw $t0, -856($sp)
+
+# %18 = add i32 %17, 1
+
+lw $t0, -856($sp)
+li $t1, 1
+addu $t2, $t0, $t1
+sw $t2, -860($sp)
+
+# store i32 %18, i32* %2
+lw $t0, -860($sp)
+sw $t0, -784($sp)
+
+# br label %11
+
+j label_identifier395
+
+label_identifier420:
+
+# br label %20
+
+j label_identifier422
+
+label_identifier422:
+
+# br label %21
+
+j label_identifier423
+
+label_identifier423:
+
+# store i32 0, i32* %1
+li $t0, 0
+sw $t0, -780($sp)
+
+# br label %22
+
+j label_identifier430
+
+label_identifier430:
+
+# br label %23
+
+j label_identifier432
+
+label_identifier432:
+
+# br label %24
+
+j label_identifier433
+
+label_identifier433:
+
+# br label %25
+
+j label_identifier438
+
+label_identifier438:
+
+# %26 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -900($sp)
+
+# %27 = icmp slt i32 %26, 10
+
+lw $t0, -900($sp)
+li $t1, 10
+slt $t2, $t0, $t1
+sw $t2, -904($sp)
+
+# br i1 %27, label %28, label %29
+
+lw $t0, -904($sp)
+beqz $t0, label_identifier441
+j label_identifier440
+
+label_identifier440:
+
+# br label %29
+
+j label_identifier441
+
+label_identifier441:
+
+# br label %30
+
+j label_identifier449
+
+label_identifier449:
+
+# br label %31
+
+j label_identifier451
+
+label_identifier451:
+
+# br label %32
+
+j label_identifier452
+
+label_identifier452:
+
+# store i32 0, i32* %1
+li $t0, 0
+sw $t0, -780($sp)
+
+# br label %36
+
+j label_identifier464
+
+label_identifier453:
+
+# %34 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -936($sp)
+
+# %35 = add i32 %34, 1
+
+lw $t0, -936($sp)
+li $t1, 1
+addu $t2, $t0, $t1
+sw $t2, -940($sp)
+
+# store i32 %35, i32* %1
+lw $t0, -940($sp)
+sw $t0, -780($sp)
+
+# br label %30
+
+j label_identifier449
+
+label_identifier464:
+
+# %37 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -952($sp)
+
+# %38 = icmp slt i32 %37, 10
+
+lw $t0, -952($sp)
+li $t1, 10
+slt $t2, $t0, $t1
+sw $t2, -956($sp)
+
+# br i1 %38, label %39, label %42
+
+lw $t0, -956($sp)
+beqz $t0, label_identifier467
+j label_identifier466
+
+label_identifier466:
+
+# %40 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -964($sp)
+
+# %41 = add i32 %40, 1
+
+lw $t0, -964($sp)
+li $t1, 1
+addu $t2, $t0, $t1
+sw $t2, -968($sp)
+
+# store i32 %41, i32* %1
+lw $t0, -968($sp)
+sw $t0, -780($sp)
+
+# br label %36
+
+j label_identifier464
+
+label_identifier467:
+
+# br label %43
+
+j label_identifier479
+
+label_identifier479:
+
+# %44 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -984($sp)
+
+# %45 = icmp slt i32 %44, 10
+
+lw $t0, -984($sp)
+li $t1, 10
+slt $t2, $t0, $t1
+sw $t2, -988($sp)
+
+# br i1 %45, label %46, label %47
+
+lw $t0, -988($sp)
+beqz $t0, label_identifier482
+j label_identifier481
+
+label_identifier481:
+
+# br label %48
+
+j label_identifier483
+
+label_identifier482:
+
+# store i32 0, i32* %1
+li $t0, 0
+sw $t0, -780($sp)
+
+# br label %51
+
+j label_identifier496
+
+label_identifier483:
+
+# %49 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -1008($sp)
+
+# %50 = add i32 %49, 1
+
+lw $t0, -1008($sp)
+li $t1, 1
+addu $t2, $t0, $t1
+sw $t2, -1012($sp)
+
+# store i32 %50, i32* %1
+lw $t0, -1012($sp)
+sw $t0, -780($sp)
+
+# br label %43
+
+j label_identifier479
+
+label_identifier496:
+
+# br label %52
+
+j label_identifier498
+
+label_identifier498:
+
+# %53 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -1028($sp)
+
+# %54 = icmp sgt i32 %53, 10
+
+lw $t0, -1028($sp)
+li $t1, 10
+sgt $t2, $t0, $t1
+sw $t2, -1032($sp)
+
+# br i1 %54, label %59, label %60
+
+lw $t0, -1032($sp)
+beqz $t0, label_identifier503
+j label_identifier501
+
+label_identifier499:
+
+# ret void
+addu $sp, $sp, -1040
+
+label_identifier500:
+
+# %57 = load i32, i32* %1
+lw $t0, -780($sp)
+sw $t0, -1044($sp)
+
+# %58 = add i32 %57, 1
+
+lw $t0, -1044($sp)
+li $t1, 1
+addu $t2, $t0, $t1
+sw $t2, -1048($sp)
+
+# store i32 %58, i32* %1
+lw $t0, -1048($sp)
+sw $t0, -780($sp)
+
+# br label %51
+
+j label_identifier496
+
+label_identifier501:
+
+# br label %55
+
+j label_identifier499
+
+label_identifier503:
+
+# br label %56
+
+j label_identifier500
+
+is_palindrome:
+lw $t0, 0($sp)
+sw $t0, -1068($sp)
+
+label_identifier519:
+
+# %2 = alloca i32
+
+# store i32 %0, i32* %2
+lw $t0, -1068($sp)
+sw $t0, -1072($sp)
+
+# %3 = load i32, i32* %2
+lw $t0, -1072($sp)
+sw $t0, -1080($sp)
+
+# %4 = alloca i32
+
+# store i32 %3, i32* %4
+lw $t0, -1080($sp)
+sw $t0, -1084($sp)
+
+# %5 = alloca i32
+
+# store i32 0, i32* %5
+li $t0, 0
+sw $t0, -1092($sp)
+
+# %6 = load i32, i32* %4
+lw $t0, -1084($sp)
+sw $t0, -1100($sp)
+
+# %7 = add i32 %6, 2
+
+lw $t0, -1100($sp)
+li $t1, 2
+addu $t2, $t0, $t1
+sw $t2, -1104($sp)
+
+# store i32 %7, i32* %4
+lw $t0, -1104($sp)
+sw $t0, -1084($sp)
+
+# %8 = icmp ne i32 1, 0
+
+li $t0, 1
+li $t1, 0
+sne $t2, $t0, $t1
+sw $t2, -1112($sp)
+
+# br i1 %8, label %9, label %10
+
+lw $t0, -1112($sp)
+beqz $t0, label_identifier533
+j label_identifier532
+
+label_identifier532:
+
+# br label %10
+
+j label_identifier533
+
+label_identifier533:
+
+# %11 = load i32, i32* %4
+lw $t0, -1084($sp)
+sw $t0, -1124($sp)
+
+# %12 = icmp ne i32 %11, 0
+
+lw $t0, -1124($sp)
+li $t1, 0
+sne $t2, $t0, $t1
+sw $t2, -1128($sp)
+
+# br i1 %12, label %13, label %14
+
+lw $t0, -1128($sp)
+beqz $t0, label_identifier540
+j label_identifier539
+
+label_identifier539:
+
+# br label %15
+
+j label_identifier545
+
+label_identifier540:
+
+# br label %15
+
+j label_identifier545
+
+label_identifier545:
+
+# %16 = load i32, i32* %2
+lw $t0, -1072($sp)
+sw $t0, -1144($sp)
+
+# %17 = icmp sge i32 %16, 0
+
+lw $t0, -1144($sp)
+li $t1, 0
+sge $t2, $t0, $t1
+sw $t2, -1148($sp)
+
+# br i1 %17, label %20, label %19
+
+lw $t0, -1148($sp)
+beqz $t0, label_identifier551
+j label_identifier554
+
+label_identifier548:
+
+# ret i32 1
+li $v0, 1
+addu $sp, $sp, -1156
+
+label_identifier551:
+
+# ret i32 0
+li $v0, 0
+addu $sp, $sp, -1160
+
+label_identifier554:
+
+# %21 = load i32, i32* %2
+lw $t0, -1072($sp)
+sw $t0, -1164($sp)
+
+# %22 = icmp slt i32 %21, 10
+
+lw $t0, -1164($sp)
+li $t1, 10
+slt $t2, $t0, $t1
+sw $t2, -1168($sp)
+
+# br i1 %22, label %18, label %19
+
+lw $t0, -1168($sp)
+beqz $t0, label_identifier551
+j label_identifier548
+
+label_identifier563:
+
+# br label %24
+
+j label_identifier566
+
+label_identifier566:
+
+# %25 = load i32, i32* %4
+lw $t0, -1084($sp)
+sw $t0, -1180($sp)
+
+# %26 = icmp sgt i32 %25, 0
+
+lw $t0, -1180($sp)
+li $t1, 0
+sgt $t2, $t0, $t1
+sw $t2, -1184($sp)
+
+# br i1 %26, label %27, label %34
+
+lw $t0, -1184($sp)
+beqz $t0, label_identifier569
+j label_identifier568
+
+label_identifier568:
+
+# %28 = load i32, i32* %5
+lw $t0, -1092($sp)
+sw $t0, -1192($sp)
+
+# %29 = mul i32 %28, 10
+
+lw $t0, -1192($sp)
+li $t1, 10
+mul $t2, $t0, $t1
+sw $t2, -1196($sp)
+
+# store i32 %29, i32* %5
+lw $t0, -1196($sp)
+sw $t0, -1092($sp)
+
+# %30 = load i32, i32* %5
+lw $t0, -1092($sp)
+sw $t0, -1204($sp)
+
+# %31 = load i32, i32* %4
+lw $t0, -1084($sp)
+sw $t0, -1208($sp)
+
+# %32 = srem i32 %31, 10
+
+lw $t0, -1208($sp)
+li $t1, 10
+rem $t2, $t0, $t1
+sw $t2, -1212($sp)
+
+# %33 = add i32 %30, %32
+
+lw $t0, -1204($sp)
+lw $t1, -1212($sp)
+addu $t2, $t0, $t1
+sw $t2, -1216($sp)
+
+# store i32 %33, i32* %5
+lw $t0, -1216($sp)
+sw $t0, -1092($sp)
+
+# br label %38
+
+j label_identifier570
+
+label_identifier569:
+
+# %35 = load i32, i32* %5
+lw $t0, -1092($sp)
+sw $t0, -1228($sp)
+
+# %36 = load i32, i32* %2
+lw $t0, -1072($sp)
+sw $t0, -1232($sp)
+
+# %37 = icmp eq i32 %35, %36
+
+lw $t0, -1228($sp)
+lw $t1, -1232($sp)
+seq $t2, $t0, $t1
+sw $t2, -1236($sp)
+
+# br i1 %37, label %41, label %42
+
+lw $t0, -1236($sp)
+beqz $t0, label_identifier594
+j label_identifier591
+
+label_identifier570:
+
+# %39 = load i32, i32* %4
+lw $t0, -1084($sp)
+sw $t0, -1244($sp)
+
+# %40 = sdiv i32 %39, 10
+
+lw $t0, -1244($sp)
+li $t1, 10
+div $t2, $t0, $t1
+sw $t2, -1248($sp)
+
+# store i32 %40, i32* %4
+lw $t0, -1248($sp)
+sw $t0, -1084($sp)
+
+# br label %24
+
+j label_identifier566
+
+label_identifier591:
+
+# ret i32 1
+li $v0, 1
+addu $sp, $sp, -1260
+
+label_identifier594:
+
+# ret i32 0
+li $v0, 0
+addu $sp, $sp, -1264
+
 main:
 
-label_identifier9:
+label_identifier603:
+
+# %1 = alloca i32
+
+# %2 = call i32 @getint()
+li $v0, 5
+syscall
+sw $v0, -1272($sp)
+
+# store i32 %2, i32* %1
+lw $t0, -1272($sp)
+sw $t0, -1268($sp)
 
 # call void @putch(i32 50)
 li $a0, 50
@@ -30,13 +1862,18 @@ li $a0, 55
 li $v0, 11
 syscall
 
-# call void @putch(i32 49)
-li $a0, 49
+# call void @putch(i32 51)
+li $a0, 51
 li $v0, 11
 syscall
 
-# call void @putch(i32 50)
-li $a0, 50
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
 li $v0, 11
 syscall
 
@@ -45,8 +1882,64 @@ li $a0, 57
 li $v0, 11
 syscall
 
-# call void @putch(i32 53)
-li $a0, 53
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# %3 = add i32 1, 2
+
+li $t0, 1
+li $t1, 2
+addu $t2, $t0, $t1
+sw $t2, -1316($sp)
+
+# call void @func3(i32 %3)
+sw $ra, -1324($sp)
+lw $t0, -1316($sp)
+sw $t0, -1328($sp)
+addu $sp, $sp, -1328
+jal func3
+addu $sp, $sp, 1328
+lw $ra, -1324($sp)
+
+# call void @putch(i32 50)
+li $a0, 50
+li $v0, 11
+syscall
+
+# call void @putch(i32 49)
+li $a0, 49
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 55)
+li $a0, 55
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 57)
+li $a0, 57
 li $v0, 11
 syscall
 
@@ -55,419 +1948,918 @@ li $a0, 10
 li $v0, 11
 syscall
 
-# %1 = alloca i32
+# call void @putch(i32 50)
+li $a0, 50
+li $v0, 11
+syscall
 
-# store i32 0, i32* %1
+# call void @putch(i32 49)
+li $a0, 49
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 55)
+li $a0, 55
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 51)
+li $a0, 51
+li $v0, 11
+syscall
+
+# call void @putch(i32 57)
+li $a0, 57
+li $v0, 11
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# %4 = alloca i32
+
+# store i32 6, i32* %4
+li $t0, 6
+sw $t0, -1396($sp)
+
+# %5 = alloca i32
+
+# store i32 6, i32* %5
+li $t0, 6
+sw $t0, -1404($sp)
+
+# %6 = alloca i32
+
+# store i32 6, i32* %6
+li $t0, 6
+sw $t0, -1412($sp)
+
+# %7 = alloca [2 x i32]
+addu $t0, $sp, -1428
+sw $t0, -1420($sp)
+
+# %8 = getelementptr [2 x i32], [2 x i32]* %7, i32 0, i32 0
+lw $t2, -1420($sp)
+sw $t2, -1432($sp)
+
+sw $t2, -1432($sp)
+
+
+# store i32 0, i32* %8
 li $t0, 0
-sw $t0, -40($sp)
+lw $t1, -1432($sp)
+sw $t0, 0($t1)
 
-# %2 = add i32 0, 1
+# %9 = getelementptr [2 x i32], [2 x i32]* %7, i32 0, i32 1
+lw $t2, -1420($sp)
+sw $t2, -1440($sp)
 
-li $t0, 0
-li $t1, 1
-addu $t2, $t0, $t1
-sw $t2, -48($sp)
+addu $t2, $t2, 4
+sw $t2, -1440($sp)
 
-# %5 = load i32, i32* %1
-lw $t0, -40($sp)
-sw $t0, -52($sp)
 
-# %6 = icmp sgt i32 %5, 0
-
-lw $t0, -52($sp)
-li $t1, 0
-sgt $t2, $t0, $t1
-sw $t2, -56($sp)
-
-# br i1 %6, label %3, label %4
-
-lw $t0, -56($sp)
-beqz $t0, label_identifier38
-j label_identifier35
-
-label_identifier35:
-
-# store i32 1, i32* %1
+# store i32 1, i32* %9
 li $t0, 1
-sw $t0, -40($sp)
+lw $t1, -1440($sp)
+sw $t0, 0($t1)
 
-# br label %7
+# %10 = alloca [2 x [2 x i32]]
+addu $t0, $sp, -1464
+sw $t0, -1448($sp)
 
-j label_identifier45
+# %11 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %10, i32 0, i32 0, i32 0
+lw $t2, -1448($sp)
+sw $t2, -1468($sp)
 
-label_identifier38:
 
-# store i32 0, i32* %1
-li $t0, 0
-sw $t0, -40($sp)
+sw $t2, -1468($sp)
 
-# br label %7
 
-j label_identifier45
-
-label_identifier45:
-
-# %8 = alloca i32
-
-# store i32 1, i32* %8
+# store i32 1, i32* %11
 li $t0, 1
-sw $t0, -80($sp)
+lw $t1, -1468($sp)
+sw $t0, 0($t1)
 
-# %9 = alloca i32
+# %12 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %10, i32 0, i32 0, i32 1
+lw $t2, -1448($sp)
+sw $t2, -1476($sp)
 
-# store i32 2, i32* %9
+
+addu $t2, $t2, 4
+sw $t2, -1476($sp)
+
+
+# store i32 1, i32* %12
+li $t0, 1
+lw $t1, -1476($sp)
+sw $t0, 0($t1)
+
+# %13 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %10, i32 0, i32 1, i32 0
+lw $t2, -1448($sp)
+sw $t2, -1484($sp)
+
+
+addu $t2, $t2, 8
+sw $t2, -1484($sp)
+
+
+# store i32 2, i32* %13
 li $t0, 2
-sw $t0, -88($sp)
+lw $t1, -1484($sp)
+sw $t0, 0($t1)
 
-# %12 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -96($sp)
+# %14 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %10, i32 0, i32 1, i32 1
+lw $t2, -1448($sp)
+sw $t2, -1492($sp)
 
-# %13 = icmp sge i32 %12, 0
 
-lw $t0, -96($sp)
-li $t1, 0
-sge $t2, $t0, $t1
-sw $t2, -100($sp)
+addu $t2, $t2, 12
+sw $t2, -1492($sp)
 
-# br i1 %13, label %10, label %11
 
-lw $t0, -100($sp)
-beqz $t0, label_identifier57
-j label_identifier54
-
-label_identifier54:
-
-# store i32 1, i32* %8
-li $t0, 1
-sw $t0, -80($sp)
-
-# br label %11
-
-j label_identifier57
-
-label_identifier57:
-
-# %16 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -116($sp)
-
-# %17 = icmp sge i32 %16, 0
-
-lw $t0, -116($sp)
-li $t1, 0
-sge $t2, $t0, $t1
-sw $t2, -120($sp)
-
-# br i1 %17, label %14, label %15
-
-lw $t0, -120($sp)
-beqz $t0, label_identifier64
-j label_identifier63
-
-label_identifier63:
-
-# br label %15
-
-j label_identifier64
-
-label_identifier64:
-
-# %20 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -132($sp)
-
-# %21 = icmp eq i32 %20, 0
-
-lw $t0, -132($sp)
-li $t1, 0
-seq $t2, $t0, $t1
-sw $t2, -136($sp)
-
-# br i1 %21, label %18, label %19
-
-lw $t0, -136($sp)
-beqz $t0, label_identifier71
-j label_identifier70
-
-label_identifier70:
-
-# br label %22
-
-j label_identifier75
-
-label_identifier71:
-
-# br label %22
-
-j label_identifier75
-
-label_identifier75:
-
-# %25 = load i32, i32* %9
-lw $t0, -88($sp)
-sw $t0, -152($sp)
-
-# %26 = icmp sle i32 %25, 0
-
-lw $t0, -152($sp)
-li $t1, 0
-sle $t2, $t0, $t1
-sw $t2, -156($sp)
-
-# br i1 %26, label %23, label %24
-
-lw $t0, -156($sp)
-beqz $t0, label_identifier81
-j label_identifier78
-
-label_identifier78:
-
-# store i32 2, i32* %9
+# store i32 2, i32* %14
 li $t0, 2
-sw $t0, -88($sp)
+lw $t1, -1492($sp)
+sw $t0, 0($t1)
 
-# br label %24
+# %15 = alloca i32
 
-j label_identifier81
+# %16 = alloca i32
 
-label_identifier81:
+# %17 = alloca i32
 
-# %29 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -172($sp)
+# %18 = alloca [5 x i32]
+addu $t0, $sp, -1532
+sw $t0, -1512($sp)
 
-# %30 = load i32, i32* %9
-lw $t0, -88($sp)
-sw $t0, -176($sp)
+# %19 = alloca [2 x [2 x i32]]
+addu $t0, $sp, -1552
+sw $t0, -1536($sp)
 
-# %31 = icmp eq i32 %29, %30
+# %20 = alloca i32
 
-lw $t0, -172($sp)
-lw $t1, -176($sp)
-seq $t2, $t0, $t1
-sw $t2, -180($sp)
+# store i32 114514, i32* %20
+li $t0, 114514
+sw $t0, -1556($sp)
 
-# br i1 %31, label %27, label %28
+# %21 = alloca i32
 
-lw $t0, -180($sp)
-beqz $t0, label_identifier90
-j label_identifier87
+# store i32 1919810, i32* %21
+li $t0, 1919810
+sw $t0, -1564($sp)
 
-label_identifier87:
+# %22 = alloca i32
 
-# store i32 1, i32* %1
+# store i32 810, i32* %22
+li $t0, 810
+sw $t0, -1572($sp)
+
+# %23 = alloca [5 x i32]
+addu $t0, $sp, -1600
+sw $t0, -1580($sp)
+
+# %24 = getelementptr [5 x i32], [5 x i32]* %23, i32 0, i32 0
+lw $t2, -1580($sp)
+sw $t2, -1604($sp)
+
+sw $t2, -1604($sp)
+
+
+# store i32 8, i32* %24
+li $t0, 8
+lw $t1, -1604($sp)
+sw $t0, 0($t1)
+
+# %25 = getelementptr [5 x i32], [5 x i32]* %23, i32 0, i32 1
+lw $t2, -1580($sp)
+sw $t2, -1612($sp)
+
+addu $t2, $t2, 4
+sw $t2, -1612($sp)
+
+
+# store i32 7, i32* %25
+li $t0, 7
+lw $t1, -1612($sp)
+sw $t0, 0($t1)
+
+# %26 = getelementptr [5 x i32], [5 x i32]* %23, i32 0, i32 2
+lw $t2, -1580($sp)
+sw $t2, -1620($sp)
+
+addu $t2, $t2, 8
+sw $t2, -1620($sp)
+
+
+# store i32 6, i32* %26
+li $t0, 6
+lw $t1, -1620($sp)
+sw $t0, 0($t1)
+
+# %27 = getelementptr [5 x i32], [5 x i32]* %23, i32 0, i32 3
+lw $t2, -1580($sp)
+sw $t2, -1628($sp)
+
+addu $t2, $t2, 12
+sw $t2, -1628($sp)
+
+
+# store i32 5, i32* %27
+li $t0, 5
+lw $t1, -1628($sp)
+sw $t0, 0($t1)
+
+# %28 = getelementptr [5 x i32], [5 x i32]* %23, i32 0, i32 4
+lw $t2, -1580($sp)
+sw $t2, -1636($sp)
+
+addu $t2, $t2, 16
+sw $t2, -1636($sp)
+
+
+# store i32 4, i32* %28
+li $t0, 4
+lw $t1, -1636($sp)
+sw $t0, 0($t1)
+
+# %29 = alloca [2 x [2 x i32]]
+addu $t0, $sp, -1660
+sw $t0, -1644($sp)
+
+# %30 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %29, i32 0, i32 0, i32 0
+lw $t2, -1644($sp)
+sw $t2, -1664($sp)
+
+
+sw $t2, -1664($sp)
+
+
+# store i32 1, i32* %30
 li $t0, 1
-sw $t0, -40($sp)
+lw $t1, -1664($sp)
+sw $t0, 0($t1)
 
-# br label %28
+# %31 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %29, i32 0, i32 0, i32 1
+lw $t2, -1644($sp)
+sw $t2, -1672($sp)
 
-j label_identifier90
 
-label_identifier90:
+addu $t2, $t2, 4
+sw $t2, -1672($sp)
 
-# %34 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -196($sp)
 
-# %35 = load i32, i32* %9
-lw $t0, -88($sp)
-sw $t0, -200($sp)
+# store i32 1, i32* %31
+li $t0, 1
+lw $t1, -1672($sp)
+sw $t0, 0($t1)
 
-# %36 = icmp ne i32 %34, %35
+# %32 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %29, i32 0, i32 1, i32 0
+lw $t2, -1644($sp)
+sw $t2, -1680($sp)
 
-lw $t0, -196($sp)
-lw $t1, -200($sp)
-sne $t2, $t0, $t1
-sw $t2, -204($sp)
 
-# br i1 %36, label %32, label %33
+addu $t2, $t2, 8
+sw $t2, -1680($sp)
 
-lw $t0, -204($sp)
-beqz $t0, label_identifier99
-j label_identifier96
 
-label_identifier96:
+# store i32 2, i32* %32
+li $t0, 2
+lw $t1, -1680($sp)
+sw $t0, 0($t1)
 
-# store i32 0, i32* %1
+# %33 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %29, i32 0, i32 1, i32 1
+lw $t2, -1644($sp)
+sw $t2, -1688($sp)
+
+
+addu $t2, $t2, 12
+sw $t2, -1688($sp)
+
+
+# store i32 2, i32* %33
+li $t0, 2
+lw $t1, -1688($sp)
+sw $t0, 0($t1)
+
+# %34 = alloca [1 x i32]
+addu $t0, $sp, -1700
+sw $t0, -1696($sp)
+
+# %35 = getelementptr [1 x i32], [1 x i32]* %34, i32 0, i32 0
+lw $t2, -1696($sp)
+sw $t2, -1704($sp)
+
+sw $t2, -1704($sp)
+
+
+# store i32 0, i32* %35
 li $t0, 0
-sw $t0, -40($sp)
+lw $t1, -1704($sp)
+sw $t0, 0($t1)
 
-# br label %33
+# %36 = alloca i32
 
-j label_identifier99
+# store i32 0, i32* %36
+li $t0, 0
+sw $t0, -1712($sp)
 
-label_identifier99:
+# %37 = getelementptr [5 x i32], [5 x i32]* %23, i32 0, i32 0
+lw $t2, -1580($sp)
+sw $t2, -1720($sp)
 
-# %40 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -220($sp)
+sw $t2, -1720($sp)
 
-# %41 = load i32, i32* %9
-lw $t0, -88($sp)
-sw $t0, -224($sp)
 
-# %42 = icmp ne i32 %40, %41
+# %38 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* %29, i32 0, i32 0
+lw $t2, -1644($sp)
+sw $t2, -1724($sp)
 
-lw $t0, -220($sp)
-lw $t1, -224($sp)
-sne $t2, $t0, $t1
-sw $t2, -228($sp)
+sw $t2, -1724($sp)
 
-# br i1 %42, label %39, label %38
 
-lw $t0, -228($sp)
-beqz $t0, label_identifier108
-j label_identifier110
-
-label_identifier105:
-
-# store i32 1, i32* %1
+# %39 = call i32 @func1(i32 1, i32* %37, [2 x i32]* %38)
+sw $ra, -1732($sp)
 li $t0, 1
-sw $t0, -40($sp)
+sw $t0, -1736($sp)
+lw $t0, -1720($sp)
+sw $t0, -1740($sp)
+lw $t0, -1724($sp)
+sw $t0, -1744($sp)
+addu $sp, $sp, -1744
+jal func1
+addu $sp, $sp, 1744
+lw $ra, -1732($sp)
+sw $v0, -1728($sp)
 
-# br label %38
+# store i32 %39, i32* %36
+lw $t0, -1728($sp)
+sw $t0, -1712($sp)
 
-j label_identifier108
+# %40 = load i32, i32* %36
+lw $t0, -1712($sp)
+sw $t0, -1736($sp)
 
-label_identifier108:
+# call void @putint(i32 %40)
+lw $a0, -1736($sp)
+li $v0, 1
+syscall
 
-# %48 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -244($sp)
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
 
-# %49 = load i32, i32* %9
-lw $t0, -88($sp)
-sw $t0, -248($sp)
+# %41 = alloca i32
 
-# %50 = icmp ne i32 %48, %49
+# store i32 0, i32* %41
+li $t0, 0
+sw $t0, -1748($sp)
 
-lw $t0, -244($sp)
-lw $t1, -248($sp)
-sne $t2, $t0, $t1
-sw $t2, -252($sp)
+# br label %42
 
-# br i1 %50, label %45, label %47
+j label_identifier812
 
-lw $t0, -252($sp)
-beqz $t0, label_identifier124
-j label_identifier119
+label_identifier812:
 
-label_identifier110:
+# %43 = load i32, i32* %41
+lw $t0, -1748($sp)
+sw $t0, -1760($sp)
 
-# %43 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -260($sp)
+# %44 = icmp slt i32 %43, 2
 
-# %44 = icmp sgt i32 %43, 0
-
-lw $t0, -260($sp)
-li $t1, 0
-sgt $t2, $t0, $t1
-sw $t2, -264($sp)
-
-# br i1 %44, label %37, label %38
-
-lw $t0, -264($sp)
-beqz $t0, label_identifier108
-j label_identifier105
-
-label_identifier119:
-
-# store i32 2, i32* %1
-li $t0, 2
-sw $t0, -40($sp)
-
-# br label %46
-
-j label_identifier122
-
-label_identifier122:
-
-# %53 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -280($sp)
-
-# %54 = add i32 %53, 1
-
-lw $t0, -280($sp)
-li $t1, 1
-addu $t2, $t0, $t1
-sw $t2, -284($sp)
-
-# %55 = mul i32 3, 4
-
-li $t0, 3
-li $t1, 4
-mul $t2, $t0, $t1
-sw $t2, -288($sp)
-
-# %56 = sdiv i32 %55, 3
-
-lw $t0, -288($sp)
-li $t1, 3
-div $t2, $t0, $t1
-sw $t2, -292($sp)
-
-# %57 = srem i32 %56, 2
-
-lw $t0, -292($sp)
+lw $t0, -1760($sp)
 li $t1, 2
-rem $t2, $t0, $t1
-sw $t2, -296($sp)
+slt $t2, $t0, $t1
+sw $t2, -1764($sp)
 
-# %58 = sub i32 %54, %57
+# br i1 %44, label %45, label %49
 
-lw $t0, -284($sp)
-lw $t1, -296($sp)
-subu $t2, $t0, $t1
-sw $t2, -300($sp)
+lw $t0, -1764($sp)
+beqz $t0, label_identifier815
+j label_identifier814
 
-# store i32 %58, i32* %8
-lw $t0, -300($sp)
-sw $t0, -80($sp)
+label_identifier814:
 
-# %59 = add i32 1, 1
+# %46 = load i32, i32* %41
+lw $t0, -1748($sp)
+sw $t0, -1772($sp)
 
-li $t0, 1
+# %47 = getelementptr [2 x i32], [2 x i32]* %7, i32 0, i32 %46
+lw $t2, -1420($sp)
+sw $t2, -1776($sp)
+
+lw $t1, -1772($sp)
+mul $t1, $t1, 4
+addu $t2, $t2, $t1
+sw $t2, -1776($sp)
+
+
+# %48 = load i32, i32* %47
+lw $t0, -1776($sp)
+lw $t1, 0($t0)
+sw $t1, -1780($sp)
+
+# call void @putint(i32 %48)
+lw $a0, -1780($sp)
+li $v0, 1
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# br label %69
+
+j label_identifier816
+
+label_identifier815:
+
+# call void @func2()
+sw $ra, -1800($sp)
+addu $sp, $sp, -1800
+jal func2
+addu $sp, $sp, 1800
+lw $ra, -1800($sp)
+
+# %50 = getelementptr [5 x i32], [5 x i32]* @arr1_g, i32 0, i32 1
+lw $t2, 76($gp)
+sw $t2, -1800($sp)
+
+addu $t2, $t2, 4
+sw $t2, -1800($sp)
+
+
+# store i32 2, i32* %50
+li $t0, 2
+lw $t1, -1800($sp)
+sw $t0, 0($t1)
+
+# %51 = getelementptr [5 x i32], [5 x i32]* @arr1_g, i32 0, i32 4
+lw $t2, 76($gp)
+sw $t2, -1808($sp)
+
+addu $t2, $t2, 16
+sw $t2, -1808($sp)
+
+
+# %52 = load i32, i32* @c_var1_g
+lw $t0, 0($gp)
+sw $t0, -1812($sp)
+
+# store i32 %52, i32* %51
+lw $t0, -1812($sp)
+lw $t1, -1808($sp)
+sw $t0, 0($t1)
+
+# %53 = getelementptr [5 x i32], [5 x i32]* @arr1_g, i32 0, i32 2
+lw $t2, 76($gp)
+sw $t2, -1820($sp)
+
+addu $t2, $t2, 8
+sw $t2, -1820($sp)
+
+
+# %54 = getelementptr [5 x i32], [5 x i32]* @arr1_g, i32 0, i32 1
+lw $t2, 76($gp)
+sw $t2, -1824($sp)
+
+addu $t2, $t2, 4
+sw $t2, -1824($sp)
+
+
+# %55 = load i32, i32* %54
+lw $t0, -1824($sp)
+lw $t1, 0($t0)
+sw $t1, -1828($sp)
+
+# store i32 %55, i32* %53
+lw $t0, -1828($sp)
+lw $t1, -1820($sp)
+sw $t0, 0($t1)
+
+# %56 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* @arr2_g, i32 0, i32 1, i32 1
+lw $t2, 100($gp)
+sw $t2, -1836($sp)
+
+
+addu $t2, $t2, 12
+sw $t2, -1836($sp)
+
+
+# %57 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* @arr2_g, i32 0, i32 1, i32 2
+lw $t2, 100($gp)
+sw $t2, -1840($sp)
+
+
+addu $t2, $t2, 16
+sw $t2, -1840($sp)
+
+
+# %58 = load i32, i32* %57
+lw $t0, -1840($sp)
+lw $t1, 0($t0)
+sw $t1, -1844($sp)
+
+# store i32 %58, i32* %56
+lw $t0, -1844($sp)
+lw $t1, -1836($sp)
+sw $t0, 0($t1)
+
+# %59 = getelementptr [2 x [2 x i32]], [2 x [2 x i32]]* @arr2_g, i32 0, i32 1, i32 1
+lw $t2, 100($gp)
+sw $t2, -1852($sp)
+
+
+addu $t2, $t2, 12
+sw $t2, -1852($sp)
+
+
+# %60 = getelementptr [5 x i32], [5 x i32]* @arr1_g, i32 0, i32 1
+lw $t2, 76($gp)
+sw $t2, -1856($sp)
+
+addu $t2, $t2, 4
+sw $t2, -1856($sp)
+
+
+# %61 = load i32, i32* %60
+lw $t0, -1856($sp)
+lw $t1, 0($t0)
+sw $t1, -1860($sp)
+
+# %62 = mul i32 %61, 3
+
+lw $t0, -1860($sp)
+li $t1, 3
+mul $t2, $t0, $t1
+sw $t2, -1864($sp)
+
+# store i32 %62, i32* %59
+lw $t0, -1864($sp)
+lw $t1, -1852($sp)
+sw $t0, 0($t1)
+
+# %63 = load i32, i32* %1
+lw $t0, -1268($sp)
+sw $t0, -1872($sp)
+
+# call void @putch(i32 120)
+li $a0, 120
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 101)
+li $a0, 101
+li $v0, 11
+syscall
+
+# call void @putch(i32 113)
+li $a0, 113
+li $v0, 11
+syscall
+
+# call void @putch(i32 117)
+li $a0, 117
+li $v0, 11
+syscall
+
+# call void @putch(i32 97)
+li $a0, 97
+li $v0, 11
+syscall
+
+# call void @putch(i32 108)
+li $a0, 108
+li $v0, 11
+syscall
+
+# call void @putch(i32 115)
+li $a0, 115
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putint(i32 %63)
+lw $a0, -1872($sp)
+li $v0, 1
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# %64 = alloca i32
+
+# store i32 0, i32* %64
+li $t0, 0
+sw $t0, -1920($sp)
+
+# %65 = load i32, i32* %1
+lw $t0, -1268($sp)
+sw $t0, -1928($sp)
+
+# %66 = call i32 @is_palindrome(i32 %65)
+sw $ra, -1936($sp)
+lw $t0, -1928($sp)
+sw $t0, -1940($sp)
+addu $sp, $sp, -1940
+jal is_palindrome
+addu $sp, $sp, 1940
+lw $ra, -1936($sp)
+sw $v0, -1932($sp)
+
+# store i32 %66, i32* %64
+lw $t0, -1932($sp)
+sw $t0, -1920($sp)
+
+# %67 = load i32, i32* %64
+lw $t0, -1920($sp)
+sw $t0, -1940($sp)
+
+# %68 = icmp eq i32 %67, 1
+
+lw $t0, -1940($sp)
+li $t1, 1
+seq $t2, $t0, $t1
+sw $t2, -1944($sp)
+
+# br i1 %68, label %72, label %74
+
+lw $t0, -1944($sp)
+beqz $t0, label_identifier930
+j label_identifier893
+
+label_identifier816:
+
+# %70 = load i32, i32* %41
+lw $t0, -1748($sp)
+sw $t0, -1952($sp)
+
+# %71 = add i32 %70, 1
+
+lw $t0, -1952($sp)
 li $t1, 1
 addu $t2, $t0, $t1
-sw $t2, -308($sp)
+sw $t2, -1956($sp)
 
-# store i32 %59, i32* %8
-lw $t0, -308($sp)
-sw $t0, -80($sp)
+# store i32 %71, i32* %41
+lw $t0, -1956($sp)
+sw $t0, -1748($sp)
 
-# %60 = sub i32 0, 1
+# br label %42
 
-li $t0, 0
-li $t1, 1
-subu $t2, $t0, $t1
-sw $t2, -316($sp)
+j label_identifier812
 
-# store i32 %60, i32* %8
-lw $t0, -316($sp)
-sw $t0, -80($sp)
+label_identifier893:
+
+# %73 = load i32, i32* %1
+lw $t0, -1268($sp)
+sw $t0, -1968($sp)
+
+# call void @putint(i32 %73)
+lw $a0, -1968($sp)
+li $v0, 1
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 105)
+li $a0, 105
+li $v0, 11
+syscall
+
+# call void @putch(i32 115)
+li $a0, 115
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 97)
+li $a0, 97
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 112)
+li $a0, 112
+li $v0, 11
+syscall
+
+# call void @putch(i32 97)
+li $a0, 97
+li $v0, 11
+syscall
+
+# call void @putch(i32 108)
+li $a0, 108
+li $v0, 11
+syscall
+
+# call void @putch(i32 105)
+li $a0, 105
+li $v0, 11
+syscall
+
+# call void @putch(i32 110)
+li $a0, 110
+li $v0, 11
+syscall
+
+# call void @putch(i32 100)
+li $a0, 100
+li $v0, 11
+syscall
+
+# call void @putch(i32 114)
+li $a0, 114
+li $v0, 11
+syscall
+
+# call void @putch(i32 111)
+li $a0, 111
+li $v0, 11
+syscall
+
+# call void @putch(i32 109)
+li $a0, 109
+li $v0, 11
+syscall
+
+# call void @putch(i32 101)
+li $a0, 101
+li $v0, 11
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# br label %76
+
+j label_identifier979
+
+label_identifier930:
+
+# %75 = load i32, i32* %1
+lw $t0, -1268($sp)
+sw $t0, -2048($sp)
+
+# call void @putint(i32 %75)
+lw $a0, -2048($sp)
+li $v0, 1
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 105)
+li $a0, 105
+li $v0, 11
+syscall
+
+# call void @putch(i32 115)
+li $a0, 115
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 110)
+li $a0, 110
+li $v0, 11
+syscall
+
+# call void @putch(i32 111)
+li $a0, 111
+li $v0, 11
+syscall
+
+# call void @putch(i32 116)
+li $a0, 116
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 97)
+li $a0, 97
+li $v0, 11
+syscall
+
+# call void @putch(i32 32)
+li $a0, 32
+li $v0, 11
+syscall
+
+# call void @putch(i32 112)
+li $a0, 112
+li $v0, 11
+syscall
+
+# call void @putch(i32 97)
+li $a0, 97
+li $v0, 11
+syscall
+
+# call void @putch(i32 108)
+li $a0, 108
+li $v0, 11
+syscall
+
+# call void @putch(i32 105)
+li $a0, 105
+li $v0, 11
+syscall
+
+# call void @putch(i32 110)
+li $a0, 110
+li $v0, 11
+syscall
+
+# call void @putch(i32 100)
+li $a0, 100
+li $v0, 11
+syscall
+
+# call void @putch(i32 114)
+li $a0, 114
+li $v0, 11
+syscall
+
+# call void @putch(i32 111)
+li $a0, 111
+li $v0, 11
+syscall
+
+# call void @putch(i32 109)
+li $a0, 109
+li $v0, 11
+syscall
+
+# call void @putch(i32 101)
+li $a0, 101
+li $v0, 11
+syscall
+
+# call void @putch(i32 10)
+li $a0, 10
+li $v0, 11
+syscall
+
+# br label %76
+
+j label_identifier979
+
+label_identifier979:
 
 # ret i32 0
 li $v0, 0
-addu $sp, $sp, -324
-
-label_identifier124:
-
-# %51 = load i32, i32* %8
-lw $t0, -80($sp)
-sw $t0, -328($sp)
-
-# %52 = icmp sgt i32 %51, 0
-
-lw $t0, -328($sp)
-li $t1, 0
-sgt $t2, $t0, $t1
-sw $t2, -332($sp)
-
-# br i1 %52, label %45, label %46
-
-lw $t0, -332($sp)
-beqz $t0, label_identifier122
-j label_identifier119
+addu $sp, $sp, -2144

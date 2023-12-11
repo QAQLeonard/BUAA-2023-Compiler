@@ -14,7 +14,8 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 
-import static ir.utils.LLVMUtils.calculate;
+import static ir.utils.LLVMUtils.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * AddExp → MulExp <br>
@@ -136,15 +137,15 @@ public class AddExpNode extends Node implements Expression
     @Override
     public void parseIR()
     {
-        if (LLVMGenerator.isConst)
+        if (isConst)
         {
-            Integer value = LLVMGenerator.saveValue;
-            Operator op = LLVMGenerator.saveOp;
-            LLVMGenerator.saveValue = null;
+            Integer val = saveVal;
+            Operator op = saveOp;
+            saveVal = null;
             this.mulExpNode.parseIR();
-            if (value != null)
+            if (val != null)
             {
-                LLVMGenerator.saveValue = calculate(op, value, LLVMGenerator.saveValue);
+                LLVMGenerator.saveVal = calculate(op, val, LLVMGenerator.saveVal);
             }
             if (this.addExpNode != null)
             {

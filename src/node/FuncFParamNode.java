@@ -129,7 +129,7 @@ public class FuncFParamNode extends Node
                     {
                         isConst = true;
                         constExpNode.parseIR();
-                        dims.add(saveValue);
+                        dims.add(saveVal);
                         isConst = false;
                     }
                 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 public class LoadInst extends Instruction
 {
 
-    public LoadInst(BasicBlock basicBlock, Value pointer)
+    public LoadInst(Value pointer)
     {
         super(((PointerType) pointer.getType()).getTargetType(), Operator.Load);
         this.setName("%" + REG_NUMBER++);
@@ -23,7 +23,6 @@ public class LoadInst extends Instruction
             setType(new PointerType(((ArrayType) getType()).getElementType()));
         }
         this.addOperand(pointer);
-
     }
 
     public Value getPointer()

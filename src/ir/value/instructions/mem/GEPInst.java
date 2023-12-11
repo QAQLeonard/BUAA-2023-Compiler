@@ -20,7 +20,7 @@ public class GEPInst extends Instruction
     Type elementType;
     Value target;
 
-    public GEPInst(BasicBlock basicBlock, Value pointer, List<Value> indices)
+    public GEPInst(Value pointer, List<Value> indices)
     {
         super(new PointerType(getElementType(pointer, indices)), Operator.GEP);
         this.setName("%" + REG_NUMBER++);
@@ -40,9 +40,9 @@ public class GEPInst extends Instruction
         this.elementType = getElementType(pointer, indices);
     }
 
-    public GEPInst(BasicBlock basicBlock, Value pointer, int offset)
+    public GEPInst(Value pointer, int offset)
     {
-        this(basicBlock, pointer, ((ArrayType) ((PointerType) pointer.getType()).getTargetType()).offset2Index(offset));
+        this(pointer, ((ArrayType) ((PointerType) pointer.getType()).getTargetType()).offset2Index(offset));
     }
 
     public Value getPointer()

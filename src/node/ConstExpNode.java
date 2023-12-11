@@ -58,7 +58,7 @@ public class ConstExpNode extends Node implements Expression
     {
         // ConstExp -> AddExp
         isConst = true;
-        saveValue = null;
+        saveVal = null;
         addExpNode.parseIR();
         isConst = false;
     }

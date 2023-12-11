@@ -22,7 +22,7 @@ public class LLVMGenerator
     public static Stack<Function> functionStack = new Stack<>();
     public static Stack<BasicBlock> blockStack = new Stack<>();
 
-    public static Integer saveValue = null;
+    public static Integer saveVal = null;
     public static Operator saveOp = null;
     public static int tmpIndex = 0;
     public static Operator tmpOp = null;
@@ -75,15 +75,9 @@ public class LLVMGenerator
 
     private static List<Map<String, Integer>> constTable = new ArrayList<>();
 
-
-    public static Map<String, Integer> getCurConstTable()
-    {
-        return constTable.get(constTable.size() - 1);
-    }
-
     public static void addConst(String name, Integer value)
     {
-        getCurConstTable().put(name, value);
+        constTable.get(constTable.size() - 1).put(name, value);
     }
 
     public static Integer getConst(String name)

@@ -123,7 +123,7 @@ public class ConstInitValNode extends Node
                 tmpValue = null;
                 constExpNode.parseIR();
                 tmpDepth = 1;
-                tmpValue = BuildFactory.getConstInt(saveValue);
+                tmpValue = BuildFactory.getConstInt(saveVal);
                 if (isGlobal)
                 {
                     BuildFactory.buildInitArray(curArray, tmpOffset, tmpValue);
@@ -138,7 +138,7 @@ public class ConstInitValNode extends Node
                 {
                     name.append(((ConstInt) v).getValue()).append(";");
                 }
-                addConst(name.toString(), saveValue);
+                addConst(name.toString(), saveVal);
                 tmpOffset++;
             }
             else if (!constInitValNodeList.isEmpty())

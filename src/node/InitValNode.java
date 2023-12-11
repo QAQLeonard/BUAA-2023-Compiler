@@ -104,7 +104,6 @@ public class InitValNode extends Node
     @Override
     public void parseIR()
     {
-
         if (expNode != null && !isArray)
         {
             // Exp
@@ -119,14 +118,14 @@ public class InitValNode extends Node
                 {
                     isConst = true;
                 }
-                saveValue = null;
+                saveVal = null;
                 tmpValue = null;
                 expNode.parseIR();
                 isConst = false;
                 tmpDepth = 1;
                 if (isGlobal)
                 {
-                    tmpValue = BuildFactory.getConstInt(saveValue);
+                    tmpValue = BuildFactory.getConstInt(saveVal);
                     BuildFactory.buildInitArray(curArray, tmpOffset, tmpValue);
                 }
                 else
