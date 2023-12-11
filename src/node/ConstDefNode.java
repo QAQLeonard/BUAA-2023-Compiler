@@ -1,7 +1,7 @@
 package node;
 
 import error.CompilerError;
-import backend.errorhandler.ErrorHandler;
+import error.errorhandler.ErrorHandler;
 import error.ErrorType;
 import ir.type.IntegerType;
 import ir.type.Type;

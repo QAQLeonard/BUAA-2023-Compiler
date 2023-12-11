@@ -1,4 +1,4 @@
-package backend.errorhandler;
+package error.errorhandler;
 
 import error.CompilerError;
 import error.ErrorType;
