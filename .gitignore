@@ -34,3 +34,5 @@ bin/
 *.tar.gz
 output.txt
 testfile.txt
+*.ll
+*.txt

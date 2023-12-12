@@ -1,6 +1,6 @@
 package frontend.lexer;
 
-import token.Token;
+import frontend.lexer.token.Token;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,31 +27,16 @@ public class Lexer
             int c;
             while ((c = getNextChar(fr)) != -1)
             {
-                if (Character.isLetter(c)||c=='_')
-                {
-                    processWord(fr, c);
-                }
-                else if (Character.isDigit(c))
-                {
-                    processNumber(fr, c);
-                }
-                else if (isSymbol((char) c))
-                {
-                    processSymbol(fr, c);
-                }
-
-                else if (c == '"')
-                {
-                    processStr(fr, c);
-                }
+                if (Character.isLetter(c) || c == '_') processWord(fr, c);
+                else if (Character.isDigit(c)) processNumber(fr, c);
+                else if (isSymbol((char) c)) processSymbol(fr, c);
+                else if (c == '"') processStr(fr, c);
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
-
     }
 
     public void output() throws IOException
@@ -60,9 +45,9 @@ public class Lexer
         CreateFileUsingJava7Files(destFile);
         try
         {
-            for(Token t : tokenList)
+            for (Token t : tokenList)
             {
-                outputFileUsingUsingBuffer(destFile, t.toString()+"\n", true);
+                outputFileUsingUsingBuffer(destFile, t.toString() + "\n", true);
             }
         }
         catch (Exception e)
@@ -70,6 +55,7 @@ public class Lexer
             e.printStackTrace();
         }
     }
+
     private int getNextChar(FileReader fr) throws IOException
     {
         if (buffer != -1)
@@ -80,7 +66,7 @@ public class Lexer
             return c;
         }
         int temp = fr.read();
-        if(temp == '\n')
+        if (temp == '\n')
         {
             lineNum++;
         }
@@ -90,14 +76,14 @@ public class Lexer
     private void UnGetCH(int c)
     {
         buffer = c;
-        if(c == '\n') lineNum--;
+        if (c == '\n') lineNum--;
     }
 
     private void processWord(FileReader fr, int firstChar) throws IOException
     {
         StringBuilder str = new StringBuilder();
         int c = firstChar;
-        while (Character.isLetterOrDigit(c)||c=='_')
+        while (Character.isLetterOrDigit(c) || c == '_')
         {
             str.append((char) c);
             c = getNextChar(fr);

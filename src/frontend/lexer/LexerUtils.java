@@ -1,10 +1,10 @@
 package frontend.lexer;
 
-import error.CompilerError;
-import error.errorhandler.ErrorHandler;
-import error.ErrorType;
-import token.Token;
-import token.TokenType;
+import frontend.error.CompilerError;
+import frontend.error.errorhandler.ErrorHandler;
+import frontend.error.ErrorType;
+import frontend.lexer.token.Token;
+import frontend.lexer.token.TokenType;
 
 import java.util.HashMap;
 import java.util.Map;
