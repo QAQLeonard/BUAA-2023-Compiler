@@ -1,8 +1,7 @@
 package frontend.parser.node;
 
-import frontend.ir.LLVMGenerator;
-import frontend.ir.type.IntegerType;
-import frontend.error.symbol.SymbolTable;
+import ir.type.IntegerType;
+import frontend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 常数声明 ConstDecl → 'const' BType ConstDef { ',' ConstDef } ';'

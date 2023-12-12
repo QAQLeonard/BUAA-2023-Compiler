@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;

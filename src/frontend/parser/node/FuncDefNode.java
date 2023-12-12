@@ -1,16 +1,16 @@
 package frontend.parser.node;
 
-import frontend.ir.value.BuildFactory;
-import frontend.error.CompilerError;
-import frontend.error.errorhandler.ErrorHandler;
-import frontend.error.ErrorType;
-import frontend.ir.type.IntegerType;
-import frontend.ir.type.Type;
-import frontend.ir.type.VoidType;
-import frontend.ir.value.Function;
-import frontend.error.symbol.FUNCSymbol;
-import frontend.error.symbol.Symbol;
-import frontend.error.symbol.SymbolTable;
+import ir.value.BuildFactory;
+import frontend.errorhandler.CompilerError;
+import frontend.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorType;
+import ir.type.IntegerType;
+import ir.type.Type;
+import ir.type.VoidType;
+import ir.value.Function;
+import frontend.errorhandler.symbol.FUNCSymbol;
+import frontend.errorhandler.symbol.Symbol;
+import frontend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static frontend.parser.ParserUtils.funcSymbolStack;
-import static frontend.ir.LLVMGenerator.*;
-import static frontend.ir.utils.LLVMUtils.checkBlockEnd;
+import static ir.LLVMGenerator.*;
+import static ir.utils.LLVMUtils.checkBlockEnd;
 
 /**
  * 函数定义 FuncDef → FuncType Ident '(' [FuncFParams] ')' Block

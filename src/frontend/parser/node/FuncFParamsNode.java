@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 函数形参表 FuncFParams → FuncFParam { ',' FuncFParam }

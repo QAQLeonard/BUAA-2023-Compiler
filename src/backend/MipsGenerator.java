@@ -1,17 +1,17 @@
 package backend;
 
 import backend.utils.Pair;
-import frontend.ir.IRModule;
-import frontend.ir.type.*;
-import frontend.ir.value.*;
-import frontend.ir.value.instructions.*;
-import frontend.ir.value.instructions.mem.AllocaInst;
-import frontend.ir.value.instructions.mem.GEPInst;
-import frontend.ir.value.instructions.mem.LoadInst;
-import frontend.ir.value.instructions.mem.StoreInst;
-import frontend.ir.value.instructions.terminator.BrInst;
-import frontend.ir.value.instructions.terminator.CallInst;
-import frontend.ir.value.instructions.terminator.RetInst;
+import ir.IRModule;
+import ir.type.*;
+import ir.value.*;
+import ir.value.instructions.*;
+import ir.value.instructions.mem.AllocaInst;
+import ir.value.instructions.mem.GEPInst;
+import ir.value.instructions.mem.LoadInst;
+import ir.value.instructions.mem.StoreInst;
+import ir.value.instructions.terminator.BrInst;
+import ir.value.instructions.terminator.CallInst;
+import ir.value.instructions.terminator.RetInst;
 import utils.FileOperate;
 
 

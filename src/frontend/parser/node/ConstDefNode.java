@@ -1,14 +1,14 @@
 package frontend.parser.node;
 
-import frontend.error.CompilerError;
-import frontend.error.errorhandler.ErrorHandler;
-import frontend.error.ErrorType;
-import frontend.ir.type.IntegerType;
-import frontend.ir.type.Type;
-import frontend.ir.value.BuildFactory;
-import frontend.ir.value.GlobalVar;
-import frontend.ir.value.instructions.ConstArray;
-import frontend.error.symbol.*;
+import frontend.errorhandler.CompilerError;
+import frontend.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorType;
+import ir.type.IntegerType;
+import ir.type.Type;
+import ir.value.BuildFactory;
+import ir.value.GlobalVar;
+import ir.value.ConstArray;
+import frontend.errorhandler.symbol.*;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -23,7 +23,7 @@ import java.util.Objects;
 
 import static frontend.parser.ParserUtils.outputArrayDimension;
 import static frontend.parser.ParserUtils.parseArrayDimension;
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 常数定义 ConstDef → Ident { '[' ConstExp ']' } '=' ConstInitVal

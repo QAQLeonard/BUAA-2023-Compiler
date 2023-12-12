@@ -4,7 +4,7 @@ import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;

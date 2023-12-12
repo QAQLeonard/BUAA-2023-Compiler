@@ -1,14 +1,14 @@
 package frontend.parser.node;
 
-import frontend.error.CompilerError;
-import frontend.error.errorhandler.ErrorHandler;
-import frontend.error.ErrorType;
-import frontend.ir.type.IntegerType;
-import frontend.ir.value.BuildFactory;
-import frontend.ir.value.Value;
-import frontend.error.symbol.ARRAYSymbol;
-import frontend.error.symbol.INTSymbol;
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.CompilerError;
+import frontend.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorType;
+import ir.type.IntegerType;
+import ir.value.BuildFactory;
+import ir.value.Value;
+import frontend.errorhandler.symbol.ARRAYSymbol;
+import frontend.errorhandler.symbol.INTSymbol;
+import frontend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 /**
  * 函数形参 FuncFParam → BType Ident ['[' ']' { '[' ConstExp ']' }]
  */

@@ -1,18 +1,18 @@
 package frontend.parser.node;
 
-import frontend.error.CompilerError;
-import frontend.error.errorhandler.ErrorHandler;
-import frontend.error.ErrorType;
-import frontend.ir.type.PointerType;
-import frontend.ir.type.Type;
-import frontend.ir.value.BuildFactory;
-import frontend.ir.value.ConstInt;
-import frontend.ir.value.Value;
+import frontend.errorhandler.CompilerError;
+import frontend.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorType;
+import ir.type.PointerType;
+import ir.type.Type;
+import ir.value.BuildFactory;
+import ir.value.ConstInt;
+import ir.value.Value;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 语句 ForStmt → LVal '=' Exp

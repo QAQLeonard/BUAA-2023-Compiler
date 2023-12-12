@@ -2,10 +2,10 @@ package frontend.parser;
 
 // import static frontend.parser.ParserUtils.GenerateNodeClasses;
 
-import frontend.error.CompilerError;
-import frontend.error.errorhandler.ErrorHandler;
-import frontend.error.ErrorType;
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.CompilerError;
+import frontend.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorType;
+import frontend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.Lexer;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;

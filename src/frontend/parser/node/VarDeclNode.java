@@ -1,7 +1,7 @@
 package frontend.parser.node;
 
-import frontend.ir.type.IntegerType;
-import frontend.error.symbol.SymbolTable;
+import ir.type.IntegerType;
+import frontend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 变量声明 VarDecl → BType VarDef { ',' VarDef } ';'

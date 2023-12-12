@@ -1,22 +1,22 @@
 package frontend.parser.node;
 
-import frontend.error.CompilerError;
-import frontend.error.errorhandler.ErrorHandler;
-import frontend.error.ErrorType;
-import frontend.ir.LLVMGenerator;
-import frontend.ir.value.ConstInt;
-import frontend.ir.value.Function;
-import frontend.ir.value.instructions.Operator;
+import frontend.errorhandler.CompilerError;
+import frontend.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorType;
+import ir.LLVMGenerator;
+import ir.value.ConstInt;
+import ir.value.Function;
+import ir.value.instructions.Operator;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
-import frontend.error.symbol.FUNCSymbol;
-import frontend.error.symbol.Symbol;
-import frontend.error.symbol.SymbolTable;
-import frontend.error.symbol.SymbolType;
+import frontend.errorhandler.symbol.FUNCSymbol;
+import frontend.errorhandler.symbol.Symbol;
+import frontend.errorhandler.symbol.SymbolTable;
+import frontend.errorhandler.symbol.SymbolType;
 import utils.FileOperate;
-import frontend.ir.value.BuildFactory;
+import ir.value.BuildFactory;
 
 import java.io.File;
 import java.io.IOException;

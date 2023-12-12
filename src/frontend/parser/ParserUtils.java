@@ -6,10 +6,10 @@ import frontend.lexer.token.TokenType;
 import frontend.parser.node.ConstExpNode;
 import frontend.parser.node.ExpType;
 import frontend.parser.node.NodeType;
-import frontend.error.symbol.ARRAYSymbol;
-import frontend.error.symbol.FUNCSymbol;
-import frontend.error.symbol.Symbol;
-import frontend.error.symbol.SymbolType;
+import frontend.errorhandler.symbol.ARRAYSymbol;
+import frontend.errorhandler.symbol.FUNCSymbol;
+import frontend.errorhandler.symbol.Symbol;
+import frontend.errorhandler.symbol.SymbolType;
 import utils.FileOperate;
 
 import java.io.File;

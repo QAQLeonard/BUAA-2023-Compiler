@@ -1,7 +1,7 @@
 package frontend.parser.node;
 
 import frontend.parser.ParserUtils;
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;

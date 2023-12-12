@@ -1,18 +1,18 @@
 package frontend.parser.node;
 
-import frontend.ir.value.BasicBlock;
-import frontend.ir.value.BuildFactory;
+import ir.value.BasicBlock;
+import ir.value.BuildFactory;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
 import frontend.parser.ParserUtils;
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
 
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 /**
  * 逻辑或表达式 LOrExp → LAndExp | LAndExp '||' LOrExp
  */

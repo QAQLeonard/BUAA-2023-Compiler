@@ -1,8 +1,8 @@
 import backend.MipsGenerator;
-import frontend.error.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorHandler;
 import frontend.lexer.Lexer;
 import frontend.parser.Parser;
-import frontend.ir.LLVMGenerator;
+import ir.LLVMGenerator;
 
 import java.io.IOException;
 

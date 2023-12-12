@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.symbol.SymbolTable;
 
 import java.io.File;
 import java.io.IOException;

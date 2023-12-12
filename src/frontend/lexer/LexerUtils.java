@@ -1,8 +1,8 @@
 package frontend.lexer;
 
-import frontend.error.CompilerError;
-import frontend.error.errorhandler.ErrorHandler;
-import frontend.error.ErrorType;
+import frontend.errorhandler.CompilerError;
+import frontend.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorType;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 

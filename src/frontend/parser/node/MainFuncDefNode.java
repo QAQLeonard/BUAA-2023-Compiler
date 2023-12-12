@@ -1,14 +1,14 @@
 package frontend.parser.node;
 
-import frontend.error.CompilerError;
-import frontend.error.errorhandler.ErrorHandler;
-import frontend.error.ErrorType;
-import frontend.ir.LLVMGenerator;
-import frontend.ir.type.IntegerType;
-import frontend.ir.value.Function;
-import frontend.ir.value.BuildFactory;
-import frontend.error.symbol.FUNCSymbol;
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.CompilerError;
+import frontend.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorType;
+import ir.LLVMGenerator;
+import ir.type.IntegerType;
+import ir.value.Function;
+import ir.value.BuildFactory;
+import frontend.errorhandler.symbol.FUNCSymbol;
+import frontend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static frontend.ir.utils.LLVMUtils.checkBlockEnd;
+import static ir.utils.LLVMUtils.checkBlockEnd;
 
 /**
  * MainFuncDef -> 'int' 'main' '(' ')' Block

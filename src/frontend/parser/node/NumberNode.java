@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import frontend.ir.value.BuildFactory;
+import ir.value.BuildFactory;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -10,7 +10,7 @@ import utils.FileOperate;
 import java.io.File;
 import java.io.IOException;
 
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 数值 Number → IntConst

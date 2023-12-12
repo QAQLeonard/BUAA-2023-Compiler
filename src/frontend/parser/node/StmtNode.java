@@ -1,14 +1,14 @@
 package frontend.parser.node;
 
-import frontend.error.CompilerError;
-import frontend.error.errorhandler.ErrorHandler;
-import frontend.error.ErrorType;
-import frontend.ir.LLVMGenerator;
-import frontend.ir.type.PointerType;
-import frontend.ir.type.Type;
-import frontend.ir.value.*;
-import frontend.error.symbol.FUNCSymbol;
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.CompilerError;
+import frontend.errorhandler.ErrorHandler;
+import frontend.errorhandler.ErrorType;
+import ir.LLVMGenerator;
+import ir.type.PointerType;
+import ir.type.Type;
+import ir.value.*;
+import frontend.errorhandler.symbol.FUNCSymbol;
+import frontend.errorhandler.symbol.SymbolTable;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 
 /**
  * 语句 Stmt → LVal '=' Exp ';'

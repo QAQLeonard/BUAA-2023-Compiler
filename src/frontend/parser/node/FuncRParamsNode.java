@@ -1,6 +1,6 @@
 package frontend.parser.node;
 
-import frontend.ir.value.Value;
+import ir.value.Value;
 import frontend.lexer.token.Token;
 import frontend.lexer.token.TokenType;
 import frontend.parser.Parser;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 /**
  * 函数实参表 FuncRParams → Exp { ',' Exp }
  */

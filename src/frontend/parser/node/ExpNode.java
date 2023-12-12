@@ -2,13 +2,13 @@ package frontend.parser.node;
 
 import frontend.lexer.token.Token;
 import frontend.parser.ParserUtils;
-import frontend.error.symbol.SymbolTable;
+import frontend.errorhandler.symbol.SymbolTable;
 import utils.FileOperate;
 
 import java.io.File;
 import java.io.IOException;
 
-import static frontend.ir.LLVMGenerator.*;
+import static ir.LLVMGenerator.*;
 /**
  * 表达式 Exp → AddExp
  */
